@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dicent</string>
+    <string-array name="players">
+    	<item>Overlord</item>
+    	<item>Hero 1</item>
+    	<item>Hero 2</item>
+    	<item>Hero 3</item>
+    	<item>Hero 4</item>
+    </string-array>
+    <string name="exitNotification">press back again to exit.</string>
+    <string name="changePlayerNameDialog">Change player name</string>
+    <string name="OK">OK</string>
+    <string name="cancel">Cancel</string>
+    
+    <string name="roll">Roll</string>
+    <string name="reroll">Reroll</string>
+    <string name="rerollNotification">select dice to reroll.</string>
+    <string name="addBlack">Add Black</string>
+    <string name="addSilver">Add Silver</string>
+    <string name="addGold">Add Gold</string>
+    <string name="range">Range</string>
+    <string name="enhancement">Enhancement</string>
+    <string name="menuPreferences">Preferences</string>
+    <string name="menuAbout">About</string>
+    
+    <string name="preferencesTitle">Dicent - preferences</string>
+    <string name="preferencesAddons">Addons</string>
+    <string name="preferencesRoadToLegend">Road to Legend</string>
+    <string name="preferencesRoadToLegendSummary">Adds silver and gold dice</string>
+    <string name="preferencesTombOfIce">Tomb of Ice</string>
+    <string name="preferencesTombOfIceSummary">Adds transparent die</string>
+    <string name="preferencesSettings">Settings</string>
+    <string name="preferencesSounds">Sounds</string>
+    <string name="preferencesSoundsSummary">Roll sounds</string>
+    <string name="preferencesVibration">Vibration</string>
+    <string name="preferencesVibrationSummary">Vibration on rolls</string>
+    <string name="preferencesReset">Reset</string>
+    <string name="preferencesResetSummary">Reset everything to default</string>
+    <string name="preferencesResetDialog">Reset everything to default?</string>
+    
+    <string name="resultsTitle">Dicent - results</string>
+    
+    <string name="selectDiceTitle">Dicent - select dice</string>
+    
+    <string name="selectAddons">Select Addons</string>
+    <string name="about">Version 2.0
+    \n
+    \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
+    or use the issue tracker on the project\'s website
+    \nhttp://code.google.com/p/dicent/
+    \n
+    \nLicense: GNU GPL version 3 &lt;http://www.gnu.org/licenses/gpl-3.0-standalone.html&gt;
+    \n
+    \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
+    \n
+    \nChangelog:
+    \n2.0
+	\n- a LOT of code cleanup/restructuring
+	\n- now compatible with android 1.5 and newer
+	\n- new preferences screen
+	\n- persistent storage (player names, selected dice, preferences)
+	\n- roll sound
+	\n- slightly better dice background
+	\n
+    \n1.3:
+	\n- dice now look more like dice
+	\n- confirmation on app exit
+	\n- notification when the reroll button is pressed and no dice are selected
+	\n- every roll vibrates now
+	\n
+    \n1.2:
+	\n- default name for the non-OL players is now \"Hero X\" instead of \"Player X\" (the OL is a Player too!)
+	\n- the reroll button now only vibrates if dice are selected
+	\n- fixed a bug where added silver/gold die on the results screen are not properly saved on orientation change
+	\n- added legal text to about
+    </string>
+</resources>
