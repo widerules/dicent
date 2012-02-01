@@ -12,53 +12,51 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent;
+package com.dicent.dice;
+
 
 import android.content.Context;
 
-public class GoldDie extends PowerDie {
+public class WhiteDie extends Die {
 
-	public GoldDie(Context context, int _side, boolean _selected) {
+	public WhiteDie(Context context, int _side, boolean _selected) {
 		super(context, _side, _selected);
-		dieContent.setBackgroundColor(0xFF666600);
+		dieContent.setBackgroundColor(0xFFFFFFFF);
+		useBlack = true;
 		setSide(_side);
 	}
 	
 	public void setSide(int side) {
-		super.setSide(side);
 		if (this.side == side) return;
 		reset();
 		if (side >= 0 && side <= 5) this.side = side;
 		switch (side) {
 		case 0:
-			dieContent.addView(separator());
-			dieContent.addView(wounds(3));
-			dieContent.addView(range(3));
-			enhancement = 3;
+			setRange(1);
+			setWounds(3);
+			setSingleSurge();
 			break;
 		case 1:
-			dieContent.addView(separator());
-			dieContent.addView(wounds(3));
-			dieContent.addView(range(3));
-			enhancement = 3;
+			setRange(1);
+			setWounds(3);
+			setSingleSurge();
 			break;
 		case 2:
-			dieContent.addView(separator());
-			dieContent.addView(wounds(3));
-			dieContent.addView(range(3));
-			enhancement = 3;
+			setRange(2);
+			setWounds(2);
 			break;
 		case 3:
-			dieContent.addView(topLeftSurge);
-			dieContent.addView(centeredSurge);
-			dieContent.addView(surge());
-			surges = 3;
+			setRange(3);
+			setWounds(1);
+			setSingleSurge();
 			break;
 		case 4:
-			dieContent.addView(topLeftSurge);
-			dieContent.addView(centeredSurge);
-			dieContent.addView(surge());
-			surges = 3;
+			setRange(3);
+			setWounds(1);
+			setSingleSurge();
+			break;
+		case 5:
+			setFail(true);
 			break;
 		}
 	}

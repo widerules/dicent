@@ -3,3 +3,5 @@ gen/
 .classpath
 .project
 default.properties
+project.properties
+proguard.cfg

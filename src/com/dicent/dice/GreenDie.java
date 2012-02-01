@@ -12,16 +12,15 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent;
+package com.dicent.dice;
+
 
 import android.content.Context;
 
-public class TransparentDie extends Die {
-
-	public TransparentDie(Context context, int _side, boolean _selected) {
+public class GreenDie extends Die {
+	public GreenDie(Context context, int _side, boolean _selected) {
 		super(context, _side, _selected);
-		dieContent.setBackgroundColor(0xFFCCCCCC);
-		useBlack = true;
+		dieContent.setBackgroundColor(0xFF00AA00);
 		setSide(_side);
 	}
 	
@@ -31,10 +30,30 @@ public class TransparentDie extends Die {
 		if (side >= 0 && side <= 5) this.side = side;
 		switch (side) {
 		case 0:
-			setFail(true);
+			setRange(0);
+			setWounds(3);
 			break;
 		case 1:
-			setFail(true);
+			setRange(0);
+			setWounds(3);
+			break;
+		case 2:
+			setRange(0);
+			setWounds(2);
+			setSingleSurge();
+			break;
+		case 3:
+			setRange(0);
+			setWounds(2);
+			setSingleSurge();
+			break;
+		case 4:
+			setRange(1);
+			setWounds(2);
+			break;
+		case 5:
+			setRange(1);
+			setWounds(1);
 			break;
 		}
 	}

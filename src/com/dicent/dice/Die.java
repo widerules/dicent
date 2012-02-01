@@ -12,9 +12,10 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent;
+package com.dicent.dice;
 
 import com.dicent.R;
+import com.dicent.R.drawable;
 
 import android.content.Context;
 import android.view.View;
@@ -122,7 +123,7 @@ public abstract class Die extends FrameLayout {
 		if (fail) dieContent.addView(fail());
 	}
 	
-	protected void setDieSelected(boolean _selected) {
+	public void setDieSelected(boolean _selected) {
 		selected = _selected;
 		if (selected) setBackgroundColor(selectedBorderColor);
 		else setBackgroundColor(borderColor);

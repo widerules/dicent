@@ -12,7 +12,8 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent;
+package com.dicent.dice;
+
 
 import android.content.Context;
 import android.widget.ImageView;

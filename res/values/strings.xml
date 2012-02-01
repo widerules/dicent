@@ -44,7 +44,7 @@
     <string name="selectDiceTitle">Dicent - select dice</string>
     
     <string name="selectAddons">Select Addons</string>
-    <string name="about">Version 2.0
+    <string name="about">Version 2.1
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -55,6 +55,10 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n2.1
+	\n- the reroll button no longer ignores the vibration setting
+	\n- confirmation on app exit now also works on android versions &lt; 2.0
+	\n
     \n2.0
 	\n- a LOT of code cleanup/restructuring
 	\n- now compatible with android 1.5 and newer
@@ -68,11 +72,5 @@
 	\n- confirmation on app exit
 	\n- notification when the reroll button is pressed and no dice are selected
 	\n- every roll vibrates now
-	\n
-    \n1.2:
-	\n- default name for the non-OL players is now \"Hero X\" instead of \"Player X\" (the OL is a Player too!)
-	\n- the reroll button now only vibrates if dice are selected
-	\n- fixed a bug where added silver/gold die on the results screen are not properly saved on orientation change
-	\n- added legal text to about
     </string>
 </resources>

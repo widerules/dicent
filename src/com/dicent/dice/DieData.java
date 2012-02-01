@@ -12,7 +12,9 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent;
+package com.dicent.dice;
+
+import android.content.Context;
 
 public class DieData {
 	public static final int RED_DIE = 0;
@@ -37,5 +39,38 @@ public class DieData {
 		dieType = type;
 		side = 0;
 		isSelected = false;
+	}
+	
+	public Die createDie(Context context) {
+		Die newDie;
+		switch (dieType) {
+		case DieData.BLUE_DIE:
+			newDie = new BlueDie(context, side, isSelected);
+			break;
+		case DieData.WHITE_DIE:
+			newDie = new WhiteDie(context, side, isSelected);
+			break;
+		case DieData.GREEN_DIE:
+			newDie = new GreenDie(context, side, isSelected);
+			break;
+		case DieData.YELLOW_DIE:
+			newDie = new YellowDie(context, side, isSelected);
+			break;
+		case DieData.BLACK_DIE:
+			newDie = new BlackDie(context, side, isSelected);
+			break;
+		case DieData.TRANSPARENT_DIE:
+			newDie = new TransparentDie(context, side, isSelected);
+			break;
+		case DieData.SILVER_DIE:
+			newDie = new SilverDie(context, side, isSelected);
+			break;
+		case DieData.GOLD_DIE:
+			newDie = new GoldDie(context, side, isSelected);
+			break;
+		default:
+			newDie = new RedDie(context, side, isSelected);	
+		}
+		return newDie;
 	}
 }

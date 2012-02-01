@@ -17,6 +17,9 @@ package com.dicent;
 import java.util.Random;
 import java.util.Vector;
 
+import com.dicent.dice.Die;
+import com.dicent.dice.DieData;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +59,7 @@ public class DieAdapter extends BaseAdapter {
 			returnedView.setSide(dieData.side);
 			returnedView.setDieSelected(dieData.isSelected);
 		} else {
-			returnedView = createDie(dice.get(position));
+			returnedView = dice.get(position).createDie(context);
 		}
 		
 		return returnedView;
@@ -240,38 +243,5 @@ public class DieAdapter extends BaseAdapter {
 			i++;
 		}
 		return isPowerDie;
-	}
-	
-	private Die createDie(DieData newDieData) {
-		Die newDie;
-		switch (newDieData.dieType) {
-		case DieData.BLUE_DIE:
-			newDie = new BlueDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.WHITE_DIE:
-			newDie = new WhiteDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.GREEN_DIE:
-			newDie = new GreenDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.YELLOW_DIE:
-			newDie = new YellowDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.BLACK_DIE:
-			newDie = new BlackDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.TRANSPARENT_DIE:
-			newDie = new TransparentDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.SILVER_DIE:
-			newDie = new SilverDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		case DieData.GOLD_DIE:
-			newDie = new GoldDie(context, newDieData.side, newDieData.isSelected);
-			break;
-		default:
-			newDie = new RedDie(context, newDieData.side, newDieData.isSelected);	
-		}
-		return newDie;
 	}
 }

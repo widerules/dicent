@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -113,12 +114,14 @@ public class Dicent extends DicentActivity {
 		savedPlayerNamesEditor.commit();
     }
     
-    public void onBackPressed() {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if (keyCode != KeyEvent.KEYCODE_BACK) return false;
     	if (backPressed) finish();
     	else {
     		backPressed = true;
     		exitToast.show();
     	}
+    	return false;
     }
     
     protected Dialog onCreateDialog(int id) {

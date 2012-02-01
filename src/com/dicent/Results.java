@@ -1,5 +1,8 @@
 package com.dicent;
 
+import com.dicent.dice.Die;
+import com.dicent.dice.DieData;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -72,7 +75,6 @@ public class Results extends DicentActivity {
     		public void onClick(View v) {
     			if (dieAdapter.selectedDiceCount() > 0) {
     				rollEffects();
-    				vibrator.vibrate(150);
     			}
     			else rerollToast.show();
     			int resultsDieAdapterCount = dieAdapter.getCount();
