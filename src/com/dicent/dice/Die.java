@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.BitmapFactory.Options;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 public class Die extends View {
@@ -33,8 +35,6 @@ public class Die extends View {
 	protected static float woundHeight;
 	protected static float surgeWidth;
 	protected static float surgeHeight;
-	protected static float separatorSize;
-	protected static float failSize;
 	
 	protected Context context;
 	
@@ -44,7 +44,7 @@ public class Die extends View {
 		borderPaint = new Paint();
 		borderPaint.setColor(Color.GRAY);
 		borderPaint.setStyle(Paint.Style.STROKE);
-		borderPaint.setStrokeWidth(5.0f);
+		borderPaint.setStrokeWidth(4.0f);
 		
 		selectedBorderPaint = new Paint(borderPaint);
 		selectedBorderPaint.setColor(Color.CYAN);
@@ -70,38 +70,24 @@ public class Die extends View {
 			size = (int)(density * scale);
 			whiteTextPaint.setTextSize(textSize * density);
 			blackTextPaint.setTextSize(textSize * density);
-			woundWidth = 14.0f * density;
-			woundHeight = 12.0f * density;
-			surgeWidth = 35.0f * density;
-			surgeHeight = 12.0f * density;
-			separatorSize = (size - 30.0f) * density;
-			failSize = (size - 30.0f) * density;
+			borderPaint.setStrokeWidth(4.0f * density);
+			selectedBorderPaint.setStrokeWidth(4.0f * density);
 		}
 		
 		if (dieBackground == null) {
-			Bitmap decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.diebackground, null);
-			dieBackground = Bitmap.createScaledBitmap(decoded, size, size, true);
+			dieBackground = BitmapFactory.decodeResource(context.getResources(), R.drawable.diebackground, null);
+			whiteWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitewound, null);
+			blackWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackwound, null);
+			whiteSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitesurge, null);
+			blackSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.blacksurge, null);
+			whiteSeparator = BitmapFactory.decodeResource(context.getResources(), R.drawable.whiteseparator, null);
+			whiteFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitefail, null);
+			blackFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackfail, null);
 			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitewound, null);
-			whiteWound = Bitmap.createScaledBitmap(decoded, (int)woundWidth, (int)woundHeight, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackwound, null);
-			blackWound = Bitmap.createScaledBitmap(decoded, (int)woundWidth, (int)woundHeight, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitesurge, null);
-			whiteSurge = Bitmap.createScaledBitmap(decoded, (int)surgeWidth, (int)surgeHeight, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blacksurge, null);
-			blackSurge = Bitmap.createScaledBitmap(decoded, (int)surgeWidth, (int)surgeHeight, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whiteseparator, null);
-			whiteSeparator = Bitmap.createScaledBitmap(decoded, (int)separatorSize, (int)separatorSize, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitefail, null);
-			whiteFail = Bitmap.createScaledBitmap(decoded, (int)failSize, (int)failSize, true);
-			
-			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackfail, null);
-			blackFail = Bitmap.createScaledBitmap(decoded, (int)failSize, (int)failSize, true);
+			woundWidth = whiteWound.getWidth();
+			woundHeight = whiteWound.getHeight();
+			surgeWidth = whiteSurge.getWidth();
+			surgeHeight = whiteSurge.getHeight(); 
 		}
 		
 		dieData = _dieData;
@@ -143,8 +129,7 @@ public class Die extends View {
 		Paint usedPaint;
 		if (dieData.blackIcons) usedPaint = blackTextPaint;
 		else usedPaint = whiteTextPaint;
-		//int margin = size - (int)(10.0f * density);
-		canvas.drawText(Integer.toString(range), 10.0f * density, ((float)size - 13.0f) * density, usedPaint);
+		canvas.drawText(Integer.toString(range), 10.0f * density, (scale - 13.0f) * density, usedPaint);
 	}
 	
 	protected void drawWounds(Canvas canvas, int wounds) {
@@ -153,14 +138,14 @@ public class Die extends View {
 		else usedBitmap = whiteWound;
 		
 		if (wounds >= 1) 
-			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth) * density, 12.0f * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 10.0f) * density - woundWidth, 12.0f * density, iconPaint);
 		if (wounds >= 2)
-			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 2.0f - 2.0f) * density, 12.0f * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 12.0f) * density - woundWidth * 2.0f, 12.0f * density, iconPaint);
 		if (wounds == 3)
-			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 1.5f - 2.0f) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 10.0f - 2.0f) * density - woundWidth * 1.5f, (12.0f + 2.0f) * density + woundHeight, iconPaint);
 		if (wounds == 4) {
-			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
-			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 2.0f - 2.0f) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 10.0f) * density - woundWidth, (12.0f + 2.0f) * density + woundHeight, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 10.0f - 2.0f) * density - woundWidth * 2.0f, (12.0f + 2.0f) * density + woundHeight, iconPaint);
 		}
 	}
 	
@@ -169,7 +154,7 @@ public class Die extends View {
 		if (dieData.blackIcons) usedBitmap = blackSurge;
 		else usedBitmap = whiteSurge;
 		
-		canvas.drawBitmap(usedBitmap, ((float)size - 5.0f - surgeWidth) * density, ((float)size - 10.0f - surgeHeight) * density, iconPaint);
+		canvas.drawBitmap(usedBitmap, (scale - 5.0f) * density - surgeWidth, (scale - 10.0f) * density - surgeHeight, iconPaint);
 	}
 	
 	protected void drawPowerDieSurges(Canvas canvas, int surges) {
@@ -180,9 +165,9 @@ public class Die extends View {
 		if (surges >= 1)
 			canvas.drawBitmap(usedBitmap, 10.0f * density, 10.0f * density, iconPaint);
 		if (surges >= 2)
-			canvas.drawBitmap(usedBitmap, (2.5f + ((float)size - surgeWidth) / 2) * density, (((float)size - surgeHeight) / 2) * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (2.5f + scale / 2.0f) * density - surgeWidth / 2.0f, (scale / 2.0f) * density - surgeHeight / 2.0f, iconPaint);
 		if (surges >= 3) 
-			canvas.drawBitmap(usedBitmap, ((float)size - 5.0f - surgeWidth) * density, ((float)size - 10.0f - surgeHeight) * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, (scale - 5.0f) * density  - surgeWidth, (scale - 10.0f) * density - surgeHeight, iconPaint);
 	}
 	
 	protected void drawEnhancement(Canvas canvas, int enhancement) {

@@ -113,7 +113,7 @@ public class DieAdapter extends BaseAdapter {
 	}
 	
 	public void setSides(int[] sides) {
-		for (int i = 0; i <= dice.size(); i++) 
+		for (int i = 0; i < dice.size(); i++) 
 			dice.get(i).side = Side.values()[sides[i]];
 		notifyDataSetChanged();
 	}
