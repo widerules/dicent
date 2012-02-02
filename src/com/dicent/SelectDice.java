@@ -1,6 +1,7 @@
 package com.dicent;
 
 import com.dicent.dice.DieData;
+import com.dicent.dice.Die;
 
 import android.content.Context;
 import android.content.Intent;
@@ -43,6 +44,9 @@ public class SelectDice extends DicentActivity {
 		//collect objects created in XML
 		GridView diceGrid = (GridView)findViewById(R.id.selectDiceGrid);
     	Button rollButton = (Button)findViewById(R.id.selectDiceRollButton);
+    	
+    	float density = getResources().getDisplayMetrics().density;
+    	diceGrid.setColumnWidth((int)(density * Die.scale));
     	
     	//create stuff
     	dieAdapter = new DieAdapter(this);

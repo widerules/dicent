@@ -14,9 +14,9 @@
 
 package com.dicent.dice;
 
-import android.content.Context;
+import android.graphics.Color;
 
-public class DieData {
+public abstract class DieData {
 	public static final int RED_DIE = 0;
 	public static final int BLUE_DIE = 1;
 	public static final int WHITE_DIE = 2;
@@ -32,45 +32,62 @@ public class DieData {
 	public static final int DIE_TYPES_COUNT = 9;
 	
 	public int dieType;
-	public int side;
+	public Side side;
 	public boolean isSelected;
 	
-	public DieData(int type) {
-		dieType = type;
-		side = 0;
-		isSelected = false;
-	}
+	public int backgroundColor;
+	public boolean blackIcons;
+	public boolean powerDie;
 	
-	public Die createDie(Context context) {
-		Die newDie;
+	public static DieData create(int dieType) {
+		DieData newDieData;
 		switch (dieType) {
 		case DieData.BLUE_DIE:
-			newDie = new BlueDie(context, side, isSelected);
+			newDieData = new BlueDieData();
 			break;
 		case DieData.WHITE_DIE:
-			newDie = new WhiteDie(context, side, isSelected);
+			newDieData = new WhiteDieData();
 			break;
 		case DieData.GREEN_DIE:
-			newDie = new GreenDie(context, side, isSelected);
+			newDieData = new GreenDieData();
 			break;
 		case DieData.YELLOW_DIE:
-			newDie = new YellowDie(context, side, isSelected);
+			newDieData = new YellowDieData();
 			break;
 		case DieData.BLACK_DIE:
-			newDie = new BlackDie(context, side, isSelected);
+			newDieData = new BlackDieData();
 			break;
 		case DieData.TRANSPARENT_DIE:
-			newDie = new TransparentDie(context, side, isSelected);
+			newDieData = new TransparentDieData();
 			break;
 		case DieData.SILVER_DIE:
-			newDie = new SilverDie(context, side, isSelected);
+			newDieData = new SilverDieData();
 			break;
 		case DieData.GOLD_DIE:
-			newDie = new GoldDie(context, side, isSelected);
+			newDieData = new GoldDieData();
 			break;
 		default:
-			newDie = new RedDie(context, side, isSelected);	
+			newDieData = new RedDieData();	
 		}
-		return newDie;
+		return newDieData;
+	}
+	
+	public DieData() {
+		side = Side.SIDE1;
+		isSelected = false;
+		backgroundColor = Color.BLACK;
+		blackIcons = false;
+		powerDie = false;
+	}
+	
+	public abstract SideValues getSideValues();
+	
+	public enum Side {
+		SIDE1,
+		SIDE2,
+		SIDE3,
+		SIDE4,
+		SIDE5,
+		SIDE6
 	}
 }

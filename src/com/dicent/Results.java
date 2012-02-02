@@ -2,6 +2,7 @@ package com.dicent;
 
 import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
+import com.dicent.dice.SideValues;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,8 +33,8 @@ public class Results extends DicentActivity {
 	private TextView rangeText;
 	private TextView enhancementText;
 	
-	Button addSilverButton;
-	Button addGoldButton;
+	private Button addSilverButton;
+	private Button addGoldButton;
 	
 	private Vibrator vibrator;
 	private MediaPlayer rollSound;
@@ -63,6 +64,9 @@ public class Results extends DicentActivity {
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		rollSound = MediaPlayer.create(this, R.raw.rollsound);
 		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		
+		float density = getResources().getDisplayMetrics().density;
+    	diceGrid.setColumnWidth((int)(density * Die.scale));
 		
 		//set listeners
 		diceGrid.setOnItemClickListener(new OnItemClickListener() {
@@ -132,11 +136,7 @@ public class Results extends DicentActivity {
     			dieAdapter.addDie(dieType);
     		}
         	
-        	int[] sides = savedInstanceState.getIntArray("sides");
-        	int dieAdapterCount = dieAdapter.getCount();
-        	for (int i = 0; i < dieAdapterCount; i++) {
-        		dieAdapter.setSide(i, sides[i]);
-        	}
+        	dieAdapter.setSides(savedInstanceState.getIntArray("sides"));
         	
         	int[] selection = savedInstanceState.getIntArray("selectedDice");
         	for (int selectedIndex : selection) {
@@ -167,18 +167,19 @@ public class Results extends DicentActivity {
 	}
 	
 	private void updateResults() {
+		
     	wounds = surges = range = enhancement = 0;
     	fail = false;
     	
     	int dieAdapterCount = dieAdapter.getCount();
     	for (int i = 0; i < dieAdapterCount; i++) {
-    		Die currentDie = dieAdapter.getView(i, null, null);
-    		if (currentDie.isFail()) fail = true;
+    		SideValues currentSideValues = dieAdapter.getSideValues(i);
+    		if (currentSideValues.fail) fail = true;
     		else {
-    			wounds += currentDie.getWounds();
-    			surges += currentDie.getSurges();
-    			range += currentDie.getRange();
-    			enhancement += currentDie.getEnhancement();
+    			wounds += currentSideValues.wounds;
+    			surges += currentSideValues.surges;
+    			range += currentSideValues.range;
+    			enhancement += currentSideValues.enhancement;
     		}
     	}
     	if (fail) wounds = surges = range = enhancement = 0;

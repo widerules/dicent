@@ -17,8 +17,10 @@ package com.dicent;
 import java.util.Random;
 import java.util.Vector;
 
-import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
+import com.dicent.dice.Die;
+import com.dicent.dice.DieData.Side;
+import com.dicent.dice.SideValues;
 
 import android.content.Context;
 import android.view.View;
@@ -51,18 +53,21 @@ public class DieAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public Die getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		Die returnedView;
-		if (convertView != null) {
+		DieData dieData = dice.get(position);
+		if (convertView instanceof Die) {
 			returnedView = (Die)convertView;
-			DieData dieData = dice.get(position);
-			returnedView.setSide(dieData.side);
-			returnedView.setDieSelected(dieData.isSelected);
+			returnedView.setDieData(dieData);
 		} else {
-			returnedView = dice.get(position).createDie(context);
+			returnedView = new Die(context, dieData);
 		}
 		
 		return returnedView;
+	}
+	
+	public SideValues getSideValues(int position) {
+		return dice.get(position).getSideValues();
 	}
 	
 	public int getItemViewType(int position) {
@@ -73,14 +78,15 @@ public class DieAdapter extends BaseAdapter {
 		return DieData.DIE_TYPES_COUNT;
 	}
 	
+	
 	public void addDie(int dieType) {
-		DieData newDie = new DieData(dieType);
+		DieData newDie = DieData.create(dieType);
 		dice.add(newDie);
 		notifyDataSetChanged();
 	}
 	
 	public void addRolledDie(int dieType) {
-		DieData newDie = new DieData(dieType);
+		DieData newDie = DieData.create(dieType);
 		newDie.side = randomSide();
 		dice.add(newDie);
 		notifyDataSetChanged();
@@ -106,8 +112,9 @@ public class DieAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public void setSide(int position, int side) {
-		dice.get(position).side = side;
+	public void setSides(int[] sides) {
+		for (int i = 0; i <= dice.size(); i++) 
+			dice.get(i).side = Side.values()[sides[i]];
 		notifyDataSetChanged();
 	}
 	
@@ -120,15 +127,14 @@ public class DieAdapter extends BaseAdapter {
 	}
 	
 	public void rollDie(int position) {
-		int randomSide = randomSide();
-		dice.get(position).side = randomSide;
+		dice.get(position).side = randomSide();
 		dice.get(position).isSelected = false;
 		notifyDataSetChanged();
 	}
 	
-	public int randomSide() {
+	public Side randomSide() {
 		int randomSide = generator.nextInt(Integer.MAX_VALUE);
-		return randomSide % 6;
+		return Side.values()[randomSide % 6];
 	}
 	
 	public int[] selectedIndices() {
@@ -149,7 +155,7 @@ public class DieAdapter extends BaseAdapter {
 		int diceCount = dice.size();
 		int[] sides = new int[diceCount];
 		for (int i = 0; i < diceCount; i++) {
-			sides[i] = dice.get(i).side;
+			sides[i] = dice.get(i).side.ordinal();
 		}
 		return sides;
 	}
@@ -210,38 +216,26 @@ public class DieAdapter extends BaseAdapter {
 	
 	public int powerDiceCount() {
 		int powerDiceCount = 0;
-		int diceSize = dice.size();
-		for (int i = 0; i < diceSize; i++) {
-			if (isPowerDie(i)) powerDiceCount++; 
-		}
+		for (DieData die : dice)
+			if (die.powerDie) powerDiceCount++;
 		return powerDiceCount;
 	}
 	
 	public int selectedDiceCount() {
-		int selectedDice = 0;
-		int diceSize = dice.size();
-		for (int i = 0; i < diceSize; i++) {
-			if (dice.get(i).isSelected) selectedDice++;
-		}
-		return selectedDice;
+		int selectedDiceCount = 0;
+		for (DieData die : dice)
+			if (die.isSelected) selectedDiceCount++;
+		return selectedDiceCount;
 	}
 	
 	public int selectedPowerDiceCount() {
 		int selectedPowerDiceCount = 0;
-		int diceSize = dice.size();
-		for (int i = 0; i < diceSize; i++) {
-			if (isPowerDie(i) && dice.get(i).isSelected) selectedPowerDiceCount++; 
-		}
+		for (DieData die : dice)
+			if (die.isSelected && die.powerDie) selectedPowerDiceCount++;
 		return selectedPowerDiceCount;
 	}
 	
 	public boolean isPowerDie(int position) {
-		boolean isPowerDie = false;
-		int i = 0;
-		while(!isPowerDie && i < DieData.POWER_DICE_TYPES_COUNT) {
-			if (dice.get(position).dieType == DieData.POWER_DICE[i]) isPowerDie = true;
-			i++;
-		}
-		return isPowerDie;
+		return dice.get(position).powerDie;
 	}
 }

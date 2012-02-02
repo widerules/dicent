@@ -1,228 +1,205 @@
-/** This file is part of Dicent.
- *
- *  Dicent is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  Dicent is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  You should have received a copy of the GNU General Public License
- *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
- **/
-
 package com.dicent.dice;
 
 import com.dicent.R;
-import com.dicent.R.drawable;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.RelativeLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-public abstract class Die extends FrameLayout {
+public class Die extends View {
+	public static final float scale = 70.0f;
+	protected static final float textSize = 20.0f;
+	protected static Paint borderPaint;
+	protected static Paint selectedBorderPaint;
+	protected static Paint whiteTextPaint;
+	protected static Paint blackTextPaint;
+	protected static Paint iconPaint;
+	protected static Bitmap dieBackground;
+	protected static Bitmap whiteWound;
+	protected static Bitmap blackWound;
+	protected static Bitmap whiteSurge;
+	protected static Bitmap blackSurge;
+	protected static Bitmap whiteSeparator;
+	protected static Bitmap whiteFail;
+	protected static Bitmap blackFail;
 	
-	protected static LayoutParams dieLayoutParams;
-	protected static float scaleFactor;
-	
-	public static final int borderColor = 0xFF333333;
-	public static final int selectedBorderColor = 0xFF00CCCC;
-	public static final float surgeWidth = 35.0f;
-	public static final float surgeHeight = 12.0f;
-	public static final float woundWidth = 14.0f;
-	public static final float woundHeight = 12.0f;
+	protected static float density = 0.0f;
+	protected static int size;
+	protected static float woundWidth;
+	protected static float woundHeight;
+	protected static float surgeWidth;
+	protected static float surgeHeight;
+	protected static float separatorSize;
+	protected static float failSize;
 	
 	protected Context context;
-	protected RelativeLayout dieContent;
-	protected boolean useBlack;
 	
-	protected int side;
-	protected int range;
-	protected int wounds;
-	protected int enhancement;
-	protected int surges;
-	protected boolean fail;
-	protected boolean selected;
+	protected DieData dieData;
 	
-	public Die(Context context, int _side, boolean _selected) {
+	static {
+		borderPaint = new Paint();
+		borderPaint.setColor(Color.GRAY);
+		borderPaint.setStyle(Paint.Style.STROKE);
+		borderPaint.setStrokeWidth(5.0f);
+		
+		selectedBorderPaint = new Paint(borderPaint);
+		selectedBorderPaint.setColor(Color.CYAN);
+		
+		whiteTextPaint = new Paint();
+		whiteTextPaint.setColor(Color.WHITE);
+		whiteTextPaint.setAntiAlias(true);
+		
+		blackTextPaint = new Paint(whiteTextPaint);
+		blackTextPaint.setColor(Color.BLACK);
+		
+		iconPaint = new Paint();
+		iconPaint.setFilterBitmap(true);
+		iconPaint.setDither(true);
+	}
+	
+	public Die(Context context, DieData _dieData) {
 		super(context);
+		
 		this.context = context;
-		
-		if (dieLayoutParams == null) {
-			scaleFactor = context.getResources().getDisplayMetrics().density;
-			dieLayoutParams = new LayoutParams((int)(70.0f * scaleFactor), (int)(70.0f * scaleFactor));
+		if (density <= 0.0f) {
+			density = context.getResources().getDisplayMetrics().density;
+			size = (int)(density * scale);
+			whiteTextPaint.setTextSize(textSize * density);
+			blackTextPaint.setTextSize(textSize * density);
+			woundWidth = 14.0f * density;
+			woundHeight = 12.0f * density;
+			surgeWidth = 35.0f * density;
+			surgeHeight = 12.0f * density;
+			separatorSize = (size - 30.0f) * density;
+			failSize = (size - 30.0f) * density;
 		}
 		
-		setLayoutParams(new GridView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		int scaledPadding = (int)(3.0f * scaleFactor);
-		setPadding(scaledPadding, scaledPadding, scaledPadding, scaledPadding);
-		setBackgroundColor(borderColor);
-		
-		dieContent = new RelativeLayout(context);
-		dieContent.setLayoutParams(dieLayoutParams);
-		scaledPadding = (int)(9.0f * scaleFactor);
-		dieContent.setPadding(scaledPadding, scaledPadding, scaledPadding, scaledPadding);
-		addView(dieContent);
-		
-		ImageView dieBackground = new ImageView(context);
-		dieBackground.setImageResource(R.drawable.diebackground);
-		dieBackground.setLayoutParams(dieLayoutParams);
-		addView(dieBackground);
-		
-		side = -1;
-		
-		setDieSelected(_selected);
-	}
-	
-	public abstract void setSide(int side);
-	
-	public int getRange() {
-		return range;
-	}
-	
-	public int getWounds() {
-		return wounds;
-	}
-	
-	public int getEnhancement() {
-		return enhancement;
-	}
-	
-	public int getSurges() {
-		return surges;
-	}
-	
-	public boolean isFail() {
-		return fail;
-	}
-	
-	protected void setRange(int _range) {
-		range = _range;
-		dieContent.addView(range(range));
-	}
-	
-	protected void setWounds(int _wounds) {
-		wounds = _wounds;
-		if (wounds > 0) dieContent.addView(wounds(wounds));
-	}
-	
-	protected void setSingleSurge() {
-		surges =  1;
-		dieContent.addView(surge());
-	}
-	
-	protected void setFail(boolean _fail) {
-		fail = _fail;
-		if (fail) dieContent.addView(fail());
-	}
-	
-	public void setDieSelected(boolean _selected) {
-		selected = _selected;
-		if (selected) setBackgroundColor(selectedBorderColor);
-		else setBackgroundColor(borderColor);
-	}
-	
-	protected void reset() {
-		dieContent.removeAllViews();
-		range = 0;
-		wounds = 0;
-		enhancement = 0;
-		surges = 0;
-		fail = false;
-	}
-	
-	protected ImageView surge() {
-		ImageView surgeView = new ImageView(context);
-		if (useBlack) surgeView.setImageResource(R.drawable.blacksurge);
-		else surgeView.setImageResource(R.drawable.whitesurge);
-		
-		RelativeLayout.LayoutParams surgeLayoutParams = new RelativeLayout.LayoutParams((int)(surgeWidth * scaleFactor), (int)(surgeHeight * scaleFactor));
-		surgeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		surgeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		surgeView.setLayoutParams(surgeLayoutParams);
-		
-		return surgeView;
-	}
-	
-	protected ImageView wound() {
-		ImageView woundView = new ImageView(context);
-		if (useBlack) woundView.setImageResource(R.drawable.blackwound);
-		else woundView.setImageResource(R.drawable.whitewound);
-		TableRow.LayoutParams woundParams = new TableRow.LayoutParams((int)(woundWidth * scaleFactor), (int)(woundHeight * scaleFactor));
-		int scaledMargin = (int)(1.0f * scaleFactor);
-		woundParams.setMargins(scaledMargin, scaledMargin, scaledMargin, scaledMargin);
-		woundView.setLayoutParams(woundParams);
-		
-		return woundView;
-	}
-	
-	protected TableLayout wounds(int woundsNum) {
-		TableLayout woundsTable = new TableLayout(context);
-		TableRow row1 = new TableRow(context);
-		TableRow row2 = new TableRow(context);
-		woundsTable.addView(row1);
-		woundsTable.addView(row2);
-		row1.addView(wound());
-		if (woundsNum >= 2) row1.addView(wound());
-		if (woundsNum >= 3) {
-			View newWound = wound();
-			row2.addView(newWound);
-			if (woundsNum == 3) ((TableRow.LayoutParams)newWound.getLayoutParams()).span = 2;
+		if (dieBackground == null) {
+			Bitmap decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.diebackground, null);
+			dieBackground = Bitmap.createScaledBitmap(decoded, size, size, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitewound, null);
+			whiteWound = Bitmap.createScaledBitmap(decoded, (int)woundWidth, (int)woundHeight, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackwound, null);
+			blackWound = Bitmap.createScaledBitmap(decoded, (int)woundWidth, (int)woundHeight, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitesurge, null);
+			whiteSurge = Bitmap.createScaledBitmap(decoded, (int)surgeWidth, (int)surgeHeight, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blacksurge, null);
+			blackSurge = Bitmap.createScaledBitmap(decoded, (int)surgeWidth, (int)surgeHeight, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whiteseparator, null);
+			whiteSeparator = Bitmap.createScaledBitmap(decoded, (int)separatorSize, (int)separatorSize, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitefail, null);
+			whiteFail = Bitmap.createScaledBitmap(decoded, (int)failSize, (int)failSize, true);
+			
+			decoded = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackfail, null);
+			blackFail = Bitmap.createScaledBitmap(decoded, (int)failSize, (int)failSize, true);
 		}
-		if (woundsNum >= 4) row2.addView(wound());
 		
-		RelativeLayout.LayoutParams woundsTableLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		woundsTableLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		woundsTableLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		woundsTable.setLayoutParams(woundsTableLayoutParams);
-		
-		
-		return woundsTable;
+		dieData = _dieData;
 	}
 	
-	protected TextView range(int rangeVal) {
-		TextView rangeView = new TextView(context);
-		rangeView.setSingleLine();
-		rangeView.setText(Integer.toString(rangeVal));
-		if (useBlack) rangeView.setTextColor(0xFF000000);
-		else rangeView.setTextColor(0xFFFFFFFF);
-		rangeView.setTextSize(20.0f);
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		
-		RelativeLayout.LayoutParams rangeLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		rangeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		rangeLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rangeView.setLayoutParams(rangeLayoutParams);
+		Paint usedBorderPaint;
+		if (dieData.isSelected) usedBorderPaint = selectedBorderPaint;
+		else usedBorderPaint = borderPaint;
 		
-		return rangeView;
+		//background color
+		canvas.drawColor(dieData.backgroundColor);
+		//border
+		canvas.drawRect(0.0f, 0.0f, (float)size, (float)size, usedBorderPaint);
+		//background
+		canvas.drawBitmap(dieBackground, 0.0f, 0.0f, null);
+		
+		SideValues sv = dieData.getSideValues();
+		if (dieData.powerDie) {
+			if (sv.enhancement > 0) drawEnhancement(canvas, sv.enhancement);
+			else if (sv.surges > 0) drawPowerDieSurges(canvas, sv.surges);
+		} else {
+			if (sv.fail) drawFail(canvas);
+			else {
+				drawRange(canvas, sv.range);
+				if (sv.wounds > 0) drawWounds(canvas, sv.wounds);
+				if (sv.surges > 0) drawSurge(canvas);
+			}
+		}
 	}
 	
-	protected ImageView fail() {
-		ImageView failView = new ImageView(context);
-		if (useBlack) failView.setImageResource(R.drawable.blackfail);
-		else failView.setImageResource(R.drawable.whitefail);
-		
-		RelativeLayout.LayoutParams failLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(50.0f * scaleFactor));
-		failLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		failView.setLayoutParams(failLayoutParams);
-		
-		return failView;
+	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+		setMeasuredDimension(size, size);
 	}
 	
-	protected ImageView separator() {
-		ImageView separatorView = new ImageView(context);
-		separatorView.setImageResource(R.drawable.whiteseparator);
+	protected void drawRange(Canvas canvas, int range) {
+		Paint usedPaint;
+		if (dieData.blackIcons) usedPaint = blackTextPaint;
+		else usedPaint = whiteTextPaint;
+		//int margin = size - (int)(10.0f * density);
+		canvas.drawText(Integer.toString(range), 10.0f * density, ((float)size - 13.0f) * density, usedPaint);
+	}
+	
+	protected void drawWounds(Canvas canvas, int wounds) {
+		Bitmap usedBitmap;
+		if (dieData.blackIcons) usedBitmap = blackWound;
+		else usedBitmap = whiteWound;
 		
-		RelativeLayout.LayoutParams separatorLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(50.0f * scaleFactor));
-		separatorLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		separatorView.setLayoutParams(separatorLayoutParams);
+		if (wounds >= 1) 
+			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth) * density, 12.0f * density, iconPaint);
+		if (wounds >= 2)
+			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 2.0f - 2.0f) * density, 12.0f * density, iconPaint);
+		if (wounds == 3)
+			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 1.5f - 2.0f) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
+		if (wounds == 4) {
+			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, ((float)size - 10.0f - woundWidth * 2.0f - 2.0f) * density, (12.0f + woundHeight + 2.0f) * density, iconPaint);
+		}
+	}
+	
+	protected void drawSurge(Canvas canvas) {
+		Bitmap usedBitmap;
+		if (dieData.blackIcons) usedBitmap = blackSurge;
+		else usedBitmap = whiteSurge;
 		
-		return separatorView;
+		canvas.drawBitmap(usedBitmap, ((float)size - 5.0f - surgeWidth) * density, ((float)size - 10.0f - surgeHeight) * density, iconPaint);
+	}
+	
+	protected void drawPowerDieSurges(Canvas canvas, int surges) {
+		Bitmap usedBitmap;
+		if (dieData.blackIcons) usedBitmap = blackSurge;
+		else usedBitmap = whiteSurge;
+		
+		if (surges >= 1)
+			canvas.drawBitmap(usedBitmap, 10.0f * density, 10.0f * density, iconPaint);
+		if (surges >= 2)
+			canvas.drawBitmap(usedBitmap, (2.5f + ((float)size - surgeWidth) / 2) * density, (((float)size - surgeHeight) / 2) * density, iconPaint);
+		if (surges >= 3) 
+			canvas.drawBitmap(usedBitmap, ((float)size - 5.0f - surgeWidth) * density, ((float)size - 10.0f - surgeHeight) * density, iconPaint);
+	}
+	
+	protected void drawEnhancement(Canvas canvas, int enhancement) {
+		drawRange(canvas, enhancement);
+		drawWounds(canvas, enhancement);
+		canvas.drawBitmap(whiteSeparator, 15.0f * density, 15.0f * density, iconPaint);
+	}
+	
+	protected void drawFail(Canvas canvas) {
+		Bitmap usedBitmap;
+		if (dieData.blackIcons) usedBitmap = blackFail;
+		else usedBitmap = whiteFail;
+		
+		canvas.drawBitmap(usedBitmap, 15.0f * density, 15.0f * density, iconPaint);
+	}
+	
+	public void setDieData(DieData _dieData) {
+		dieData = _dieData;
 	}
 }
