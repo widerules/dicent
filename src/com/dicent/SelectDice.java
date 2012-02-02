@@ -1,5 +1,9 @@
 package com.dicent;
 
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import com.dicent.dice.DieData;
 import com.dicent.dice.Die;
 
@@ -87,19 +91,19 @@ public class SelectDice extends DicentActivity {
 		super.onStart();
 		
 		dieAdapter.clear();
-		//base game
-    	dieAdapter.addDie(DieData.RED_DIE);
-    	dieAdapter.addDie(DieData.BLUE_DIE);
-    	dieAdapter.addDie(DieData.WHITE_DIE);
-    	dieAdapter.addDie(DieData.GREEN_DIE);
-    	dieAdapter.addDie(DieData.GREEN_DIE);
-    	dieAdapter.addDie(DieData.YELLOW_DIE);
-    	dieAdapter.addDie(DieData.YELLOW_DIE);
-    	dieAdapter.addDie(DieData.BLACK_DIE);
-    	dieAdapter.addDie(DieData.BLACK_DIE);
-    	dieAdapter.addDie(DieData.BLACK_DIE);
-    	dieAdapter.addDie(DieData.BLACK_DIE);
-    	dieAdapter.addDie(DieData.BLACK_DIE);
+		
+		//add dice
+		try {
+			DiceXmlParser.parse(getResources(), R.xml.basedice, dieAdapter);
+			if (preferences.getBoolean("roadToLegend", false))
+				DiceXmlParser.parse(getResources(), R.xml.rtldice, dieAdapter);
+			if (preferences.getBoolean("tombOfIce", false))
+					DiceXmlParser.parse(getResources(), R.xml.toidice, dieAdapter);
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     	
 	    //restore saved base dice
 		SharedPreferences savedBaseSelection = getSharedPreferences(SAVED_BASE_DICE_SHARED_PREFERENCE + playerIndexString, Context.MODE_PRIVATE);
@@ -107,21 +111,8 @@ public class SelectDice extends DicentActivity {
 		for (int i = 0; i < selectedBaseDiceCount; i++)
 			dieAdapter.setSelected(savedBaseSelection.getInt(Integer.toString(i), 0), true);
 		
+		//restore saved RTL dice
 		if (preferences.getBoolean("roadToLegend", false)) {
-			//road to legend
-	    	dieAdapter.addDie(DieData.SILVER_DIE);
-	    	dieAdapter.addDie(DieData.SILVER_DIE);
-	    	dieAdapter.addDie(DieData.SILVER_DIE);
-	    	dieAdapter.addDie(DieData.SILVER_DIE);
-	    	dieAdapter.addDie(DieData.SILVER_DIE);
-	    	dieAdapter.addDie(DieData.GOLD_DIE);
-	    	dieAdapter.addDie(DieData.GOLD_DIE);
-	    	dieAdapter.addDie(DieData.GOLD_DIE);
-	    	dieAdapter.addDie(DieData.GOLD_DIE);
-	    	dieAdapter.addDie(DieData.GOLD_DIE);
-	    	
-
-		   	//restore saved RTL dice
 		   	int rtlStartIndex = -1;
 			int dieAdapterCount = dieAdapter.getCount();
 			for (int i = 0; i < dieAdapterCount; i++) {
@@ -137,11 +128,9 @@ public class SelectDice extends DicentActivity {
 				dieAdapter.setSelected(savedRTLSelection.getInt(Integer.toString(i), 0) + rtlStartIndex, true);
 		} 
 		
+		//restore transparent die
 		if (preferences.getBoolean("tombOfIce", false)) {
-			//tomb of ice
-	    	dieAdapter.addDie(DieData.TRANSPARENT_DIE);
 	    	
-	    	//restore transparent die
 		    SharedPreferences savedTransparentDieSelection = getSharedPreferences(SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE + playerIndexString, Context.MODE_PRIVATE);
 		    if (savedTransparentDieSelection.getBoolean("transparentDie", false)) {
 		    	int dieAdapterCount = dieAdapter.getCount();

@@ -98,6 +98,7 @@ public class DieAdapter extends BaseAdapter {
 	}
 	
 	public void setSelected(int position, boolean selected) {
+		if (position >= dice.size()) return;
 		dice.get(position).isSelected = selected;
 		notifyDataSetChanged();
 	}
