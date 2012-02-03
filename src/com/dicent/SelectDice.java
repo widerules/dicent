@@ -34,8 +34,6 @@ public class SelectDice extends DicentActivity {
 	
 	private Intent resultsIntent;
 	
-	SharedPreferences preferences;
-	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_dice);
@@ -53,7 +51,6 @@ public class SelectDice extends DicentActivity {
     	playerIndexString = Integer.toString(playerIndex);
     	isOverlord = getIntent().getBooleanExtra("isOverlord", false);
     	resultsIntent = new Intent(getBaseContext(), Results.class);
-    	preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     	
     	//set listeners
     	rollButton.setOnClickListener(new OnClickListener() {
@@ -119,7 +116,7 @@ public class SelectDice extends DicentActivity {
 			int selectedRTLDiceCount = savedRTLSelection.getInt("count", 0);
 			for (int i = 0; i < selectedRTLDiceCount; i++)
 				dieAdapter.setSelected(savedRTLSelection.getInt(Integer.toString(i), 0) + rtlStartIndex, true);
-		} 
+		}
 		
 		//restore transparent die
 		if (preferences.getBoolean("tombOfIce", false)) {

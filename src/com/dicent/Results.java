@@ -35,8 +35,6 @@ public class Results extends DicentActivity {
 	
 	private Toast rerollToast;
 	
-	SharedPreferences preferences;
-	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.results);
@@ -55,7 +53,6 @@ public class Results extends DicentActivity {
 		//create stuff
 		dieAdapter = new DieAdapter(this);
 		rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
-		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
 		float density = getResources().getDisplayMetrics().density;
     	diceGrid.setColumnWidth((int)(density * Die.scale));

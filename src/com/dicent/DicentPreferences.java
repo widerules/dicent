@@ -12,6 +12,11 @@ import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 
 public class DicentPreferences extends PreferenceActivity {
+	public static final boolean DEFAULT_RTL_CHECKED = false;
+	public static final boolean DEFAULT_TOI_CHECKED = false;
+	public static final boolean DEFAULT_SOUNDS_CHECKED = true;
+	public static final boolean DEFAULT_VIBRATION_CHECKED = true;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
@@ -65,10 +70,10 @@ public class DicentPreferences extends PreferenceActivity {
 		}
 		
 		//preferences
-		((CheckBoxPreference)findPreference("roadToLegend")).setChecked(false);
-		((CheckBoxPreference)findPreference("tombOfIce")).setChecked(false);
-		((CheckBoxPreference)findPreference("sounds")).setChecked(true);
-		((CheckBoxPreference)findPreference("vibration")).setChecked(true);
+		((CheckBoxPreference)findPreference("roadToLegend")).setChecked(DEFAULT_RTL_CHECKED);
+		((CheckBoxPreference)findPreference("tombOfIce")).setChecked(DEFAULT_TOI_CHECKED);
+		((CheckBoxPreference)findPreference("sounds")).setChecked(DEFAULT_SOUNDS_CHECKED);
+		((CheckBoxPreference)findPreference("vibration")).setChecked(DEFAULT_VIBRATION_CHECKED);
 	}
 	
 	private void resetPreference(String preferenceString) {

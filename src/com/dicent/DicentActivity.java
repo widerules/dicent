@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +24,8 @@ public class DicentActivity extends Activity {
 	protected Vibrator vibrator;
 	protected MediaPlayer rollSound;
 	
+	protected SharedPreferences preferences;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -29,6 +33,8 @@ public class DicentActivity extends Activity {
 			vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		if (rollSound == null)
 			rollSound = MediaPlayer.create(this, R.raw.rollsound);
+		
+		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

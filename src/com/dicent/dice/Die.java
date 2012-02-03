@@ -85,7 +85,7 @@ public class Die extends View {
 			woundWidth = whiteWound.getWidth();
 			woundHeight = whiteWound.getHeight();
 			surgeWidth = whiteSurge.getWidth();
-			surgeHeight = whiteSurge.getHeight(); 
+			surgeHeight = whiteSurge.getHeight();
 		}
 		
 		dieData = _dieData;
