@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -106,7 +105,7 @@ public class SelectDice extends DicentActivity {
 		   	int rtlStartIndex = -1;
 			int dieAdapterCount = dieAdapter.getCount();
 			for (int i = 0; i < dieAdapterCount; i++) {
-				if (dieAdapter.getItemViewType(i) == DieData.SILVER_DIE || dieAdapter.getItemViewType(i) == DieData.GOLD_DIE) {
+				if (dieAdapter.getDieType(i) == DieData.SILVER_DIE || dieAdapter.getDieType(i) == DieData.GOLD_DIE) {
 					rtlStartIndex = i;
 					i = dieAdapterCount;
 				}
@@ -125,7 +124,8 @@ public class SelectDice extends DicentActivity {
 		    if (savedTransparentDieSelection.getBoolean("transparentDie", false)) {
 		    	int dieAdapterCount = dieAdapter.getCount();
 		    	for (int i = 0; i < dieAdapterCount; i++) {
-		    		if (dieAdapter.getItemViewType(i) == DieData.TRANSPARENT_DIE) {
+		    		if (dieAdapter.getDieType(i) == DieData.TRANSPARENT_DIE) {
+		    			System.out.println("SETTING TRANSPARENT DIE");
 		    			dieAdapter.setSelected(i, true);
 		    			i = dieAdapterCount;
 		    		}

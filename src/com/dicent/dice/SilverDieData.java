@@ -1,14 +1,19 @@
 package com.dicent.dice;
 
 public class SilverDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return SILVER_DIE;
+	}
 
-	public SilverDieData() {
-		super();
-		
-		dieType = SILVER_DIE;
-		backgroundColor = 0xffaaaaaa;
-		blackIcons = false;
-		powerDie = true;
+	@Override
+	public int getDieColor() {
+		return 0xffaaaaaa;
+	}
+	
+	@Override
+	public boolean isPowerDie() {
+		return true;
 	}
 
 	@Override

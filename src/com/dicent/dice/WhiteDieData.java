@@ -3,15 +3,21 @@ package com.dicent.dice;
 import android.graphics.Color;
 
 public class WhiteDieData extends DieData {
-
-	public WhiteDieData() {
-		super();
-		
-		dieType = WHITE_DIE;
-		backgroundColor = Color.WHITE;
-		blackIcons = true;
+	@Override
+	public int getDieType() {
+		return WHITE_DIE;
 	}
 
+	@Override
+	public int getDieColor() {
+		return Color.WHITE;
+	}
+	
+	@Override
+	public boolean usesBlackIcons() {
+		return true;
+	}
+	
 	@Override
 	public SideValues getSideValues() {
 		SideValues sv = new SideValues();
@@ -46,5 +52,4 @@ public class WhiteDieData extends DieData {
 		}
 		return sv;
 	}
-
 }

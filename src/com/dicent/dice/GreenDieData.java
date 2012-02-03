@@ -1,13 +1,14 @@
 package com.dicent.dice;
 
 public class GreenDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return GREEN_DIE;
+	}
 
-	public GreenDieData() {
-		super();
-		
-		dieType = GREEN_DIE;
-		backgroundColor = 0xFF00AA00;
-		blackIcons = false;
+	@Override
+	public int getDieColor() {
+		return 0xFF00AA00;
 	}
 
 	@Override
@@ -39,5 +40,4 @@ public class GreenDieData extends DieData {
 		}
 		return sv;
 	}
-
 }

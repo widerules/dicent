@@ -1,15 +1,19 @@
 package com.dicent.dice;
 
-import android.graphics.Color;
-
 public class YellowDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return YELLOW_DIE;
+	}
+
+	@Override
+	public int getDieColor() {
+		return 0xffdddd00;
+	}
 	
-	public YellowDieData() {
-		super();
-		
-		dieType = YELLOW_DIE;
-		backgroundColor = Color.YELLOW;
-		blackIcons = true;
+	@Override
+	public boolean usesBlackIcons() {
+		return true;
 	}
 
 	@Override

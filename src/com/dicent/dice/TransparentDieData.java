@@ -1,13 +1,19 @@
 package com.dicent.dice;
 
 public class TransparentDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return TRANSPARENT_DIE;
+	}
 
-	public TransparentDieData() {
-		super();
-		
-		dieType = TRANSPARENT_DIE;
-		backgroundColor = 0xffcccccc;
-		blackIcons = true;
+	@Override
+	public int getDieColor() {
+		return 0xffcccccc;
+	}
+	
+	@Override
+	public boolean usesBlackIcons() {
+		return true;
 	}
 
 	@Override

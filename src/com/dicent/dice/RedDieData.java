@@ -1,15 +1,14 @@
 package com.dicent.dice;
 
-import android.graphics.Color;
-
 public class RedDieData extends DieData {
-	
-	public RedDieData() {
-		super();
-		
-		dieType = RED_DIE;
-		backgroundColor = Color.RED;
-		blackIcons = false;
+	@Override
+	public int getDieType() {
+		return RED_DIE;
+	}
+
+	@Override
+	public int getDieColor() {
+		return 0xffcc0000;
 	}
 
 	@Override

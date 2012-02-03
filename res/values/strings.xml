@@ -44,7 +44,7 @@
     <string name="selectDiceTitle">Dicent - select dice</string>
     
     <string name="selectAddons">Select Addons</string>
-    <string name="about">Version 2.1
+    <string name="about">Version 3.0
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -55,6 +55,10 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n3.0
+	\n- proper support for high density displays
+	\n- lots of code cleanup
+	\n
     \n2.1
 	\n- the reroll button no longer ignores the vibration setting
 	\n- confirmation on app exit now also works on android versions &lt; 2.0
@@ -67,10 +71,5 @@
 	\n- roll sound
 	\n- slightly better dice background
 	\n
-    \n1.3:
-	\n- dice now look more like dice
-	\n- confirmation on app exit
-	\n- notification when the reroll button is pressed and no dice are selected
-	\n- every roll vibrates now
     </string>
 </resources>

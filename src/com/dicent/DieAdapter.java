@@ -71,11 +71,11 @@ public class DieAdapter extends BaseAdapter {
 	}
 	
 	public int getItemViewType(int position) {
-		return dice.get(position).dieType;
+		return 0;
 	}
 	
 	public int getViewTypeCount() {
-		return DieData.DIE_TYPES_COUNT;
+		return 1;
 	}
 	
 	
@@ -123,7 +123,7 @@ public class DieAdapter extends BaseAdapter {
 		int diceSize = dice.size();
 		int[] dieTypes = new int[diceSize];
 		for (int i = 0; i < diceSize; i++)
-			dieTypes[i] = dice.get(i).dieType;
+			dieTypes[i] = dice.get(i).getDieType();
 		return dieTypes;
 	}
 	
@@ -165,7 +165,7 @@ public class DieAdapter extends BaseAdapter {
 		Vector<Integer> selectedDiceVector = new Vector<Integer>();
 		int diceCount = dice.size();
 		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).isSelected) selectedDiceVector.add(dice.get(i).dieType);
+			if (dice.get(i).isSelected) selectedDiceVector.add(dice.get(i).getDieType());
 		}
 		
 		int selectedDiceSize = selectedDiceVector.size();
@@ -178,7 +178,7 @@ public class DieAdapter extends BaseAdapter {
 		Vector<Integer> selectedDiceVector = new Vector<Integer>();
 		int diceCount = dice.size();
 		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).isSelected && (dice.get(i).dieType < DieData.SILVER_DIE)) selectedDiceVector.add(i); //dirty hack!
+			if (dice.get(i).isSelected && (dice.get(i).getDieType() < DieData.SILVER_DIE)) selectedDiceVector.add(i); //dirty hack!
 		}
 		
 		int selectedDiceSize = selectedDiceVector.size();
@@ -192,7 +192,7 @@ public class DieAdapter extends BaseAdapter {
 		Vector<Integer> selectedDiceVector = new Vector<Integer>();
 		int diceCount = dice.size();
 		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).dieType == DieData.SILVER_DIE || dice.get(i).dieType == DieData.GOLD_DIE) {
+			if (dice.get(i).getDieType() == DieData.SILVER_DIE || dice.get(i).getDieType() == DieData.GOLD_DIE) {
 				if (rtlStartIndex < 0) rtlStartIndex = i;
 				
 				if (dice.get(i).isSelected) selectedDiceVector.add(i - rtlStartIndex);
@@ -207,7 +207,7 @@ public class DieAdapter extends BaseAdapter {
 	
 	public boolean transparentDieIsSelected() {
 		for (DieData die : dice) {
-			if (die.dieType == DieData.TRANSPARENT_DIE) {
+			if (die.getDieType() == DieData.TRANSPARENT_DIE) {
 				if (die.isSelected) return true;
 				else return false;
 			}
@@ -218,7 +218,7 @@ public class DieAdapter extends BaseAdapter {
 	public int powerDiceCount() {
 		int powerDiceCount = 0;
 		for (DieData die : dice)
-			if (die.powerDie) powerDiceCount++;
+			if (die.isPowerDie()) powerDiceCount++;
 		return powerDiceCount;
 	}
 	
@@ -232,11 +232,15 @@ public class DieAdapter extends BaseAdapter {
 	public int selectedPowerDiceCount() {
 		int selectedPowerDiceCount = 0;
 		for (DieData die : dice)
-			if (die.isSelected && die.powerDie) selectedPowerDiceCount++;
+			if (die.isSelected && die.isPowerDie()) selectedPowerDiceCount++;
 		return selectedPowerDiceCount;
 	}
 	
 	public boolean isPowerDie(int position) {
-		return dice.get(position).powerDie;
+		return dice.get(position).isPowerDie();
+	}
+	
+	public int getDieType(int position) {
+		return dice.get(position).getDieType();
 	}
 }

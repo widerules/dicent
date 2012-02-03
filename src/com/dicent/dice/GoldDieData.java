@@ -1,14 +1,19 @@
 package com.dicent.dice;
 
 public class GoldDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return GOLD_DIE;
+	}
 
-	public GoldDieData() {
-		super();
-		
-		dieType = GOLD_DIE;
-		backgroundColor = 0xff666600;
-		blackIcons = false;
-		powerDie = true;
+	@Override
+	public int getDieColor() {
+		return 0xff666600;
+	}
+	
+	@Override
+	public boolean isPowerDie() {
+		return true;
 	}
 
 	@Override

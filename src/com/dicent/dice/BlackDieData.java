@@ -3,14 +3,19 @@ package com.dicent.dice;
 import android.graphics.Color;
 
 public class BlackDieData extends DieData {
-
-	public BlackDieData() {
-		super();
-		
-		dieType = BLACK_DIE;
-		backgroundColor = Color.BLACK;
-		blackIcons = false;
-		powerDie = true;
+	@Override
+	public int getDieType() {
+		return BLACK_DIE;
+	}
+	
+	@Override
+	public int getDieColor() {
+		return Color.BLACK;
+	}
+	
+	@Override
+	public boolean isPowerDie() {
+		return true;
 	}
 
 	@Override

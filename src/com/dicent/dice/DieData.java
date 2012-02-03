@@ -14,8 +14,6 @@
 
 package com.dicent.dice;
 
-import android.graphics.Color;
-
 public abstract class DieData {
 	public static final int RED_DIE = 0;
 	public static final int BLUE_DIE = 1;
@@ -31,13 +29,8 @@ public abstract class DieData {
 	public static final int POWER_DICE_TYPES_COUNT = POWER_DICE.length;
 	public static final int DIE_TYPES_COUNT = 9;
 	
-	public int dieType;
 	public Side side;
 	public boolean isSelected;
-	
-	public int backgroundColor;
-	public boolean blackIcons;
-	public boolean powerDie;
 	
 	public static DieData create(int dieType) {
 		DieData newDieData;
@@ -75,9 +68,18 @@ public abstract class DieData {
 	public DieData() {
 		side = Side.SIDE1;
 		isSelected = false;
-		backgroundColor = Color.BLACK;
-		blackIcons = false;
-		powerDie = false;
+	}
+	
+	public abstract int getDieType();
+	
+	public abstract int getDieColor();
+	
+	public boolean usesBlackIcons() {
+		return false;
+	}
+	
+	public boolean isPowerDie() {
+		return false;
 	}
 	
 	public abstract SideValues getSideValues();

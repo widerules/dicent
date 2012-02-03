@@ -4,9 +4,7 @@ import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
 import com.dicent.dice.SideValues;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;

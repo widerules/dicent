@@ -1,15 +1,14 @@
 package com.dicent.dice;
 
-import android.graphics.Color;
-
 public class BlueDieData extends DieData {
+	@Override
+	public int getDieType() {
+		return BLUE_DIE;
+	}
 
-	public BlueDieData() {
-		super();
-		
-		dieType = BLUE_DIE;
-		backgroundColor = Color.BLUE;
-		blackIcons = false;
+	@Override
+	public int getDieColor() {
+		return 0xff0000aa;
 	}
 
 	@Override
@@ -44,5 +43,4 @@ public class BlueDieData extends DieData {
 		}
 		return sv;
 	}
-
 }

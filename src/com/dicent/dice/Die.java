@@ -99,19 +99,19 @@ public class Die extends View {
 		else usedBorderPaint = borderPaint;
 		
 		//background color
-		canvas.drawColor(dieData.backgroundColor);
+		canvas.drawColor(dieData.getDieColor());
 		//border
 		canvas.drawRect(0.0f, 0.0f, (float)size, (float)size, usedBorderPaint);
 		//background
 		canvas.drawBitmap(dieBackground, 0.0f, 0.0f, null);
 		
 		SideValues sv = dieData.getSideValues();
-		if (dieData.powerDie) {
+		if (dieData.isPowerDie()) {
 			if (sv.enhancement > 0) drawEnhancement(canvas, sv.enhancement);
 			else if (sv.surges > 0) drawPowerDieSurges(canvas, sv.surges);
 		} else {
 			if (sv.fail) drawFail(canvas);
-			else if (dieData.dieType == DieData.TRANSPARENT_DIE) {}
+			else if (dieData.getDieType() == DieData.TRANSPARENT_DIE) {}
 			else {
 				drawRange(canvas, sv.range);
 				if (sv.wounds > 0) drawWounds(canvas, sv.wounds);
@@ -126,14 +126,14 @@ public class Die extends View {
 	
 	protected void drawRange(Canvas canvas, int range) {
 		Paint usedPaint;
-		if (dieData.blackIcons) usedPaint = blackTextPaint;
+		if (dieData.usesBlackIcons()) usedPaint = blackTextPaint;
 		else usedPaint = whiteTextPaint;
 		canvas.drawText(Integer.toString(range), 10.0f * density, (scale - 13.0f) * density, usedPaint);
 	}
 	
 	protected void drawWounds(Canvas canvas, int wounds) {
 		Bitmap usedBitmap;
-		if (dieData.blackIcons) usedBitmap = blackWound;
+		if (dieData.usesBlackIcons()) usedBitmap = blackWound;
 		else usedBitmap = whiteWound;
 		
 		if (wounds >= 1) 
@@ -150,7 +150,7 @@ public class Die extends View {
 	
 	protected void drawSurge(Canvas canvas) {
 		Bitmap usedBitmap;
-		if (dieData.blackIcons) usedBitmap = blackSurge;
+		if (dieData.usesBlackIcons()) usedBitmap = blackSurge;
 		else usedBitmap = whiteSurge;
 		
 		canvas.drawBitmap(usedBitmap, (scale - 5.0f) * density - surgeWidth, (scale - 10.0f) * density - surgeHeight, iconPaint);
@@ -158,7 +158,7 @@ public class Die extends View {
 	
 	protected void drawPowerDieSurges(Canvas canvas, int surges) {
 		Bitmap usedBitmap;
-		if (dieData.blackIcons) usedBitmap = blackSurge;
+		if (dieData.usesBlackIcons()) usedBitmap = blackSurge;
 		else usedBitmap = whiteSurge;
 		
 		if (surges >= 1)
@@ -177,7 +177,7 @@ public class Die extends View {
 	
 	protected void drawFail(Canvas canvas) {
 		Bitmap usedBitmap;
-		if (dieData.blackIcons) usedBitmap = blackFail;
+		if (dieData.usesBlackIcons()) usedBitmap = blackFail;
 		else usedBitmap = whiteFail;
 		
 		canvas.drawBitmap(usedBitmap, 15.0f * density, 15.0f * density, iconPaint);
