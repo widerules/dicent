@@ -4,11 +4,8 @@ import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
 import com.dicent.dice.SideValues;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,9 +33,6 @@ public class Results extends DicentActivity {
 	private Button addSilverButton;
 	private Button addGoldButton;
 	
-	private Vibrator vibrator;
-	private MediaPlayer rollSound;
-	
 	private Toast rerollToast;
 	
 	SharedPreferences preferences;
@@ -61,8 +55,6 @@ public class Results extends DicentActivity {
 		//create stuff
 		dieAdapter = new DieAdapter(this);
 		rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
-		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		rollSound = MediaPlayer.create(this, R.raw.rollsound);
 		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		
 		float density = getResources().getDisplayMetrics().density;

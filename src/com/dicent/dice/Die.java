@@ -8,8 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.BitmapFactory.Options;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 public class Die extends View {
@@ -113,6 +111,7 @@ public class Die extends View {
 			else if (sv.surges > 0) drawPowerDieSurges(canvas, sv.surges);
 		} else {
 			if (sv.fail) drawFail(canvas);
+			else if (dieData.dieType == DieData.TRANSPARENT_DIE) {}
 			else {
 				drawRange(canvas, sv.range);
 				if (sv.wounds > 0) drawWounds(canvas, sv.wounds);

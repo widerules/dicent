@@ -10,9 +10,7 @@ import com.dicent.dice.Die;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,9 +34,6 @@ public class SelectDice extends DicentActivity {
 	
 	private Intent resultsIntent;
 	
-	private Vibrator vibrator;
-	private MediaPlayer rollSound;
-	
 	SharedPreferences preferences;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +52,6 @@ public class SelectDice extends DicentActivity {
     	playerIndex = getIntent().getIntExtra("playerIndex", 0);
     	playerIndexString = Integer.toString(playerIndex);
     	isOverlord = getIntent().getBooleanExtra("isOverlord", false);
-    	vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-    	rollSound = MediaPlayer.create(this, R.raw.rollsound);
     	resultsIntent = new Intent(getBaseContext(), Results.class);
     	preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     	

@@ -3,8 +3,12 @@ package com.dicent;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +18,18 @@ public class DicentActivity extends Activity {
 	public static final int DIALOG_ABOUT = 0;
 	public static final int DIALOG_CHANGE_PLAYER_NAME = 1;
 	public static final int DIALOG_RESET = 2;
+	
+	protected Vibrator vibrator;
+	protected MediaPlayer rollSound;
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		if (vibrator == null)
+			vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		if (rollSound == null)
+			rollSound = MediaPlayer.create(this, R.raw.rollsound);
+	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
