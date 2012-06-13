@@ -44,11 +44,7 @@ public class Dicent extends DicentActivity {
 	private ListView playersListView;
 	private EditText changePlayerNameEditText;
 	
-	private Toast exitToast;
-	
 	private Intent selectDiceIntent;
-	
-	private boolean backPressed;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +59,10 @@ public class Dicent extends DicentActivity {
         changePlayerNameEditText.setSingleLine();
         selectDiceIntent = new Intent(getBaseContext(), SelectDice.class);
         defaultPlayers = getResources().getStringArray(R.array.players);
-        
-        exitToast = Toast.makeText(this, getResources().getString(R.string.exitNotification), Toast.LENGTH_SHORT);
     	
     	//set listeners
     	playersListView.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    			backPressed = false;
     			selectDiceIntent.putExtra("playerIndex", position);
     			if (position == 0) selectDiceIntent.putExtra("isOverlord", true);
     			else selectDiceIntent.putExtra("isOverlord", false);
@@ -79,7 +72,6 @@ public class Dicent extends DicentActivity {
     	
         playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
     		public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
-    			backPressed = false;
     			currentNameChangePlayerIndex = position;
     			changePlayerNameEditText.setText(players[position]);
     			showDialog(DicentActivity.DIALOG_CHANGE_PLAYER_NAME);
@@ -112,16 +104,6 @@ public class Dicent extends DicentActivity {
 		for (int i = 0; i < playersLength; i++) 
 			savedPlayerNamesEditor.putString(Integer.toString(i), players[i]);
 		savedPlayerNamesEditor.commit();
-    }
-    
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if (keyCode != KeyEvent.KEYCODE_BACK) return false;
-    	if (backPressed) finish();
-    	else {
-    		backPressed = true;
-    		exitToast.show();
-    	}
-    	return false;
     }
     
     protected Dialog onCreateDialog(int id) {

@@ -20,9 +20,9 @@ public class DicentPreferences extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
-		 
+		
 		//collect objects created in XML
-		Preference reset = (Preference)findPreference("reset"); 
+		Preference reset = (Preference)findPreference("reset");
 		
 		//add listeners
 		reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {

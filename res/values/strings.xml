@@ -8,7 +8,6 @@
     	<item>Hero 3</item>
     	<item>Hero 4</item>
     </string-array>
-    <string name="exitNotification">press back again to exit.</string>
     <string name="changePlayerNameDialog">Change player name</string>
     <string name="OK">OK</string>
     <string name="cancel">Cancel</string>
@@ -44,7 +43,7 @@
     <string name="selectDiceTitle">Dicent - select dice</string>
     
     <string name="selectAddons">Select Addons</string>
-    <string name="about">Version 3.0
+    <string name="about">Version 3.1
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -55,6 +54,9 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n3.1
+	\n- removed warning on exit since it\'s no longer neccesary
+	\n
     \n3.0
 	\n- proper support for high density displays
 	\n- lots of code cleanup

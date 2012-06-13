@@ -21,6 +21,8 @@ public class DicentActivity extends Activity {
 	public static final int DIALOG_CHANGE_PLAYER_NAME = 1;
 	public static final int DIALOG_RESET = 2;
 	
+	protected DicentState state;
+	
 	protected Vibrator vibrator;
 	protected MediaPlayer rollSound;
 	
@@ -28,6 +30,8 @@ public class DicentActivity extends Activity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		state = DicentState.instance();
 		
 		if (vibrator == null)
 			vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
