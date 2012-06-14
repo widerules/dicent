@@ -1,3 +1,17 @@
+/** This file is part of Dicent.
+ *
+ *  Dicent is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  Dicent is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 package com.dicent;
 
 import android.app.AlertDialog;
@@ -17,6 +31,7 @@ public class DicentPreferences extends PreferenceActivity {
 	public static final boolean DEFAULT_SOUNDS_CHECKED = true;
 	public static final boolean DEFAULT_VIBRATION_CHECKED = true;
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
@@ -32,6 +47,12 @@ public class DicentPreferences extends PreferenceActivity {
 				return true;
 			}
 		});
+	}
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		DicentState.instance().preferencesChanged(this);
 	}
 	
 	protected Dialog onCreateDialog(int id) {
@@ -59,14 +80,14 @@ public class DicentPreferences extends PreferenceActivity {
 	
 	private void resetEverything() {
 		//player names
-		resetPreference(Dicent.SAVED_PLAYER_NAMES);
+		resetPreference(DicentState.PREFERENCES_PLAYERNAMES);
 		
 		//dice selections
 		int playersCount = getResources().getStringArray(R.array.players).length;
 		for (int i = 0; i < playersCount; i++) {
-			resetPreference(SelectDice.SAVED_BASE_DICE_SHARED_PREFERENCE + Integer.toString(i));
-			resetPreference(SelectDice.SAVED_RTL_DICE_SHARED_PREFERENCE + Integer.toString(i));
-			resetPreference(SelectDice.SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE + Integer.toString(i));
+			resetPreference(SelectDiceActivity.SAVED_BASE_DICE_SHARED_PREFERENCE + Integer.toString(i));
+			resetPreference(SelectDiceActivity.SAVED_RTL_DICE_SHARED_PREFERENCE + Integer.toString(i));
+			resetPreference(SelectDiceActivity.SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE + Integer.toString(i));
 		}
 		
 		//preferences

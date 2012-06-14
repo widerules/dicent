@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".Dicent"
+		<activity android:name=".PlayerListActivity"
 			android:label="@string/app_name">
 		<intent-filter>
         	<action android:name="android.intent.action.MAIN" />
@@ -14,9 +14,9 @@
 		</activity>
 		<activity android:name=".DicentPreferences"
 			android:label="@string/preferencesTitle" />
-		<activity android:name=".SelectDice"
+		<activity android:name=".SelectDiceActivity"
 			android:label="@string/selectDiceTitle" />
-		<activity android:name=".Results"
+		<activity android:name=".ResultsActivity"
 			android:label="@string/resultsTitle" />
     </application>
 </manifest> 

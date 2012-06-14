@@ -14,6 +14,8 @@
 
 package com.dicent.dice;
 
+import java.util.Random;
+
 public abstract class DieData {
 	public static final int RED_DIE = 0;
 	public static final int BLUE_DIE = 1;
@@ -28,6 +30,8 @@ public abstract class DieData {
 	
 	public static final int POWER_DICE_TYPES_COUNT = POWER_DICE.length;
 	public static final int DIE_TYPES_COUNT = 9;
+	
+	private static Random generator = new Random();
 	
 	public Side side;
 	public boolean isSelected;
@@ -70,6 +74,13 @@ public abstract class DieData {
 		isSelected = false;
 	}
 	
+	public DieData copy() {
+		DieData newData = create(getDieType());
+		newData.side = side;
+		newData.isSelected = isSelected;
+		return newData;
+	}
+	
 	public abstract int getDieType();
 	
 	public abstract int getDieColor();
@@ -83,6 +94,15 @@ public abstract class DieData {
 	}
 	
 	public abstract SideValues getSideValues();
+	
+	public void roll() {
+		int random = generator.nextInt(Integer.MAX_VALUE);
+		side = Side.values()[random % 6];
+	}
+	
+	public boolean isVisible() {
+		return true;
+	}
 	
 	public enum Side {
 		SIDE1,

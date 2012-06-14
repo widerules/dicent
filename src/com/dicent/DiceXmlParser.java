@@ -1,6 +1,21 @@
+/** This file is part of Dicent.
+ *
+ *  Dicent is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  Dicent is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 package com.dicent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -11,21 +26,24 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 
 public class DiceXmlParser {
-	public static void parse(Resources res, int resId, DieAdapter dieAdapter) throws XmlPullParserException, IOException {
+	public static DiceList parse(Resources res, int resId) throws XmlPullParserException, IOException {
 		XmlResourceParser xrp = res.getXml(resId);
+		
+		DiceList data = new DiceList();
 		
 		int eventType = xrp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			switch (eventType) {
 			case XmlPullParser.START_TAG:
 				if (xrp.getName().equals("die")) {
-					dieAdapter.addDie(getDieType(xrp.getAttributeValue(null, "type")));
+					data.add(DieData.create(getDieType(xrp.getAttributeValue(null, "type"))));
 				}
 				break;
 			}
 			
 			eventType = xrp.next();
 		}
+		return data;
 	}
 	
 	private static int getDieType(String name) {

@@ -14,233 +14,58 @@
 
 package com.dicent;
 
-import java.util.Random;
-import java.util.Vector;
-
 import com.dicent.dice.DieData;
 import com.dicent.dice.Die;
-import com.dicent.dice.DieData.Side;
-import com.dicent.dice.SideValues;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-public class DieAdapter extends BaseAdapter {
-	protected static Random generator;
+public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifier {
+	private DiceList dice;;
+	private DiceList relevantDice = new DiceList();
 	
-	static {
-		generator = new Random();
+	public void setDice(DiceList newDice) {
+		dice = newDice;
+		preferencesChanged();
 	}
 	
-	private Context context;
-	private Vector<DieData> dice;
-	
-	public DieAdapter(Context _context) {
-		context = _context;
-		dice = new Vector<DieData>();
-	}
-
+	@Override
 	public int getCount() {
-		return dice.size();
+		return relevantDice.size();
 	}
-
+	
+	@Override
 	public DieData getItem(int position) {
-		return dice.get(position);
+		return relevantDice.get(position);
 	}
-
+	
+	@Override
 	public long getItemId(int position) {
 		return 0;
 	}
-
+	
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Die returnedView;
-		DieData dieData = dice.get(position);
+		DieData dieData = relevantDice.get(position);
 		if (convertView instanceof Die) {
 			returnedView = (Die)convertView;
 			returnedView.setDieData(dieData);
 		} else {
-			returnedView = new Die(context, dieData);
+			returnedView = new Die(parent.getContext(), dieData);
 		}
 		
 		return returnedView;
 	}
-	
-	public SideValues getSideValues(int position) {
-		return dice.get(position).getSideValues();
-	}
-	
-	public int getItemViewType(int position) {
-		return 0;
-	}
-	
-	public int getViewTypeCount() {
-		return 1;
-	}
-	
-	
-	public void addDie(int dieType) {
-		DieData newDie = DieData.create(dieType);
-		dice.add(newDie);
-		notifyDataSetChanged();
-	}
-	
-	public void addRolledDie(int dieType) {
-		DieData newDie = DieData.create(dieType);
-		newDie.side = randomSide();
-		dice.add(newDie);
-		notifyDataSetChanged();
-	}
-	
-	public void clear() {
-		dice.clear();
-		notifyDataSetChanged();
-	}
-	
-	public void setSelected(int position, boolean selected) {
-		if (position >= dice.size()) return;
-		dice.get(position).isSelected = selected;
-		notifyDataSetChanged();
-	}
-	
-	public boolean isSelected(int position) {
-		return dice.get(position).isSelected;
-	}
-	
-	public void toggleSelected(int position) {
-		DieData dieData = dice.get(position);
-		dieData.isSelected = !dieData.isSelected;
-		notifyDataSetChanged();
-	}
-	
-	public void setSides(int[] sides) {
-		for (int i = 0; i < dice.size(); i++) 
-			dice.get(i).side = Side.values()[sides[i]];
-		notifyDataSetChanged();
-	}
-	
-	public int[] dieTypes() {
-		int diceSize = dice.size();
-		int[] dieTypes = new int[diceSize];
-		for (int i = 0; i < diceSize; i++)
-			dieTypes[i] = dice.get(i).getDieType();
-		return dieTypes;
-	}
-	
-	public void rollDie(int position) {
-		dice.get(position).side = randomSide();
-		dice.get(position).isSelected = false;
-		notifyDataSetChanged();
-	}
-	
-	public Side randomSide() {
-		int randomSide = generator.nextInt(Integer.MAX_VALUE);
-		return Side.values()[randomSide % 6];
-	}
-	
-	public int[] selectedIndices() {
-		Vector<Integer> selectedDiceIndices = new Vector<Integer>();
-		int diceSize = dice.size();
-		for (int i = 0; i < diceSize; i++) {
-			if (dice.get(i).isSelected) selectedDiceIndices.add(i);
-		}
-		int selectedDiceIndicesSize = selectedDiceIndices.size();
-		int[] selectedIndices = new int[selectedDiceIndicesSize];
-		for (int i = 0; i < selectedDiceIndicesSize; i++) {
-			selectedIndices[i] = selectedDiceIndices.get(i);
-		}
-		return selectedIndices;
-	}
-	
-	public int[] sides() {
-		int diceCount = dice.size();
-		int[] sides = new int[diceCount];
-		for (int i = 0; i < diceCount; i++) {
-			sides[i] = dice.get(i).side.ordinal();
-		}
-		return sides;
-	}
-	
-	public int[] selectedDieTypes() {
-		Vector<Integer> selectedDiceVector = new Vector<Integer>();
-		int diceCount = dice.size();
-		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).isSelected) selectedDiceVector.add(dice.get(i).getDieType());
-		}
-		
-		int selectedDiceSize = selectedDiceVector.size();
-		int[] selectedDice = new int[selectedDiceSize];
-		for (int i = 0; i < selectedDiceSize; i++) selectedDice[i] = selectedDiceVector.get(i);
-		return selectedDice;
-	}
-	
-	public int[] selectedBaseDice() {
-		Vector<Integer> selectedDiceVector = new Vector<Integer>();
-		int diceCount = dice.size();
-		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).isSelected && (dice.get(i).getDieType() < DieData.SILVER_DIE)) selectedDiceVector.add(i); //dirty hack!
-		}
-		
-		int selectedDiceSize = selectedDiceVector.size();
-		int[] selectedDice = new int[selectedDiceSize];
-		for (int i = 0; i < selectedDiceSize; i++) selectedDice[i] = selectedDiceVector.get(i);
-		return selectedDice;
-	}
-	
-	public int[] selectedRTLDice() {
-		int rtlStartIndex = -1;
-		Vector<Integer> selectedDiceVector = new Vector<Integer>();
-		int diceCount = dice.size();
-		for (int i = 0; i < diceCount; i++) {
-			if (dice.get(i).getDieType() == DieData.SILVER_DIE || dice.get(i).getDieType() == DieData.GOLD_DIE) {
-				if (rtlStartIndex < 0) rtlStartIndex = i;
-				
-				if (dice.get(i).isSelected) selectedDiceVector.add(i - rtlStartIndex);
-			}
-		}
-		
-		int selectedDiceSize = selectedDiceVector.size();
-		int[] selectedDice = new int[selectedDiceSize];
-		for (int i = 0; i < selectedDiceSize; i++) selectedDice[i] = selectedDiceVector.get(i);
-		return selectedDice;
-	}
-	
-	public boolean transparentDieIsSelected() {
-		for (DieData die : dice) {
-			if (die.getDieType() == DieData.TRANSPARENT_DIE) {
-				if (die.isSelected) return true;
-				else return false;
-			}
-		}
-		return false;
-	}
-	
-	public int powerDiceCount() {
-		int powerDiceCount = 0;
+
+	@Override
+	public void preferencesChanged() {
+		if (dice == null) return;
+		relevantDice.clear();
 		for (DieData die : dice)
-			if (die.isPowerDie()) powerDiceCount++;
-		return powerDiceCount;
-	}
-	
-	public int selectedDiceCount() {
-		int selectedDiceCount = 0;
-		for (DieData die : dice)
-			if (die.isSelected) selectedDiceCount++;
-		return selectedDiceCount;
-	}
-	
-	public int selectedPowerDiceCount() {
-		int selectedPowerDiceCount = 0;
-		for (DieData die : dice)
-			if (die.isSelected && die.isPowerDie()) selectedPowerDiceCount++;
-		return selectedPowerDiceCount;
-	}
-	
-	public boolean isPowerDie(int position) {
-		return dice.get(position).isPowerDie();
-	}
-	
-	public int getDieType(int position) {
-		return dice.get(position).getDieType();
+			if (die.isVisible()) relevantDice.add(die);
+		
+		notifyDataSetChanged();
 	}
 }

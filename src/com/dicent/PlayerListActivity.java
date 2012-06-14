@@ -33,10 +33,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class Dicent extends DicentActivity {
-	public static final String SAVED_PLAYER_NAMES = "savedPlayerNames";
-	private String[] players;
-	private String[] defaultPlayers;
+public class PlayerListActivity extends DicentActivity {
 	private ArrayAdapter<String> playerAdapter;
 	
 	private int currentNameChangePlayerIndex;
@@ -44,25 +41,22 @@ public class Dicent extends DicentActivity {
 	private ListView playersListView;
 	private EditText changePlayerNameEditText;
 	
-	private Intent selectDiceIntent;
-	
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.playerlist);
         
         //collect objects created in XML
-        players = getResources().getStringArray(R.array.players);
         playersListView = (ListView)findViewById(R.id.playersListView);
         
     	//create stuff
         changePlayerNameEditText = new EditText(this);
         changePlayerNameEditText.setSingleLine();
-        selectDiceIntent = new Intent(getBaseContext(), SelectDice.class);
-        defaultPlayers = getResources().getStringArray(R.array.players);
     	
     	//set listeners
     	playersListView.setOnItemClickListener(new OnItemClickListener() {
     		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    			Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
     			selectDiceIntent.putExtra("playerIndex", position);
     			if (position == 0) selectDiceIntent.putExtra("isOverlord", true);
     			else selectDiceIntent.putExtra("isOverlord", false);
@@ -73,39 +67,26 @@ public class Dicent extends DicentActivity {
         playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
     		public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
     			currentNameChangePlayerIndex = position;
-    			changePlayerNameEditText.setText(players[position]);
+    			changePlayerNameEditText.setText(state.getPlayers()[position]);
     			showDialog(DicentActivity.DIALOG_CHANGE_PLAYER_NAME);
     			return true;
     		}
     	});
         
         //create dice and adapters
-        playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, players);
+        playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
         playersListView.setAdapter(playerAdapter);
         
     }
-    
-    protected void onStart() {
-    	super.onStart();
-    	SharedPreferences savedPlayerNames = getSharedPreferences(SAVED_PLAYER_NAMES, Context.MODE_PRIVATE);
-    	
-    	int playersLength = players.length;
-		for (int i = 0; i < playersLength; i++)
-			players[i] = savedPlayerNames.getString(Integer.toString(i), defaultPlayers[i]);
-		playerAdapter.notifyDataSetChanged();
-    }
-    
-    protected void onStop() {
-    	super.onStop();
-    	SharedPreferences savedPlayerNames = getSharedPreferences(SAVED_PLAYER_NAMES, Context.MODE_PRIVATE);
-		SharedPreferences.Editor savedPlayerNamesEditor = savedPlayerNames.edit();
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 		
-		int playersLength = players.length;
-		for (int i = 0; i < playersLength; i++) 
-			savedPlayerNamesEditor.putString(Integer.toString(i), players[i]);
-		savedPlayerNamesEditor.commit();
-    }
+		state.saveState(this);
+	}
     
+	@Override
     protected Dialog onCreateDialog(int id) {
         Dialog dialog = super.onCreateDialog(id);
         if (dialog != null) return dialog;
@@ -117,7 +98,7 @@ public class Dicent extends DicentActivity {
         	builder.setView(changePlayerNameEditText);
         	builder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
         		public void onClick(DialogInterface dialog, int which) {
-        			players[currentNameChangePlayerIndex] = changePlayerNameEditText.getText().toString();
+        			state.getPlayers()[currentNameChangePlayerIndex] = changePlayerNameEditText.getText().toString();
             		playerAdapter.notifyDataSetChanged();
         		}
             });
