@@ -24,6 +24,8 @@ import com.dicent.dice.DieData;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -31,12 +33,18 @@ public class DicentState {
 	public static final String PREFERENCES_PLAYERNAMES = "playerNames";
 	public static final String PREFERENCES_RTL_ENABLED = "roadToLegend";
 	public static final String PREFERENCES_TOI_ENABLED = "tombOfIce";
+	public static final String PREFERENCES_VIBRATION_ENABLED = "vibration";
+	public static final String PREFERENCES_ROLLSOUND_ENABLED = "sounds";
 	private static DicentState state;
 	
 	private Storage storage;
+	private Vibrator vibrator;
+	private MediaPlayer rollSound;
 	
 	private boolean rtlEnabled;
 	private boolean toiEnabled;
+	private boolean vibrationEnabled;
+	private boolean rollSoundEnabled;
 	
 	private String[] defaultPlayers;
 	private String[] players;
@@ -57,6 +65,8 @@ public class DicentState {
 	private DicentState(Context context) {
 		Log.d(null, "CREATING THEM STATES");
 		storage = new Storage(context);
+		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		rollSound = MediaPlayer.create(context, R.raw.rollsound);
 		defaultPlayers = context.getResources().getStringArray(R.array.players);
 		
 		//restore preferences
@@ -87,12 +97,6 @@ public class DicentState {
 	}
 	
 	public void saveState(Context context) {
-		//save preferences
-		SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(context);
-		SharedPreferences.Editor defaultPrefEditor = defaultPref.edit();
-		defaultPrefEditor.putBoolean(PREFERENCES_RTL_ENABLED, rtlEnabled);
-		defaultPrefEditor.putBoolean(PREFERENCES_TOI_ENABLED, toiEnabled);
-		
 		//save player names
 		SharedPreferences savedPlayerNames = context.getSharedPreferences(
 				PREFERENCES_PLAYERNAMES, Context.MODE_PRIVATE);
@@ -111,7 +115,7 @@ public class DicentState {
 	
 	public void preferencesChanged(Context context) {
 		restorePreferences(context);
-		for (PreferencesChangedNotifier notifier : prefChangedNotifiers) notifier.preferencesChanged();
+		for (PreferencesChangedNotifier notifier : prefChangedNotifiers) notifier.diceChanged();
 	}
 	
 	public void registerPreferencesChangedNotifier(PreferencesChangedNotifier notifier) {
@@ -124,6 +128,11 @@ public class DicentState {
 				prefChangedNotifiers.remove(notifier);
 				return;
 			}
+	}
+	
+	public void rollEffects() {
+		if (vibrationEnabled) vibrator.vibrate(150);
+		if (rollSoundEnabled) rollSound.start();
 	}
 	
 	public String[] getPlayers() {
@@ -154,5 +163,7 @@ public class DicentState {
 		SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(context);
 		rtlEnabled = defaultPref.getBoolean(PREFERENCES_RTL_ENABLED, false);
 		toiEnabled = defaultPref.getBoolean(PREFERENCES_TOI_ENABLED, false);
+		vibrationEnabled = defaultPref.getBoolean(PREFERENCES_VIBRATION_ENABLED, true);
+		rollSoundEnabled = defaultPref.getBoolean(PREFERENCES_ROLLSOUND_ENABLED, true);
 	}
 }

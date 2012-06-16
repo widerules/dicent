@@ -45,7 +45,7 @@ public class ResultsActivity extends DicentActivity {
 	private Button addSilverButton;
 	private Button addGoldButton;
 
-	private Toast rerollToast;
+	//private Toast rerollToast;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class ResultsActivity extends DicentActivity {
 		addGoldButton = (Button)findViewById(R.id.resultsAddGoldButton);
 
 		//create stuff
-		rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
+		//rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
 
 		float density = getResources().getDisplayMetrics().density;
 		diceGrid.setColumnWidth((int)(density * Die.scale));
@@ -81,9 +81,10 @@ public class ResultsActivity extends DicentActivity {
 		rerollButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (state.getResultDice().selectedDiceCount() > 0) {
-					rollEffects();
+					state.rollEffects();
 				}
-				else rerollToast.show();
+				else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
+						Toast.LENGTH_SHORT).show();
 				for (DieData data : state.getResultDice()) {
 					if (data.isSelected) {
 						data.isSelected = false;
@@ -100,7 +101,7 @@ public class ResultsActivity extends DicentActivity {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
 				addRolledDie(DieData.BLACK_DIE);
 
-				rollEffects();
+				state.rollEffects();
 				updateResults();
 			}
 		});
@@ -110,7 +111,7 @@ public class ResultsActivity extends DicentActivity {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
 				addRolledDie(DieData.SILVER_DIE);
 
-				rollEffects();
+				state.rollEffects();
 				updateResults();
 			}
 		});
@@ -120,7 +121,7 @@ public class ResultsActivity extends DicentActivity {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
 				addRolledDie(DieData.GOLD_DIE);
 
-				rollEffects();
+				state.rollEffects();
 				updateResults();
 			}
 		});
@@ -135,7 +136,7 @@ public class ResultsActivity extends DicentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (preferences.getBoolean("roadToLegend", false)) {
+		if (state.isRtlEnabled()) {
 			addSilverButton.setVisibility(View.VISIBLE);
 			addGoldButton.setVisibility(View.VISIBLE);
 		} else {
@@ -155,7 +156,7 @@ public class ResultsActivity extends DicentActivity {
 		DieData newDie = DieData.create(dieType);
 		newDie.roll();
 		state.getResultDice().add(newDie);
-		dieAdapter.notifyDataSetChanged();
+		dieAdapter.diceChanged();
 	}
 
 	private void updateResults() {
@@ -178,10 +179,5 @@ public class ResultsActivity extends DicentActivity {
 		surgesText.setText(Integer.toString(surges));
 		rangeText.setText(Integer.toString(range));
 		enhancementText.setText(Integer.toString(enhancement));
-	}
-
-	private void rollEffects() {
-		if (preferences.getBoolean("vibration", true)) vibrator.vibrate(150);
-		if (preferences.getBoolean("sounds", true)) rollSound.start();
 	}
 }

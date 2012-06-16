@@ -37,22 +37,10 @@ public class DicentActivity extends Activity {
 	
 	protected DicentState state;
 	
-	protected Vibrator vibrator;
-	protected MediaPlayer rollSound;
-	
-	protected SharedPreferences preferences;
-	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		state = DicentState.init(this);
-		
-		if (vibrator == null)
-			vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		if (rollSound == null)
-			rollSound = MediaPlayer.create(this, R.raw.rollsound);
-		
-		preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

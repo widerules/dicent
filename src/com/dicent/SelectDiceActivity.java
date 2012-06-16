@@ -58,8 +58,7 @@ public class SelectDiceActivity extends DicentActivity {
 		//set listeners
 		rollButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (preferences.getBoolean("vibration", true)) vibrator.vibrate(150);
-				if (preferences.getBoolean("sounds", true)) rollSound.start();
+				state.rollEffects();
 
 				DiceList resultDice = state.getResultDice();
 				resultDice.clear();
