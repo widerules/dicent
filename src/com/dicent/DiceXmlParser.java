@@ -15,7 +15,6 @@
 package com.dicent;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

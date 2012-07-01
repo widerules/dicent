@@ -52,7 +52,7 @@ public class DiceList extends ArrayList<DieData> {
 	public int selectedPowerDiceCount() {
 		int count = 0;
 		for (DieData data : this)
-			if (data.isPowerDie() && data.isSelected) count++;
+			if (data.isPowerDie() && data.isSelected && data.isVisible()) count++;
 		return count;
 	}
 }

@@ -25,7 +25,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 
-public class DicentPreferences extends PreferenceActivity {
+public class DicentPreferencesActivity extends PreferenceActivity {
+	private static final int DIALOG_RESET = 0;
 	public static final boolean DEFAULT_RTL_CHECKED = false;
 	public static final boolean DEFAULT_TOI_CHECKED = false;
 	public static final boolean DEFAULT_SOUNDS_CHECKED = true;
@@ -42,43 +43,45 @@ public class DicentPreferences extends PreferenceActivity {
 		//add listeners
 		reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(Preference preference) {
-				showDialog(DicentActivity.DIALOG_RESET);
+				showDialog(DIALOG_RESET);
 				
 				return true;
 			}
 		});
 	}
 	
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		
 		DicentState.instance().preferencesChanged(this);
 	}
 	
+	@Override
 	protected Dialog onCreateDialog(int id) {
         Dialog dialog = super.onCreateDialog(id);
         if (dialog != null) return dialog;
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch(id) {
-        case DicentActivity.DIALOG_RESET:
-        	builder.setTitle(getResources().getString(R.string.preferencesResetDialog));
-        	builder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
-        		public void onClick(DialogInterface dialog, int which) {
-        			resetEverything();
-        			onContentChanged();
-        		}
+        case DIALOG_RESET:
+                builder.setTitle(getResources().getString(R.string.preferencesResetDialog));
+                builder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                                resetEverything();
+                                onContentChanged();
+                        }
             });
-        	builder.setNegativeButton(getResources().getString(R.string.cancel), null);
-        	dialog = builder.create();
-        	break;
+                builder.setNegativeButton(getResources().getString(R.string.cancel), null);
+                dialog = builder.create();
+                break;
         default:
             dialog = null;
         }
         return dialog;
     }
 	
-	private void resetEverything() {
+	public void resetEverything() {
 		//player names
 		resetPreference(DicentState.PREFERENCES_PLAYERNAMES);
 		

@@ -74,7 +74,7 @@ public class SelectDiceActivity extends DicentActivity {
 				startActivity(resultsIntent);
 			}
 		});
-
+		
 		diceGrid.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				DiceList dice = state.getPlayerDieDatas(playerIndex);

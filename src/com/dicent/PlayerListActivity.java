@@ -16,30 +16,21 @@ package com.dicent;
 
 import com.dicent.R;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
+	public static final String FRAGMENT_PLAYERNAME = "playerName";
 	private ArrayAdapter<String> playerAdapter;
 	
-	private int currentNameChangePlayerIndex;
-	
 	private ListView playersListView;
-	private EditText changePlayerNameEditText;
+	private PlayerNameDialogFragment playerNameDialogFragment;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +40,9 @@ public class PlayerListActivity extends DicentActivity {
         //collect objects created in XML
         playersListView = (ListView)findViewById(R.id.playersListView);
         
-    	//create stuff
-        changePlayerNameEditText = new EditText(this);
-        changePlayerNameEditText.setSingleLine();
+        //fragments
+        playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
+		if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
     	
     	//set listeners
     	playersListView.setOnItemClickListener(new OnItemClickListener() {
@@ -66,9 +57,9 @@ public class PlayerListActivity extends DicentActivity {
     	
         playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
     		public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
-    			currentNameChangePlayerIndex = position;
-    			changePlayerNameEditText.setText(state.getPlayers()[position]);
-    			showDialog(DicentActivity.DIALOG_CHANGE_PLAYER_NAME);
+    			playerNameDialogFragment.setPlayerIndex(position);
+    			playerNameDialogFragment.setPlayerName(state.getPlayers()[position]);
+    			playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
     			return true;
     		}
     	});
@@ -85,29 +76,8 @@ public class PlayerListActivity extends DicentActivity {
 		
 		state.saveState(this);
 	}
-    
-	@Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = super.onCreateDialog(id);
-        if (dialog != null) return dialog;
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        switch(id) {
-        case DicentActivity.DIALOG_CHANGE_PLAYER_NAME:
-        	builder.setTitle(getResources().getString(R.string.changePlayerNameDialog));
-        	builder.setView(changePlayerNameEditText);
-        	builder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
-        		public void onClick(DialogInterface dialog, int which) {
-        			state.getPlayers()[currentNameChangePlayerIndex] = changePlayerNameEditText.getText().toString();
-            		playerAdapter.notifyDataSetChanged();
-        		}
-            });
-        	builder.setNegativeButton(getResources().getString(R.string.cancel), null);
-        	dialog = builder.create();
-        	break;
-        default:
-            dialog = null;
-        }
-        return dialog;
-    }
+	
+	public ArrayAdapter<String> getPlayerAdapter() {
+		return playerAdapter;
+	}
 }

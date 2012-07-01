@@ -20,8 +20,6 @@ import java.util.LinkedList;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.dicent.dice.DieData;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;

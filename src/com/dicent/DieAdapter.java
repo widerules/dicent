@@ -17,7 +17,6 @@ package com.dicent;
 import com.dicent.dice.DieData;
 import com.dicent.dice.Die;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

@@ -12,7 +12,7 @@
        		<category android:name="android.intent.category.LAUNCHER" />
 		</intent-filter>	
 		</activity>
-		<activity android:name=".DicentPreferences"
+		<activity android:name=".DicentPreferencesActivity"
 			android:label="@string/preferencesTitle" />
 		<activity android:name=".SelectDiceActivity"
 			android:label="@string/selectDiceTitle" />
