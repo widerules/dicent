@@ -20,6 +20,7 @@ import com.dicent.dice.Die;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifier {
 	private DiceList dice;;
 	private DiceList relevantDice = new DiceList();
@@ -52,7 +53,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 			returnedView = (Die)convertView;
 			returnedView.setDieData(dieData);
 		} else {
-			returnedView = new Die(parent.getContext(), dieData);
+			returnedView = new Die(parent.getContext(), dieData, this);
 		}
 		
 		return returnedView;
@@ -66,5 +67,11 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 			if (die.isVisible()) relevantDice.add(die);
 		
 		notifyDataSetChanged();
+	}
+	
+	public boolean isDieSelectable(DieData die) {
+		if (die.isPowerDie() &&	relevantDice.selectedPowerDiceCount() >= 5) return false;
+		
+		return true;
 	}
 }

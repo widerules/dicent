@@ -21,10 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SelectDiceActivity extends DicentActivity {
 	public static final int BASE_DICE_COUNT = 12;
@@ -72,18 +70,6 @@ public class SelectDiceActivity extends DicentActivity {
 
 				Intent resultsIntent = new Intent(getBaseContext(), ResultsActivity.class);
 				startActivity(resultsIntent);
-			}
-		});
-		
-		diceGrid.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				DiceList dice = state.getPlayerDieDatas(playerIndex);
-				DieData die = dice.get(position);
-				if (die.isPowerDie() &&	dice.selectedPowerDiceCount() >= 5 && !die.isSelected)
-					return;
-				
-				die.isSelected = !die.isSelected;
-				dieAdapter.notifyDataSetChanged();
 			}
 		});
 		

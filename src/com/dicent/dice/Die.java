@@ -14,6 +14,7 @@
 
 package com.dicent.dice;
 
+import com.dicent.DieAdapter;
 import com.dicent.R;
 
 import android.content.Context;
@@ -48,13 +49,12 @@ public class Die extends View {
 	protected static float surgeWidth;
 	protected static float surgeHeight;
 	
-	protected Context context;
-	
-	protected DieData dieData;
+	private DieData dieData;
+	private DieAdapter dieAdapter;
 	
 	static {
 		borderPaint = new Paint();
-		borderPaint.setColor(Color.GRAY);
+		borderPaint.setColor(Color.DKGRAY);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(4.0f);
 		
@@ -73,10 +73,11 @@ public class Die extends View {
 		iconPaint.setDither(true);
 	}
 	
-	public Die(Context context, DieData _dieData) {
+	public Die(Context context, DieData _dieData, DieAdapter _dieAdapter) {
 		super(context);
 		
-		this.context = context;
+		dieAdapter = _dieAdapter;
+		
 		if (density <= 0.0f) {
 			density = context.getResources().getDisplayMetrics().density;
 			size = (int)(density * scale);
@@ -103,6 +104,19 @@ public class Die extends View {
 		}
 		
 		dieData = _dieData;
+		
+		setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (dieData.isSelected) {
+					dieData.isSelected = false;
+					dieAdapter.notifyDataSetChanged();
+				} else if (dieAdapter.isDieSelectable(dieData)) {
+					dieData.isSelected = true;
+					dieAdapter.notifyDataSetChanged();
+				}
+			}
+		});
 	}
 	
 	protected void onDraw(Canvas canvas) {

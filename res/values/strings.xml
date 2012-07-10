@@ -56,6 +56,9 @@
     \nChangelog:
     \n3.1
 	\n- removed warning on exit since it\'s no longer neccesary
+	\n- dice selection is a bit more visible now
+	\n- now uses modern style on newer android versions
+	\n- dice selection is now less laggy
 	\n
     \n3.0
 	\n- proper support for high density displays

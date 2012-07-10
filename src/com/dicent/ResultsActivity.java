@@ -21,12 +21,10 @@ import com.dicent.dice.SideValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ResultsActivity extends DicentActivity {
 	private DieAdapter dieAdapter = new DieAdapter();
@@ -70,14 +68,6 @@ public class ResultsActivity extends DicentActivity {
 		diceGrid.setColumnWidth((int)(density * Die.scale));
 
 		//set listeners
-		diceGrid.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				DieData die = state.getResultDice().get(position);
-				die.isSelected = !die.isSelected;
-				dieAdapter.notifyDataSetChanged();
-			}
-		});
-
 		rerollButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (state.getResultDice().selectedDiceCount() > 0) {
