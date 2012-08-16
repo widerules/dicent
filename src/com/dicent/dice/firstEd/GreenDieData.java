@@ -12,40 +12,46 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.firstEd;
 
-import java.util.Random;
+public class GreenDieData extends FirstEdDieData {
+	@Override
+	public int getDieType() {
+		return GREEN_DIE;
+	}
 
-public abstract class DieData {
-	private static Random generator = new Random();
-	
-	public Side side;
-	public boolean isSelected;
-	
-	public DieData() {
-		side = Side.SIDE1;
-		isSelected = false;
+	@Override
+	public int getDieColor() {
+		return 0xFF00AA00;
 	}
-	
-	public abstract int getDieType();
-	
-	public abstract int getDieColor();
-	
-	public void roll() {
-		int random = generator.nextInt(Integer.MAX_VALUE);
-		side = Side.values()[random % 6];
-	}
-	
-	public boolean isVisible() {
-		return true;
-	}
-	
-	public enum Side {
-		SIDE1,
-		SIDE2,
-		SIDE3,
-		SIDE4,
-		SIDE5,
-		SIDE6
+
+	@Override
+	public SideValues getSideValues() {
+		SideValues sv = new SideValues();
+		switch (side) {
+		case SIDE1:
+			sv.wounds = 3;
+			break;
+		case SIDE2:
+			sv.wounds = 3;
+			break;
+		case SIDE3:
+			sv.wounds = 2;
+			sv.surges = 1;
+			break;
+		case SIDE4:
+			sv.wounds = 2;
+			sv.surges = 1;
+			break;
+		case SIDE5:
+			sv.range = 1;
+			sv.wounds = 2;
+			break;
+		case SIDE6:
+			sv.range = 1;
+			sv.wounds = 1;
+			break;
+		}
+		return sv;
 	}
 }

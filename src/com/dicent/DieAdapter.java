@@ -15,7 +15,8 @@
 package com.dicent;
 
 import com.dicent.dice.DieData;
-import com.dicent.dice.Die;
+import com.dicent.dice.firstEd.FirstEdDie;
+import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	}
 	
 	@Override
-	public DieData getItem(int position) {
+	public FirstEdDieData getItem(int position) {
 		return relevantDice.get(position);
 	}
 	
@@ -47,13 +48,13 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Die returnedView;
-		DieData dieData = relevantDice.get(position);
-		if (convertView instanceof Die) {
-			returnedView = (Die)convertView;
+		FirstEdDie returnedView;
+		FirstEdDieData dieData = relevantDice.get(position);
+		if (convertView instanceof FirstEdDie) {
+			returnedView = (FirstEdDie)convertView;
 			returnedView.setDieData(dieData);
 		} else {
-			returnedView = new Die(parent.getContext(), dieData, this);
+			returnedView = new FirstEdDie(parent.getContext(), dieData, this);
 		}
 		
 		return returnedView;
@@ -63,14 +64,17 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	public void diceChanged() {
 		if (dice == null) return;
 		relevantDice.clear();
-		for (DieData die : dice)
+		for (FirstEdDieData die : dice)
 			if (die.isVisible()) relevantDice.add(die);
 		
 		notifyDataSetChanged();
 	}
 	
 	public boolean isDieSelectable(DieData die) {
-		if (die.isPowerDie() &&	relevantDice.selectedPowerDiceCount() >= 5) return false;
+		if (die instanceof FirstEdDieData) {
+			if (((FirstEdDieData)die).isPowerDie() && relevantDice.selectedPowerDiceCount() >= 5)
+				return false; 
+		}
 		
 		return true;
 	}

@@ -12,51 +12,20 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.secondEd;
 
-public class YellowDieData extends DieData {
+public class PowerDie extends SecondEdDieData {
+
 	@Override
 	public int getDieType() {
-		return YELLOW_DIE;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getDieColor() {
-		return 0xffdddd00;
-	}
-	
-	@Override
-	public boolean usesBlackIcons() {
-		return true;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	@Override
-	public SideValues getSideValues() {
-		SideValues sv = new SideValues();
-		switch (side) {
-		case SIDE1:
-			sv.range = 3;
-			break;
-		case SIDE2:
-			sv.range = 3;
-			break;
-		case SIDE3:
-			sv.range = 2;
-			sv.surges = 1;
-			break;
-		case SIDE4:
-			sv.range = 2;
-			sv.surges = 1;
-			break;
-		case SIDE5:
-			sv.range = 2;
-			sv.wounds = 1;
-			break;
-		case SIDE6:
-			sv.range = 1;
-			sv.wounds = 1;
-			break;
-		}
-		return sv;
-	}
 }

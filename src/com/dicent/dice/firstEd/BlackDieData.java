@@ -12,19 +12,19 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.firstEd;
 
-import com.dicent.DicentState;
+import android.graphics.Color;
 
-public class SilverDieData extends DieData {
+public class BlackDieData extends FirstEdDieData {
 	@Override
 	public int getDieType() {
-		return SILVER_DIE;
+		return BLACK_DIE;
 	}
-
+	
 	@Override
 	public int getDieColor() {
-		return 0xffaaaaaa;
+		return Color.BLACK;
 	}
 	
 	@Override
@@ -37,30 +37,24 @@ public class SilverDieData extends DieData {
 		SideValues sv = new SideValues();
 		switch (side) {
 		case SIDE1:
-			sv.enhancement = 2;
+			sv.enhancement = 1;
 			break;
 		case SIDE2:
-			sv.enhancement = 2;
+			sv.enhancement = 1;
 			break;
 		case SIDE3:
-			sv.enhancement = 2;
+			sv.enhancement = 1;
 			break;
 		case SIDE4:
-			sv.surges = 2;
+			sv.surges = 1;
 			break;
 		case SIDE5:
-			sv.surges = 2;
+			sv.surges = 1;
 			break;
 		case SIDE6:
 			
 			break;
 		}
 		return sv;
-	}
-	
-	@Override
-	public boolean isVisible() {
-		if (DicentState.instance().isRtlEnabled()) return true;
-		return false;
 	}
 }

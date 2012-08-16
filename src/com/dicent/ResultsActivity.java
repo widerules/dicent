@@ -14,9 +14,9 @@
 
 package com.dicent;
 
-import com.dicent.dice.Die;
-import com.dicent.dice.DieData;
-import com.dicent.dice.SideValues;
+import com.dicent.dice.firstEd.FirstEdDie;
+import com.dicent.dice.firstEd.FirstEdDieData;
+import com.dicent.dice.firstEd.SideValues;
 
 import android.os.Bundle;
 import android.view.View;
@@ -65,7 +65,7 @@ public class ResultsActivity extends DicentActivity {
 		//rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
 
 		float density = getResources().getDisplayMetrics().density;
-		diceGrid.setColumnWidth((int)(density * Die.scale));
+		diceGrid.setColumnWidth((int)(density * FirstEdDie.scale));
 
 		//set listeners
 		rerollButton.setOnClickListener(new OnClickListener() {
@@ -75,7 +75,7 @@ public class ResultsActivity extends DicentActivity {
 				}
 				else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
 						Toast.LENGTH_SHORT).show();
-				for (DieData data : state.getResultDice()) {
+				for (FirstEdDieData data : state.getResultDice()) {
 					if (data.isSelected) {
 						data.isSelected = false;
 						data.roll();
@@ -89,7 +89,7 @@ public class ResultsActivity extends DicentActivity {
 		addBlackButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
-				addRolledDie(DieData.BLACK_DIE);
+				addRolledDie(FirstEdDieData.BLACK_DIE);
 
 				state.rollEffects();
 				updateResults();
@@ -99,7 +99,7 @@ public class ResultsActivity extends DicentActivity {
 		addSilverButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
-				addRolledDie(DieData.SILVER_DIE);
+				addRolledDie(FirstEdDieData.SILVER_DIE);
 
 				state.rollEffects();
 				updateResults();
@@ -109,7 +109,7 @@ public class ResultsActivity extends DicentActivity {
 		addGoldButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (state.getResultDice().powerDiceCount() >= 5) return;
-				addRolledDie(DieData.GOLD_DIE);
+				addRolledDie(FirstEdDieData.GOLD_DIE);
 
 				state.rollEffects();
 				updateResults();
@@ -143,7 +143,7 @@ public class ResultsActivity extends DicentActivity {
 	}
 	
 	private void addRolledDie(int dieType) {
-		DieData newDie = DieData.create(dieType);
+		FirstEdDieData newDie = FirstEdDieData.create(dieType);
 		newDie.roll();
 		state.getResultDice().add(newDie);
 		dieAdapter.diceChanged();
@@ -154,7 +154,7 @@ public class ResultsActivity extends DicentActivity {
 		wounds = surges = range = enhancement = 0;
 		fail = false;
 		
-		for (DieData die : state.getResultDice()) {
+		for (FirstEdDieData die : state.getResultDice()) {
 			SideValues currentSideValues = die.getSideValues();
 			if (currentSideValues.fail) fail = true;
 			else {

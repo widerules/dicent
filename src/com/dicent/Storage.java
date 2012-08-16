@@ -16,7 +16,7 @@ package com.dicent;
 
 import java.util.ArrayList;
 
-import com.dicent.dice.DieData;
+import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -58,7 +58,7 @@ public class Storage extends SQLiteOpenHelper {
 		for (int i = 0; i < playersDice.size(); i++) {
 			DiceList dice = playersDice.get(i);
 			for (int j = 0; j < dice.size(); j++) {
-				DieData data = dice.get(j);
+				FirstEdDieData data = dice.get(j);
 				insertStatement.bindLong(1, i);
 				insertStatement.bindLong(2, j);
 				if (data.isSelected) insertStatement.bindLong(3, 1);
@@ -74,7 +74,7 @@ public class Storage extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery("SELECT * FROM " + TABLE_DICE, null);
 		c.moveToFirst();
 		while (!c.isAfterLast()) {
-			DieData data = playersDice.get(c.getInt(0)).get(c.getInt(1));
+			FirstEdDieData data = playersDice.get(c.getInt(0)).get(c.getInt(1));
 			if (c.getInt(2) == 1) data.isSelected = true;
 			else data.isSelected = false;
 			

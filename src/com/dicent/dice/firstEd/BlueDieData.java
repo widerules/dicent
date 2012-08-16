@@ -12,43 +12,35 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.firstEd;
 
-import android.graphics.Color;
-
-public class WhiteDieData extends DieData {
+public class BlueDieData extends FirstEdDieData {
 	@Override
 	public int getDieType() {
-		return WHITE_DIE;
+		return BLUE_DIE;
 	}
 
 	@Override
 	public int getDieColor() {
-		return Color.WHITE;
+		return 0xff0000aa;
 	}
-	
-	@Override
-	public boolean usesBlackIcons() {
-		return true;
-	}
-	
+
 	@Override
 	public SideValues getSideValues() {
 		SideValues sv = new SideValues();
 		switch (side) {
 		case SIDE1:
 			sv.range = 1;
-			sv.wounds = 3;
-			sv.surges = 1;
+			sv.wounds = 2;
 			break;
 		case SIDE2:
-			sv.range = 1;
-			sv.wounds = 3;
-			sv.surges = 1;
-			break;
-		case SIDE3:
 			sv.range = 2;
 			sv.wounds = 2;
+			break;
+		case SIDE3:
+			sv.range = 3;
+			sv.wounds = 1;
+			sv.surges = 1;
 			break;
 		case SIDE4:
 			sv.range = 3;
@@ -56,8 +48,7 @@ public class WhiteDieData extends DieData {
 			sv.surges = 1;
 			break;
 		case SIDE5:
-			sv.range = 3;
-			sv.wounds = 1;
+			sv.range = 4;
 			sv.surges = 1;
 			break;
 		case SIDE6:

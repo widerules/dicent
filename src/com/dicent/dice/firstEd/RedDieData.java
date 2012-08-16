@@ -12,24 +12,17 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.firstEd;
 
-import com.dicent.DicentState;
-
-public class TransparentDieData extends DieData {
+public class RedDieData extends FirstEdDieData {
 	@Override
 	public int getDieType() {
-		return TRANSPARENT_DIE;
+		return RED_DIE;
 	}
 
 	@Override
 	public int getDieColor() {
-		return 0xffcccccc;
-	}
-	
-	@Override
-	public boolean usesBlackIcons() {
-		return true;
+		return 0xffcc0000;
 	}
 
 	@Override
@@ -37,30 +30,30 @@ public class TransparentDieData extends DieData {
 		SideValues sv = new SideValues();
 		switch (side) {
 		case SIDE1:
-			sv.fail = true;
+			sv.wounds = 4;
 			break;
 		case SIDE2:
-			sv.fail = true;
+			sv.range = 1;
+			sv.wounds = 3;
+			sv.surges = 1;
 			break;
 		case SIDE3:
-			
+			sv.range = 1;
+			sv.wounds = 3;
 			break;
 		case SIDE4:
-			
+			sv.range = 2;
+			sv.wounds = 1;
+			sv.surges = 1;
 			break;
 		case SIDE5:
-			
+			sv.range = 2;
+			sv.wounds = 2;
 			break;
 		case SIDE6:
-			
+			sv.fail = true;
 			break;
 		}
 		return sv;
-	}
-	
-	@Override
-	public boolean isVisible() {
-		if (DicentState.instance().isToiEnabled()) return true;
-		return false;
 	}
 }

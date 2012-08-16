@@ -12,55 +12,20 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.secondEd;
 
-import com.dicent.DicentState;
+public class AttackDie extends SecondEdDieData {
 
-public class GoldDieData extends DieData {
 	@Override
 	public int getDieType() {
-		return GOLD_DIE;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getDieColor() {
-		return 0xff666600;
-	}
-	
-	@Override
-	public boolean isPowerDie() {
-		return true;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	@Override
-	public SideValues getSideValues() {
-		SideValues sv = new SideValues();
-		switch (side) {
-		case SIDE1:
-			sv.enhancement = 3;
-			break;
-		case SIDE2:
-			sv.enhancement = 3;
-			break;
-		case SIDE3:
-			sv.enhancement = 3;
-			break;
-		case SIDE4:
-			sv.surges = 3;
-			break;
-		case SIDE5:
-			sv.surges = 3;
-			break;
-		case SIDE6:
-			
-			break;
-		}
-		return sv;
-	}
-	
-	@Override
-	public boolean isVisible() {
-		if (DicentState.instance().isRtlEnabled()) return true;
-		return false;
-	}
 }

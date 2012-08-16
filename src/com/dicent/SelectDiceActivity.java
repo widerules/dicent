@@ -14,8 +14,8 @@
 
 package com.dicent;
 
-import com.dicent.dice.Die;
-import com.dicent.dice.DieData;
+import com.dicent.dice.firstEd.FirstEdDie;
+import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +45,7 @@ public class SelectDiceActivity extends DicentActivity {
 		Button rollButton = (Button)findViewById(R.id.selectDiceRollButton);
 
 		float density = getResources().getDisplayMetrics().density;
-		diceGrid.setColumnWidth((int)(density * Die.scale));
+		diceGrid.setColumnWidth((int)(density * FirstEdDie.scale));
 
 		//create stuff
 		playerIndex = getIntent().getIntExtra("playerIndex", 0);
@@ -60,9 +60,9 @@ public class SelectDiceActivity extends DicentActivity {
 
 				DiceList resultDice = state.getResultDice();
 				resultDice.clear();
-				for (DieData data : state.getPlayerDieDatas(playerIndex)) {
+				for (FirstEdDieData data : state.getPlayerDieDatas(playerIndex)) {
 					if (!data.isSelected || !data.isVisible()) continue;
-					DieData newData = data.copy();
+					FirstEdDieData newData = data.copy();
 					newData.isSelected = false;
 					newData.roll();
 					resultDice.add(newData);
@@ -74,7 +74,7 @@ public class SelectDiceActivity extends DicentActivity {
 		});
 		
 		if (savedInstanceState == null && isOverlord) {
-			for (DieData data : state.getPlayerDieDatas(playerIndex))
+			for (FirstEdDieData data : state.getPlayerDieDatas(playerIndex))
 				data.isSelected = false;
 		}
 

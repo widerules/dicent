@@ -12,12 +12,8 @@
  *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package com.dicent.dice;
+package com.dicent.dice.secondEd;
 
-public class SideValues {
-	public int range = 0;
-	public int wounds = 0;
-	public int enhancement = 0;
-	public int surges = 0;
-	public boolean fail = false;
+public abstract class DefenseDie extends SecondEdDieData {
+
 }
