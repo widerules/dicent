@@ -23,8 +23,11 @@
     <string name="menuPreferences">Preferences</string>
     <string name="menuAbout">About</string>
     
+    <string name="attack">Attack</string>
+    <string name="defense">Defense</string>
+    
     <string name="preferencesTitle">Dicent - preferences</string>
-    <string name="preferencesAddons">Addons</string>
+    <string name="preferencesFirstEdAddons">First edition Addons</string>
     <string name="preferencesRoadToLegend">Road to Legend</string>
     <string name="preferencesRoadToLegendSummary">Adds silver and gold dice</string>
     <string name="preferencesTombOfIce">Tomb of Ice</string>
@@ -37,6 +40,19 @@
     <string name="preferencesReset">Reset</string>
     <string name="preferencesResetSummary">Reset everything to default</string>
     <string name="preferencesResetDialog">Reset everything to default?</string>
+    
+    <string name="preferencesDescentVersion">Descent version</string>
+    <string name="preferencesDescentVersionSummary">First or second edition?</string>
+    <string-array name="descentVersions">
+        <item>First edition</item>
+        <item>Second edition</item>
+    </string-array>
+    <string name="descentVersionFirstEd">firstEd</string>
+    <string name="descentVersionSecondEd">secondEd</string>
+    <string-array name="descentVersionsValues">
+        <item>@string/descentVersionFirstEd</item>
+        <item>@string/descentVersionSecondEd</item>
+    </string-array>
     
     <string name="resultsTitle">Dicent - results</string>
     

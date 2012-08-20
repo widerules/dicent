@@ -21,63 +21,74 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
 	public static final String FRAGMENT_PLAYERNAME = "playerName";
-	private ArrayAdapter<String> playerAdapter;
+	private PlayerListAdapter playerAdapter;
 	
 	private ListView playersListView;
 	private PlayerNameDialogFragment playerNameDialogFragment;
+	private PrefChangedNotifier prefChangedNotifier = new PrefChangedNotifier();
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.playerlist);
-        
-        //collect objects created in XML
-        playersListView = (ListView)findViewById(R.id.playersListView);
-        
-        //fragments
-        playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.playerlist);
+		
+		//collect objects created in XML
+		playersListView = (ListView)findViewById(R.id.playersListView);
+		
+		//fragments
+		playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
 		if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
-    	
-    	//set listeners
-    	playersListView.setOnItemClickListener(new OnItemClickListener() {
-    		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    			Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
-    			selectDiceIntent.putExtra("playerIndex", position);
-    			if (position == 0) selectDiceIntent.putExtra("isOverlord", true);
-    			else selectDiceIntent.putExtra("isOverlord", false);
-    			startActivity(selectDiceIntent);
-    		}
-    	});
-    	
-        playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-    		public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
-    			playerNameDialogFragment.setPlayerIndex(position);
-    			playerNameDialogFragment.setPlayerName(state.getPlayers()[position]);
-    			playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
-    			return true;
-    		}
-    	});
-        
-        //create dice and adapters
-        playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
-        playersListView.setAdapter(playerAdapter);
-        
-    }
+		
+		//set listeners
+		playersListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
+				selectDiceIntent.putExtra("playerIndex", position);
+				if (position == 0) selectDiceIntent.putExtra("isOverlord", true);
+				else selectDiceIntent.putExtra("isOverlord", false);
+				startActivity(selectDiceIntent);
+			}
+		});
+		
+		playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
+				playerNameDialogFragment.setPlayerIndex(position);
+				playerNameDialogFragment.setPlayerName(state.getPlayers()[position]);
+				playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
+				return true;
+			}
+		});
+		
+		//playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
+		playerAdapter = new PlayerListAdapter(this);
+		playersListView.setAdapter(playerAdapter);
+		
+		state.registerPreferencesChangedNotifier(prefChangedNotifier);
+	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		
+		state.unregisterPreferencesChangedNotifier(prefChangedNotifier);
 		state.saveState(this);
 	}
 	
-	public ArrayAdapter<String> getPlayerAdapter() {
+	public PlayerListAdapter getPlayerAdapter() {
 		return playerAdapter;
+	}
+	
+	private class PrefChangedNotifier implements PreferencesChangedNotifier {
+		@Override
+		public void preferencesChanged() {
+			playerAdapter.preferencesChanged();
+		}
 	}
 }

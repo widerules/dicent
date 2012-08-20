@@ -15,5 +15,5 @@
 package com.dicent;
 
 public interface PreferencesChangedNotifier {
-	public void diceChanged();
+	public void preferencesChanged();
 }

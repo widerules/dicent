@@ -146,7 +146,7 @@ public class ResultsActivity extends DicentActivity {
 		FirstEdDieData newDie = FirstEdDieData.create(dieType);
 		newDie.roll();
 		state.getResultDice().add(newDie);
-		dieAdapter.diceChanged();
+		dieAdapter.preferencesChanged();
 	}
 
 	private void updateResults() {

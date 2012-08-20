@@ -6,12 +6,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 
 public class PlayerNameDialogFragment extends DialogFragment {
-	private ArrayAdapter<String> playerAdapter;
+	private BaseAdapter playerAdapter;
 	private int playerIndex = 0;
 	private String playerName;
 	

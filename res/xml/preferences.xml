@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory android:title="@string/preferencesAddons">
+    <com.dicent.DescentVersionPreference android:title="@string/preferencesDescentVersion"
+        android:summary="@string/preferencesDescentVersionSummary"
+        android:entries="@array/descentVersions"
+        android:entryValues="@array/descentVersionsValues"
+        android:defaultValue="@string/descentVersionFirstEd"
+        android:persistent="true"
+        android:key="descentVersion" />
+    
+	<PreferenceCategory android:title="@string/preferencesFirstEdAddons"
+	    android:key="firstEdAddons">
 		<CheckBoxPreference android:title="@string/preferencesRoadToLegend"
 			android:summary="@string/preferencesRoadToLegendSummary"
 			android:defaultValue="false"
@@ -19,8 +28,9 @@
 			android:summary="@string/preferencesVibrationSummary"
 			android:defaultValue="true"
 			android:key="vibration" />
-		<Preference android:title="@string/preferencesReset"
-			android:summary="@string/preferencesResetSummary"
-			android:key="reset" />
+		<com.dicent.ResetDialogPreference android:title="@string/preferencesReset"
+		    android:summary="@string/preferencesResetSummary"
+		    android:dialogTitle="@string/preferencesResetDialog"
+		    android:key="reset" />
 	</PreferenceCategory>
 </PreferenceScreen>

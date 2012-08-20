@@ -14,40 +14,46 @@
 
 package com.dicent;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.Preference;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
-import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 
 public class DicentPreferencesActivity extends PreferenceActivity {
-	private static final int DIALOG_RESET = 0;
-	public static final boolean DEFAULT_RTL_CHECKED = false;
-	public static final boolean DEFAULT_TOI_CHECKED = false;
-	public static final boolean DEFAULT_SOUNDS_CHECKED = true;
-	public static final boolean DEFAULT_VIBRATION_CHECKED = true;
+	public static final String DESCENT_VERSION = "descentVersion";
+	public static final String DESCENT_FIRST_EDITION = "firstEd";
+	public static final String DESCENT_SECOND_EDITION = "secondEd";
+	public static final String DEFAULT_DESCENT_VERSION = DESCENT_FIRST_EDITION;
+	public static final String PLAYERNAMES = "playerNames";
+	public static final String RTL_ENABLED = "roadToLegend";
+	public static final String TOI_ENABLED = "tombOfIce";
+	public static final String VIBRATION_ENABLED = "vibration";
+	public static final String SOUNDS_ENABLED = "sounds";
+	
+	public static final boolean DEFAULT_RTL_ENABLED = false;
+	public static final boolean DEFAULT_TOI_ENABLED = false;
+	public static final boolean DEFAULT_SOUNDS_ENABLED = true;
+	public static final boolean DEFAULT_VIBRATION_ENABLED = true;
+	
+	private PreferenceCategory firstEdAddons;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 		
-		//collect objects created in XML
-		Preference reset = (Preference)findPreference("reset");
+		ResetDialogPreference reset = (ResetDialogPreference)findPreference("reset");
+		reset.setDicentPreferencesActivity(this);
 		
-		//add listeners
-		reset.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			public boolean onPreferenceClick(Preference preference) {
-				showDialog(DIALOG_RESET);
-				
-				return true;
-			}
-		});
+		DescentVersionPreference descentVersionPreference = (DescentVersionPreference)findPreference("descentVersion");
+		descentVersionPreference.setDicentPreferencesActivity(this);
+		
+		firstEdAddons = (PreferenceCategory)findPreference("firstEdAddons");
+		descentVersionChanged();
 	}
 	
 	@Override
@@ -57,33 +63,9 @@ public class DicentPreferencesActivity extends PreferenceActivity {
 		DicentState.instance().preferencesChanged(this);
 	}
 	
-	@Override
-	protected Dialog onCreateDialog(int id) {
-        Dialog dialog = super.onCreateDialog(id);
-        if (dialog != null) return dialog;
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        switch(id) {
-        case DIALOG_RESET:
-                builder.setTitle(getResources().getString(R.string.preferencesResetDialog));
-                builder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                                resetEverything();
-                                onContentChanged();
-                        }
-            });
-                builder.setNegativeButton(getResources().getString(R.string.cancel), null);
-                dialog = builder.create();
-                break;
-        default:
-            dialog = null;
-        }
-        return dialog;
-    }
-	
 	public void resetEverything() {
 		//player names
-		resetPreference(DicentState.PREFERENCES_PLAYERNAMES);
+		resetPreference(PLAYERNAMES);
 		
 		//dice selections
 		int playersCount = getResources().getStringArray(R.array.players).length;
@@ -94,10 +76,19 @@ public class DicentPreferencesActivity extends PreferenceActivity {
 		}
 		
 		//preferences
-		((CheckBoxPreference)findPreference("roadToLegend")).setChecked(DEFAULT_RTL_CHECKED);
-		((CheckBoxPreference)findPreference("tombOfIce")).setChecked(DEFAULT_TOI_CHECKED);
-		((CheckBoxPreference)findPreference("sounds")).setChecked(DEFAULT_SOUNDS_CHECKED);
-		((CheckBoxPreference)findPreference("vibration")).setChecked(DEFAULT_VIBRATION_CHECKED);
+		((ListPreference)findPreference(DESCENT_VERSION)).setValue(DEFAULT_DESCENT_VERSION);
+		((CheckBoxPreference)findPreference(RTL_ENABLED)).setChecked(DEFAULT_RTL_ENABLED);
+		((CheckBoxPreference)findPreference(TOI_ENABLED)).setChecked(DEFAULT_TOI_ENABLED);
+		((CheckBoxPreference)findPreference(SOUNDS_ENABLED)).setChecked(DEFAULT_SOUNDS_ENABLED);
+		((CheckBoxPreference)findPreference(VIBRATION_ENABLED)).setChecked(DEFAULT_VIBRATION_ENABLED);
+		
+		onContentChanged();
+	}
+	
+	public void descentVersionChanged() {
+		SharedPreferences defaultPref = PreferenceManager.getDefaultSharedPreferences(this);
+		String descentVersion = defaultPref.getString(DESCENT_VERSION, DEFAULT_DESCENT_VERSION);
+		firstEdAddons.setEnabled(descentVersion.equals(DESCENT_FIRST_EDITION));
 	}
 	
 	private void resetPreference(String preferenceString) {

@@ -28,7 +28,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	
 	public void setDice(DiceList newDice) {
 		dice = newDice;
-		diceChanged();
+		preferencesChanged();
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	}
 
 	@Override
-	public void diceChanged() {
+	public void preferencesChanged() {
 		if (dice == null) return;
 		relevantDice.clear();
 		for (FirstEdDieData die : dice)
