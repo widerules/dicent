@@ -17,6 +17,7 @@ package com.dicent.dice.firstEd;
 import com.dicent.DieAdapter;
 import com.dicent.R;
 import com.dicent.dice.Die;
+import com.dicent.dice.SideValues;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -66,15 +67,15 @@ public class FirstEdDie extends Die {
 		
 		SideValues sv = firstEdDieData.getSideValues();
 		if (firstEdDieData.isPowerDie()) {
-			if (sv.enhancement > 0) drawEnhancement(canvas, sv.enhancement);
-			else if (sv.surges > 0) drawPowerDieSurges(canvas, sv.surges);
+			if (sv.getEnhancement() > 0) drawEnhancement(canvas, sv.getEnhancement());
+			else if (sv.getSurges() > 0) drawPowerDieSurges(canvas, sv.getSurges());
 		} else {
-			if (sv.fail) drawFail(canvas);
+			if (sv.isFail()) drawFail(canvas);
 			else if (firstEdDieData.getDieType() == FirstEdDieData.TRANSPARENT_DIE) {}
 			else {
-				drawRange(canvas, sv.range);
-				if (sv.wounds > 0) drawWounds(canvas, sv.wounds);
-				if (sv.surges > 0) drawSurge(canvas);
+				drawRange(canvas, sv.getRange());
+				if (sv.getWounds() > 0) drawWounds(canvas, sv.getWounds());
+				if (sv.getSurges() > 0) drawSurge(canvas);
 			}
 		}
 	}

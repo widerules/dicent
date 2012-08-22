@@ -14,9 +14,9 @@
 
 package com.dicent;
 
+import com.dicent.dice.SideValues;
 import com.dicent.dice.firstEd.FirstEdDie;
 import com.dicent.dice.firstEd.FirstEdDieData;
-import com.dicent.dice.firstEd.SideValues;
 
 import android.os.Bundle;
 import android.view.View;
@@ -156,12 +156,12 @@ public class ResultsActivity extends DicentActivity {
 		
 		for (FirstEdDieData die : state.getResultDice()) {
 			SideValues currentSideValues = die.getSideValues();
-			if (currentSideValues.fail) fail = true;
+			if (currentSideValues.isFail()) fail = true;
 			else {
-				wounds += currentSideValues.wounds;
-				surges += currentSideValues.surges;
-				range += currentSideValues.range;
-				enhancement += currentSideValues.enhancement;
+				wounds += currentSideValues.getWounds();
+				surges += currentSideValues.getSurges();
+				range += currentSideValues.getRange();
+				enhancement += currentSideValues.getEnhancement();
 			}
 		}
 		if (fail) wounds = surges = range = enhancement = 0;

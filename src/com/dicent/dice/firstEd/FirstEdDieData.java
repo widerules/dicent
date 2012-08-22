@@ -15,6 +15,7 @@
 package com.dicent.dice.firstEd;
 
 import com.dicent.dice.DieData;
+import com.dicent.dice.SideValues;
 
 public abstract class FirstEdDieData extends DieData {
 	public static final int RED_DIE = 0;
@@ -71,6 +72,7 @@ public abstract class FirstEdDieData extends DieData {
 		return newData;
 	}
 	
+	@Override
 	public boolean usesBlackIcons() {
 		return false;
 	}

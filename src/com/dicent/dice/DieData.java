@@ -40,6 +40,8 @@ public abstract class DieData {
 		return true;
 	}
 	
+	public abstract boolean usesBlackIcons();
+	
 	public enum Side {
 		SIDE1,
 		SIDE2,

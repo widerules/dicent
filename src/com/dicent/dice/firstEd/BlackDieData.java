@@ -14,9 +14,25 @@
 
 package com.dicent.dice.firstEd;
 
+import java.util.HashMap;
+
+import com.dicent.dice.SideValues;
+import com.dicent.dice.DieData.Side;
+
 import android.graphics.Color;
 
 public class BlackDieData extends FirstEdDieData {
+	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
+	
+	static {
+		sideValues.put(Side.SIDE1, new SideValues(1));
+		sideValues.put(Side.SIDE2, new SideValues(1));
+		sideValues.put(Side.SIDE3, new SideValues(1));
+		sideValues.put(Side.SIDE4, new SideValues(0, 0, 1));
+		sideValues.put(Side.SIDE5, new SideValues(0, 0, 1));
+		sideValues.put(Side.SIDE6, new SideValues(0));
+	}
+	
 	@Override
 	public int getDieType() {
 		return BLACK_DIE;
@@ -34,6 +50,8 @@ public class BlackDieData extends FirstEdDieData {
 
 	@Override
 	public SideValues getSideValues() {
+		return sideValues.get(side);
+		/*
 		SideValues sv = new SideValues();
 		switch (side) {
 		case SIDE1:
@@ -56,5 +74,6 @@ public class BlackDieData extends FirstEdDieData {
 			break;
 		}
 		return sv;
+		*/
 	}
 }

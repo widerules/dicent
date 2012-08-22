@@ -28,6 +28,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
 	public static final String FRAGMENT_PLAYERNAME = "playerName";
+	public static final int ACTION_FIRSTED = 0;
+	public static final int ACTION_SECONDED_ATTACK = 1;
+	public static final int ACTION_SECONDED_DEFENSE = 2;
 	private PlayerListAdapter playerAdapter;
 	
 	private ListView playersListView;
@@ -47,16 +50,6 @@ public class PlayerListActivity extends DicentActivity {
 		if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
 		
 		//set listeners
-		playersListView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
-				selectDiceIntent.putExtra("playerIndex", position);
-				if (position == 0) selectDiceIntent.putExtra("isOverlord", true);
-				else selectDiceIntent.putExtra("isOverlord", false);
-				startActivity(selectDiceIntent);
-			}
-		});
-		
 		playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
 				playerNameDialogFragment.setPlayerIndex(position);
@@ -83,6 +76,14 @@ public class PlayerListActivity extends DicentActivity {
 	
 	public PlayerListAdapter getPlayerAdapter() {
 		return playerAdapter;
+	}
+	
+	public void startDiceSelection(int player, int action) {
+		Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
+		selectDiceIntent.putExtra("playerIndex", player);
+		if (player == 0) selectDiceIntent.putExtra("isOverlord", true);
+		else selectDiceIntent.putExtra("isOverlord", false);
+		startActivity(selectDiceIntent);
 	}
 	
 	private class PrefChangedNotifier implements PreferencesChangedNotifier {

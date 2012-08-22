@@ -14,18 +14,6 @@
 
 package com.dicent.dice.secondEd;
 
-public class PowerDie extends SecondEdDieData {
-
-	@Override
-	public int getDieType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getDieColor() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+public abstract class PowerDie extends SecondEdDieData {
 
 }

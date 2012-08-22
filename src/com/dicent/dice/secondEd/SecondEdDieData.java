@@ -17,6 +17,13 @@ package com.dicent.dice.secondEd;
 import com.dicent.dice.DieData;
 
 public abstract class SecondEdDieData extends DieData {
+	public static final int BROWN_DIE = 100;
+	public static final int GREY_DIE = 101;
+	public static final int DKGREY_DIE = 102;
+	public static final int BLUE_DIE = 103;
+	public static final int RED_DIE = 104;
+	public static final int YELLOW_DIE = 105;
+	
 	public static SecondEdDieData create(int dieType) {
 		SecondEdDieData secondEdDieData;
 		//TODO

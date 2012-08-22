@@ -14,7 +14,22 @@
 
 package com.dicent.dice.firstEd;
 
+import java.util.HashMap;
+
+import com.dicent.dice.SideValues;
+
 public class BlueDieData extends FirstEdDieData {
+	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
+	
+	static {
+		sideValues.put(Side.SIDE1, new SideValues(1, 2, 0));
+		sideValues.put(Side.SIDE2, new SideValues(2, 2, 0));
+		sideValues.put(Side.SIDE3, new SideValues(3, 1, 1));
+		sideValues.put(Side.SIDE4, new SideValues(3, 1, 1));
+		sideValues.put(Side.SIDE5, new SideValues(4, 0, 1));
+		sideValues.put(Side.SIDE6, new SideValues(true));
+	}
+	
 	@Override
 	public int getDieType() {
 		return BLUE_DIE;
@@ -27,6 +42,8 @@ public class BlueDieData extends FirstEdDieData {
 
 	@Override
 	public SideValues getSideValues() {
+		return sideValues.get(side);
+		/*
 		SideValues sv = new SideValues();
 		switch (side) {
 		case SIDE1:
@@ -56,5 +73,6 @@ public class BlueDieData extends FirstEdDieData {
 			break;
 		}
 		return sv;
+		*/
 	}
 }
