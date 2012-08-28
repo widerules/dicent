@@ -14,6 +14,6 @@
 
 package com.dicent.dice.secondEd;
 
-public abstract class AttackDie extends SecondEdDieData {
-	
+public abstract class PowerDieData extends SecondEdDieData {
+
 }

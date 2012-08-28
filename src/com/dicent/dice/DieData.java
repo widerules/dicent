@@ -42,6 +42,8 @@ public abstract class DieData {
 	
 	public abstract boolean usesBlackIcons();
 	
+	public abstract SideValues getSideValues();
+	
 	public enum Side {
 		SIDE1,
 		SIDE2,

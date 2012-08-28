@@ -17,7 +17,6 @@ package com.dicent.dice.firstEd;
 import java.util.HashMap;
 
 import com.dicent.dice.SideValues;
-import com.dicent.dice.DieData.Side;
 
 public class GreenDieData extends FirstEdDieData {
 	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();

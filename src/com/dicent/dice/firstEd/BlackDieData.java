@@ -17,7 +17,6 @@ package com.dicent.dice.firstEd;
 import java.util.HashMap;
 
 import com.dicent.dice.SideValues;
-import com.dicent.dice.DieData.Side;
 
 import android.graphics.Color;
 

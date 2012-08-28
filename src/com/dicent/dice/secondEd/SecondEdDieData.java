@@ -26,8 +26,29 @@ public abstract class SecondEdDieData extends DieData {
 	
 	public static SecondEdDieData create(int dieType) {
 		SecondEdDieData secondEdDieData;
-		//TODO
-		return null;
+		switch (dieType) {
+		case BROWN_DIE:
+			secondEdDieData = new BrownDieData();
+			break;
+		case GREY_DIE:
+			secondEdDieData = new GreyDieData();
+			break;
+		case DKGREY_DIE:
+			secondEdDieData = new DkGreyDieData();
+			break;
+		case BLUE_DIE:
+			secondEdDieData = new BlueDieData();
+			break;
+		case RED_DIE:
+			secondEdDieData = new RedDieData();
+			break;
+		case YELLOW_DIE:
+			secondEdDieData = new YellowDieData();
+			break;
+		default:
+			secondEdDieData = new BlueDieData();	
+		}
+		return secondEdDieData;
 	}
 	
 	public SecondEdDieData copy() {
