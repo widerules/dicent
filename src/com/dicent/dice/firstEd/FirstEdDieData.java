@@ -17,15 +17,15 @@ package com.dicent.dice.firstEd;
 import com.dicent.dice.DieData;
 
 public abstract class FirstEdDieData extends DieData {
-	public static final int RED_DIE = 0;
-	public static final int BLUE_DIE = 1;
-	public static final int WHITE_DIE = 2;
-	public static final int GREEN_DIE = 3;
-	public static final int YELLOW_DIE = 4;
-	public static final int BLACK_DIE = 5;
-	public static final int SILVER_DIE = 6;
-	public static final int GOLD_DIE = 7;
-	public static final int TRANSPARENT_DIE = 8;
+	public static final int RED_DIE = 1;
+	public static final int BLUE_DIE = 2;
+	public static final int WHITE_DIE = 3;
+	public static final int GREEN_DIE = 4;
+	public static final int YELLOW_DIE = 5;
+	public static final int BLACK_DIE = 6;
+	public static final int SILVER_DIE = 7;
+	public static final int GOLD_DIE = 8;
+	public static final int TRANSPARENT_DIE = 9;
 	public static final int[] POWER_DICE = {BLACK_DIE, SILVER_DIE, GOLD_DIE};
 	
 	public static final int POWER_DICE_TYPES_COUNT = POWER_DICE.length;
@@ -64,6 +64,7 @@ public abstract class FirstEdDieData extends DieData {
 		return newDieData;
 	}
 	
+	@Override
 	public FirstEdDieData copy() {
 		FirstEdDieData newData = create(getDieType());
 		newData.side = side;

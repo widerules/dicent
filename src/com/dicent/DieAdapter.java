@@ -14,9 +14,12 @@
 
 package com.dicent;
 
+import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
 import com.dicent.dice.firstEd.FirstEdDie;
 import com.dicent.dice.firstEd.FirstEdDieData;
+import com.dicent.dice.secondEd.SecondEdDie;
+import com.dicent.dice.secondEd.SecondEdDieData;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +40,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	}
 	
 	@Override
-	public FirstEdDieData getItem(int position) {
+	public DieData getItem(int position) {
 		return relevantDice.get(position);
 	}
 	
@@ -48,13 +51,15 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		FirstEdDie returnedView;
-		FirstEdDieData dieData = relevantDice.get(position);
-		if (convertView instanceof FirstEdDie) {
-			returnedView = (FirstEdDie)convertView;
+		Die returnedView = null;
+		DieData dieData = relevantDice.get(position);
+		if (convertView != null) {
+			returnedView = (Die)convertView;
 			returnedView.setDieData(dieData);
-		} else {
-			returnedView = new FirstEdDie(parent.getContext(), dieData, this);
+		} else if (dieData instanceof FirstEdDieData) {
+			returnedView = new FirstEdDie(parent.getContext(), (FirstEdDieData)dieData, this);
+		} else if (dieData instanceof SecondEdDieData) {
+			returnedView = new SecondEdDie(parent.getContext(), (SecondEdDieData)dieData, this);
 		}
 		
 		return returnedView;
@@ -64,7 +69,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	public void preferencesChanged() {
 		if (dice == null) return;
 		relevantDice.clear();
-		for (FirstEdDieData die : dice)
+		for (DieData die : dice)
 			if (die.isVisible()) relevantDice.add(die);
 		
 		notifyDataSetChanged();
@@ -72,7 +77,7 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 	
 	public boolean isDieSelectable(DieData die) {
 		if (die instanceof FirstEdDieData) {
-			if (((FirstEdDieData)die).isPowerDie() && relevantDice.selectedPowerDiceCount() >= 5)
+			if (((FirstEdDieData)die).isPowerDie() && relevantDice.selectedFirstEdPowerDiceCount() >= 5)
 				return false; 
 		}
 		

@@ -20,6 +20,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.dicent.dice.firstEd.FirstEdDieData;
+import com.dicent.dice.secondEd.SecondEdDieData;
 
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -35,7 +36,13 @@ public class DiceXmlParser {
 			switch (eventType) {
 			case XmlPullParser.START_TAG:
 				if (xrp.getName().equals("die")) {
-					data.add(FirstEdDieData.create(getDieType(xrp.getAttributeValue(null, "type"))));
+					int dieType = getFirstEdDieType(xrp.getAttributeValue(null, "type"));
+					if (dieType > 0) data.add(FirstEdDieData.create(dieType));
+					else {
+						dieType = getSecondEdDieType(xrp.getAttributeValue(null, "type"));
+						if (dieType > 0) data.add(SecondEdDieData.create(dieType));
+					}
+					
 				}
 				break;
 			}
@@ -45,16 +52,27 @@ public class DiceXmlParser {
 		return data;
 	}
 	
-	private static int getDieType(String name) {
-		if (name.equals("black")) return FirstEdDieData.BLACK_DIE;
-		else if (name.equals("blue")) return FirstEdDieData.BLUE_DIE;
-		else if (name.equals("gold")) return FirstEdDieData.GOLD_DIE;
-		else if (name.equals("green")) return FirstEdDieData.GREEN_DIE;
-		else if (name.equals("red")) return FirstEdDieData.RED_DIE;
-		else if (name.equals("silver")) return FirstEdDieData.SILVER_DIE;
-		else if (name.equals("transparent")) return FirstEdDieData.TRANSPARENT_DIE;
-		else if (name.equals("white")) return FirstEdDieData.WHITE_DIE;
-		else if (name.equals("yellow")) return FirstEdDieData.YELLOW_DIE;
+	private static int getFirstEdDieType(String name) {
+		if (name.equals("first_black")) return FirstEdDieData.BLACK_DIE;
+		else if (name.equals("first_blue")) return FirstEdDieData.BLUE_DIE;
+		else if (name.equals("first_gold")) return FirstEdDieData.GOLD_DIE;
+		else if (name.equals("first_green")) return FirstEdDieData.GREEN_DIE;
+		else if (name.equals("first_red")) return FirstEdDieData.RED_DIE;
+		else if (name.equals("first_silver")) return FirstEdDieData.SILVER_DIE;
+		else if (name.equals("first_transparent")) return FirstEdDieData.TRANSPARENT_DIE;
+		else if (name.equals("first_white")) return FirstEdDieData.WHITE_DIE;
+		else if (name.equals("first_yellow")) return FirstEdDieData.YELLOW_DIE;
+		
+		return 0;
+	}
+	
+	private static int getSecondEdDieType(String name) {
+		if (name.equals("second_brown")) return SecondEdDieData.BROWN_DIE;
+		else if (name.equals("second_grey")) return SecondEdDieData.GREY_DIE;
+		else if (name.equals("second_dkgrey")) return SecondEdDieData.DKGREY_DIE;
+		else if (name.equals("second_blue")) return SecondEdDieData.BLUE_DIE;
+		else if (name.equals("second_red")) return SecondEdDieData.RED_DIE;
+		else if (name.equals("second_yellow")) return SecondEdDieData.YELLOW_DIE;
 		
 		return 0;
 	}

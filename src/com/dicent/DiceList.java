@@ -16,9 +16,11 @@ package com.dicent;
 
 import java.util.ArrayList;
 
+import com.dicent.dice.DieData;
 import com.dicent.dice.firstEd.FirstEdDieData;
+import com.dicent.dice.firstEd.PowerDieData;
 
-public class DiceList extends ArrayList<FirstEdDieData> {
+public class DiceList extends ArrayList<DieData> {
 	private static final long serialVersionUID = 641740432738495384L;
 	
 	public DiceList() {
@@ -31,28 +33,28 @@ public class DiceList extends ArrayList<FirstEdDieData> {
 	
 	public DiceList copy() {
 		DiceList newList = new DiceList(size());
-		for (FirstEdDieData data : this) newList.add(data.copy());
+		for (DieData data : this) newList.add(data.copy());
 		return newList;
 	}
 	
-	public int powerDiceCount() {
+	public int firstEdPowerDiceCount() {
 		int count = 0;
-		for (FirstEdDieData data : this)
-			if (data.isPowerDie()) count++;
+		for (DieData data : this)
+			if (data instanceof PowerDieData) count++;
 		return count;
 	}
 	
 	public int selectedDiceCount() {
 		int count = 0;
-		for (FirstEdDieData data : this)
+		for (DieData data : this)
 			if (data.isSelected) count++;
 		return count;
 	}
 	
-	public int selectedPowerDiceCount() {
+	public int selectedFirstEdPowerDiceCount() {
 		int count = 0;
-		for (FirstEdDieData data : this)
-			if (data.isPowerDie() && data.isSelected && data.isVisible()) count++;
+		for (DieData data : this)
+			if (data instanceof PowerDieData && data.isSelected && data.isVisible()) count++;
 		return count;
 	}
 }

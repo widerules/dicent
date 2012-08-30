@@ -14,7 +14,8 @@
 
 package com.dicent;
 
-import com.dicent.dice.firstEd.FirstEdDie;
+import com.dicent.dice.Die;
+import com.dicent.dice.DieData;
 import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Intent;
@@ -25,16 +26,22 @@ import android.widget.Button;
 import android.widget.GridView;
 
 public class SelectDiceActivity extends DicentActivity {
-	public static final int BASE_DICE_COUNT = 12;
-	public static final int RTL_DICE_COUNT = 10;
+	public static final String INTENTKEY_PLAYERINDEX = "playerIndex";
+	public static final String INTENTKEY_ISOVERLORD = "isOverlord";
+	public static final String INTENTKEY_MODE = "mode";
 	public static final String SAVED_BASE_DICE_SHARED_PREFERENCE = "savedBaseDice";
 	public static final String SAVED_RTL_DICE_SHARED_PREFERENCE = "savedRTLDice";
 	public static final String SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE = "savedTransparentDie";
+	
+	public static final int MODE_FIRSTED = 0;
+	public static final int MODE_SECONDED_ATTACK = 1;
+	public static final int MODE_SECONDED_DEFENSE = 2;
 
 	private DieAdapter dieAdapter = new DieAdapter();
 
 	private int playerIndex;
 	private boolean isOverlord;
+	private int mode;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,13 +52,17 @@ public class SelectDiceActivity extends DicentActivity {
 		Button rollButton = (Button)findViewById(R.id.selectDiceRollButton);
 
 		float density = getResources().getDisplayMetrics().density;
-		diceGrid.setColumnWidth((int)(density * FirstEdDie.scale));
+		diceGrid.setColumnWidth((int)(density * Die.scale));
 
 		//create stuff
-		playerIndex = getIntent().getIntExtra("playerIndex", 0);
-		dieAdapter.setDice(state.getPlayerDieDatas(playerIndex));
+		playerIndex = getIntent().getIntExtra(INTENTKEY_PLAYERINDEX, 0);
+		isOverlord = getIntent().getBooleanExtra(INTENTKEY_ISOVERLORD, false);
+		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
+		
+		if (mode == MODE_FIRSTED) dieAdapter.setDice(state.getFirstEdDieDatas(playerIndex));
+		else if (mode == MODE_SECONDED_ATTACK) dieAdapter.setDice(state.getSecondEdAttackDieDatas(playerIndex));
+		else if (mode == MODE_SECONDED_DEFENSE) dieAdapter.setDice(state.getSecondEdDefenseDieDatas(playerIndex));
 		state.registerPreferencesChangedNotifier(dieAdapter);
-		isOverlord = getIntent().getBooleanExtra("isOverlord", false);
 
 		//set listeners
 		rollButton.setOnClickListener(new OnClickListener() {
@@ -60,9 +71,9 @@ public class SelectDiceActivity extends DicentActivity {
 
 				DiceList resultDice = state.getResultDice();
 				resultDice.clear();
-				for (FirstEdDieData data : state.getPlayerDieDatas(playerIndex)) {
+				for (DieData data : state.getFirstEdDieDatas(playerIndex)) {
 					if (!data.isSelected || !data.isVisible()) continue;
-					FirstEdDieData newData = data.copy();
+					DieData newData = data.copy();
 					newData.isSelected = false;
 					newData.roll();
 					resultDice.add(newData);
@@ -74,7 +85,7 @@ public class SelectDiceActivity extends DicentActivity {
 		});
 		
 		if (savedInstanceState == null && isOverlord) {
-			for (FirstEdDieData data : state.getPlayerDieDatas(playerIndex))
+			for (DieData data : state.getFirstEdDieDatas(playerIndex))
 				data.isSelected = false;
 		}
 

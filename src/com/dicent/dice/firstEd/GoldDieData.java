@@ -19,7 +19,7 @@ import java.util.HashMap;
 import com.dicent.DicentState;
 import com.dicent.dice.SideValues;
 
-public class GoldDieData extends FirstEdDieData {
+public class GoldDieData extends PowerDieData {
 	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
 	
 	static {

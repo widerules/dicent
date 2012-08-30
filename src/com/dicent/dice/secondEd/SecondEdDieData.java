@@ -51,6 +51,7 @@ public abstract class SecondEdDieData extends DieData {
 		return secondEdDieData;
 	}
 	
+	@Override
 	public SecondEdDieData copy() {
 		SecondEdDieData newData = create(getDieType());
 		newData.side = side;

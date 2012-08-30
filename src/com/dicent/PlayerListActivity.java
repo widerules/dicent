@@ -28,9 +28,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
 	public static final String FRAGMENT_PLAYERNAME = "playerName";
-	public static final int ACTION_FIRSTED = 0;
-	public static final int ACTION_SECONDED_ATTACK = 1;
-	public static final int ACTION_SECONDED_DEFENSE = 2;
 	private PlayerListAdapter playerAdapter;
 	
 	private ListView playersListView;
@@ -78,11 +75,12 @@ public class PlayerListActivity extends DicentActivity {
 		return playerAdapter;
 	}
 	
-	public void startDiceSelection(int player, int action) {
+	public void startDiceSelection(int player, int mode) {
 		Intent selectDiceIntent = new Intent(getBaseContext(), SelectDiceActivity.class);
-		selectDiceIntent.putExtra("playerIndex", player);
-		if (player == 0) selectDiceIntent.putExtra("isOverlord", true);
-		else selectDiceIntent.putExtra("isOverlord", false);
+		selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_PLAYERINDEX, player);
+		if (player == 0) selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_ISOVERLORD, true);
+		else selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_ISOVERLORD, false);
+		selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_MODE, mode);
 		startActivity(selectDiceIntent);
 	}
 	

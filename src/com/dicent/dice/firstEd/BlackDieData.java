@@ -20,7 +20,7 @@ import com.dicent.dice.SideValues;
 
 import android.graphics.Color;
 
-public class BlackDieData extends FirstEdDieData {
+public class BlackDieData extends PowerDieData {
 	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
 	
 	static {

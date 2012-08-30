@@ -30,16 +30,35 @@ public abstract class Die extends View {
 	public static final float scale = 70.0f;
 	protected static final float textSize = 20.0f;
 	
+	protected static float dScale;
+	
 	protected static Paint borderPaint;
 	protected static Paint selectedBorderPaint;
 	protected static Paint whiteTextPaint;
 	protected static Paint blackTextPaint;
 	protected static Paint iconPaint;
 	
+	protected static Bitmap whiteWound;
+	protected static Bitmap blackWound;
+	protected static Bitmap whiteSurge;
+	protected static Bitmap blackSurge;
+	protected static Bitmap whiteFail;
+	protected static Bitmap blackFail;
+	
 	protected static Bitmap dieBackground;
 	
 	protected static float density = 0.0f;
 	protected static int size;
+	
+	protected static float hPadding = 0.0f;
+	protected static float vPadding = 0.0f;
+	
+	protected static float woundWidth;
+	protected static float woundHeight;
+	protected static float surgeWidth;
+	protected static float surgeHeight;
+	protected static float failWidth;
+	protected static float failHeight;
 	
 	private DieData dieData;
 	private DieAdapter dieAdapter;
@@ -65,7 +84,7 @@ public abstract class Die extends View {
 		iconPaint.setDither(true);
 	}
 	
-	public Die(Context context, FirstEdDieData _dieData, DieAdapter _dieAdapter) {
+	public Die(Context context, DieData _dieData, DieAdapter _dieAdapter) {
 		super(context);
 		
 		dieAdapter = _dieAdapter;
@@ -73,7 +92,10 @@ public abstract class Die extends View {
 		
 		if (density <= 0.0f) {
 			density = context.getResources().getDisplayMetrics().density;
-			size = (int)(density * scale);
+			dScale = scale * density;
+			size = (int)(dScale);
+			hPadding = 13.0f * density;
+			vPadding = 10.0f * density;
 			whiteTextPaint.setTextSize(textSize * density);
 			blackTextPaint.setTextSize(textSize * density);
 			borderPaint.setStrokeWidth(4.0f * density);
@@ -82,6 +104,22 @@ public abstract class Die extends View {
 		
 		if (dieBackground == null)
 			dieBackground = BitmapFactory.decodeResource(context.getResources(), R.drawable.diebackground, null);
+		
+		if (whiteWound == null) {
+			whiteWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitewound, null);
+			blackWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackwound, null);
+			whiteSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitesurge, null);
+			blackSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.blacksurge, null);
+			whiteFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitefail, null);
+			blackFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackfail, null);
+			
+			woundWidth = whiteWound.getWidth();
+			woundHeight = whiteWound.getHeight();
+			surgeWidth = whiteSurge.getWidth();
+			surgeHeight = whiteSurge.getHeight();
+			failWidth = whiteFail.getWidth();
+			failHeight = whiteFail.getHeight();
+		}
 		
 		setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -108,7 +146,7 @@ public abstract class Die extends View {
 		//background color
 		canvas.drawColor(dieData.getDieColor());
 		//border
-		canvas.drawRect(0.0f, 0.0f, (float)size, (float)size, usedBorderPaint);
+		canvas.drawRect(0.0f, 0.0f, dScale, dScale, usedBorderPaint);
 		//background
 		canvas.drawBitmap(dieBackground, 0.0f, 0.0f, null);
 	}
@@ -116,5 +154,9 @@ public abstract class Die extends View {
 	@Override
 	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
 		setMeasuredDimension(size, size);
+	}
+	
+	public void setDieData(DieData _dieData) {
+		dieData = _dieData;
 	}
 }

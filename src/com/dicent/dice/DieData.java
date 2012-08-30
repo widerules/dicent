@@ -44,6 +44,8 @@ public abstract class DieData {
 	
 	public abstract SideValues getSideValues();
 	
+	public abstract DieData copy();
+	
 	public enum Side {
 		SIDE1,
 		SIDE2,

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diceList>
+	<die type="first_red" />
+	<die type="first_blue" />
+	<die type="first_white" />
+	<die type="first_green" />
+	<die type="first_green" />
+	<die type="first_yellow" />
+	<die type="first_yellow" />
+	<die type="first_black" />
+	<die type="first_black" />
+	<die type="first_black" />
+	<die type="first_black" />
+	<die type="first_black" />
+</diceList>

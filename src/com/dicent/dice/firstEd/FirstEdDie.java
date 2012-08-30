@@ -17,6 +17,7 @@ package com.dicent.dice.firstEd;
 import com.dicent.DieAdapter;
 import com.dicent.R;
 import com.dicent.dice.Die;
+import com.dicent.dice.DieData;
 import com.dicent.dice.SideValues;
 
 import android.content.Context;
@@ -26,18 +27,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class FirstEdDie extends Die {
-	protected static Bitmap whiteWound;
-	protected static Bitmap blackWound;
-	protected static Bitmap whiteSurge;
-	protected static Bitmap blackSurge;
 	protected static Bitmap whiteSeparator;
-	protected static Bitmap whiteFail;
-	protected static Bitmap blackFail;
 	
-	protected static float woundWidth;
-	protected static float woundHeight;
-	protected static float surgeWidth;
-	protected static float surgeHeight;
+	protected static float separatorWidth;
+	protected static float separatorHeight;
+	
+	protected static float woundsMargin = 0.0f;
 	
 	private FirstEdDieData firstEdDieData;
 	
@@ -46,22 +41,16 @@ public class FirstEdDie extends Die {
 		
 		firstEdDieData = _firstEdDieData;
 		
-		if (whiteWound == null) {
-			whiteWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitewound, null);
-			blackWound = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackwound, null);
-			whiteSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitesurge, null);
-			blackSurge = BitmapFactory.decodeResource(context.getResources(), R.drawable.blacksurge, null);
+		if (whiteSeparator == null) {
 			whiteSeparator = BitmapFactory.decodeResource(context.getResources(), R.drawable.whiteseparator, null);
-			whiteFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.whitefail, null);
-			blackFail = BitmapFactory.decodeResource(context.getResources(), R.drawable.blackfail, null);
-			
-			woundWidth = whiteWound.getWidth();
-			woundHeight = whiteWound.getHeight();
-			surgeWidth = whiteSurge.getWidth();
-			surgeHeight = whiteSurge.getHeight();
+			separatorWidth = whiteSeparator.getWidth();
+			separatorHeight = whiteSeparator.getHeight();
 		}
+		
+		if (woundsMargin <= 0.0f) woundsMargin = 2.0f * density;
 	}
 	
+	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
@@ -84,7 +73,7 @@ public class FirstEdDie extends Die {
 		Paint usedPaint;
 		if (firstEdDieData.usesBlackIcons()) usedPaint = blackTextPaint;
 		else usedPaint = whiteTextPaint;
-		canvas.drawText(Integer.toString(range), 10.0f * density, (scale - 13.0f) * density, usedPaint);
+		canvas.drawText(Integer.toString(range), hPadding, dScale - vPadding - 3.0f * density, usedPaint);
 	}
 	
 	protected void drawWounds(Canvas canvas, int wounds) {
@@ -93,14 +82,17 @@ public class FirstEdDie extends Die {
 		else usedBitmap = whiteWound;
 		
 		if (wounds >= 1) 
-			canvas.drawBitmap(usedBitmap, (scale - 10.0f) * density - woundWidth, 12.0f * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth, vPadding, iconPaint);
 		if (wounds >= 2)
-			canvas.drawBitmap(usedBitmap, (scale - 12.0f) * density - woundWidth * 2.0f, 12.0f * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin, vPadding, iconPaint);
 		if (wounds == 3)
-			canvas.drawBitmap(usedBitmap, (scale - 10.0f - 2.0f) * density - woundWidth * 1.5f, (12.0f + 2.0f) * density + woundHeight, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 1.5f - woundsMargin / 2,
+					vPadding + woundHeight + woundsMargin, iconPaint);
 		if (wounds == 4) {
-			canvas.drawBitmap(usedBitmap, (scale - 10.0f) * density - woundWidth, (12.0f + 2.0f) * density + woundHeight, iconPaint);
-			canvas.drawBitmap(usedBitmap, (scale - 10.0f - 2.0f) * density - woundWidth * 2.0f, (12.0f + 2.0f) * density + woundHeight, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth,
+					vPadding + woundHeight + woundsMargin, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin,
+					vPadding + woundHeight + woundsMargin, iconPaint);
 		}
 	}
 	
@@ -109,7 +101,7 @@ public class FirstEdDie extends Die {
 		if (firstEdDieData.usesBlackIcons()) usedBitmap = blackSurge;
 		else usedBitmap = whiteSurge;
 		
-		canvas.drawBitmap(usedBitmap, (scale - 5.0f) * density - surgeWidth, (scale - 10.0f) * density - surgeHeight, iconPaint);
+		canvas.drawBitmap(usedBitmap, dScale - 5.0f * density - surgeWidth, dScale - vPadding - surgeHeight, iconPaint);
 	}
 	
 	protected void drawPowerDieSurges(Canvas canvas, int surges) {
@@ -118,17 +110,17 @@ public class FirstEdDie extends Die {
 		else usedBitmap = whiteSurge;
 		
 		if (surges >= 1)
-			canvas.drawBitmap(usedBitmap, 10.0f * density, 10.0f * density, iconPaint);
+			canvas.drawBitmap(usedBitmap, 5.0f * density, vPadding, iconPaint);
 		if (surges >= 2)
-			canvas.drawBitmap(usedBitmap, (2.5f + scale / 2.0f) * density - surgeWidth / 2.0f, (scale / 2.0f) * density - surgeHeight / 2.0f, iconPaint);
+			canvas.drawBitmap(usedBitmap, (dScale - surgeWidth) / 2.0f, (dScale - surgeHeight) / 2.0f, iconPaint);
 		if (surges >= 3) 
-			canvas.drawBitmap(usedBitmap, (scale - 5.0f) * density  - surgeWidth, (scale - 10.0f) * density - surgeHeight, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - 5.0f * density - surgeWidth, dScale - vPadding - surgeHeight, iconPaint);
 	}
 	
 	protected void drawEnhancement(Canvas canvas, int enhancement) {
 		drawRange(canvas, enhancement);
 		drawWounds(canvas, enhancement);
-		canvas.drawBitmap(whiteSeparator, 15.0f * density, 15.0f * density, iconPaint);
+		canvas.drawBitmap(whiteSeparator, (dScale - separatorWidth) / 2.0f, (dScale - separatorHeight) / 2.0f, iconPaint);
 	}
 	
 	protected void drawFail(Canvas canvas) {
@@ -136,10 +128,14 @@ public class FirstEdDie extends Die {
 		if (firstEdDieData.usesBlackIcons()) usedBitmap = blackFail;
 		else usedBitmap = whiteFail;
 		
-		canvas.drawBitmap(usedBitmap, 15.0f * density, 15.0f * density, iconPaint);
+		canvas.drawBitmap(usedBitmap, (dScale - failWidth) / 2.0f, (dScale - failHeight) / 2.0f, iconPaint);
 	}
 	
-	public void setDieData(FirstEdDieData _firstEdDieData) {
-		firstEdDieData = _firstEdDieData;
+	@Override
+	public void setDieData(DieData _dieData) {
+		if (_dieData instanceof FirstEdDieData) {
+			firstEdDieData = (FirstEdDieData)_dieData;
+			super.setDieData(firstEdDieData);
+		}
 	}
 }

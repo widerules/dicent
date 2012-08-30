@@ -42,7 +42,9 @@ public class DicentState {
 	
 	private String[] defaultPlayers;
 	private String[] players;
-	private ArrayList<DiceList> playerDieDatas = new ArrayList<DiceList>(5);
+	private ArrayList<DiceList> firstEdDieDatas = new ArrayList<DiceList>(5);
+	private ArrayList<DiceList> secondEdAttackDieDatas = new ArrayList<DiceList>(5);
+	private ArrayList<DiceList> secondEdDefenseDieDatas = new ArrayList<DiceList>(5);
 	private DiceList resultDice = new DiceList();
 	
 	private LinkedList<PreferencesChangedNotifier> prefChangedNotifiers = new LinkedList<PreferencesChangedNotifier>();
@@ -73,20 +75,35 @@ public class DicentState {
 			players[i] = playerNamesPref.getString(Integer.toString(i), defaultPlayers[i]);
 		
 		//player die datas
-		DiceList baseList = null;
+		//first edition
+		DiceList firstEdDice = null;
+		DiceList secondEdAttackDice = null;
+		DiceList secondEdDefenseDice = null;
 		try {
-			baseList = DiceXmlParser.parse(context.getResources(), R.xml.basedice);
-			baseList.addAll(DiceXmlParser.parse(context.getResources(), R.xml.rtldice));
-			baseList.addAll(DiceXmlParser.parse(context.getResources(), R.xml.toidice));
+			firstEdDice = DiceXmlParser.parse(context.getResources(), R.xml.firsted_basedice);
+			firstEdDice.addAll(DiceXmlParser.parse(context.getResources(), R.xml.firsted_rtldice));
+			firstEdDice.addAll(DiceXmlParser.parse(context.getResources(), R.xml.firsted_toidice));
+			secondEdAttackDice = DiceXmlParser.parse(context.getResources(), R.xml.seconded_attackdice);
+			secondEdDefenseDice = DiceXmlParser.parse(context.getResources(), R.xml.seconded_defensedice);
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		playerDieDatas.add(baseList); //overlord
-		for (int i = 1; i <= 4; i++) playerDieDatas.add(baseList.copy()); //heroes
-		storage.restorePlayesDice(playerDieDatas);
 		
+		//overlord
+		firstEdDieDatas.add(firstEdDice);
+		secondEdAttackDieDatas.add(secondEdAttackDice);
+		secondEdDefenseDieDatas.add(secondEdDefenseDice);
+		
+		//heroes
+		for (int i = 1; i <= 4; i++) {
+			firstEdDieDatas.add(firstEdDice.copy());
+			secondEdAttackDieDatas.add(secondEdAttackDice.copy());
+			secondEdDefenseDieDatas.add(secondEdDefenseDice.copy());
+		}
+		
+		//TODO storage.restorePlayesDice(firstEdDieDatas);
 	}
 	
 	public void saveState(Context context) {
@@ -100,7 +117,7 @@ public class DicentState {
 		savedPlayerNamesEditor.commit();
 		
 		//save player dice
-		storage.savePlayersDice(playerDieDatas);
+		storage.savePlayersDice(firstEdDieDatas);
 		
 		//enable for testing
 		//state = null;
@@ -136,8 +153,16 @@ public class DicentState {
 		return defaultPlayers;
 	}
 	
-	public DiceList getPlayerDieDatas(int playerIndex) {
-		return playerDieDatas.get(playerIndex);
+	public DiceList getFirstEdDieDatas(int playerIndex) {
+		return firstEdDieDatas.get(playerIndex);
+	}
+	
+	public DiceList getSecondEdAttackDieDatas(int playerIndex) {
+		return secondEdAttackDieDatas.get(playerIndex);
+	}
+	
+	public DiceList getSecondEdDefenseDieDatas(int playerIndex) {
+		return secondEdDefenseDieDatas.get(playerIndex);
 	}
 	
 	public DiceList getResultDice() {

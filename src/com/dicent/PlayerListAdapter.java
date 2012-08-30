@@ -25,11 +25,11 @@ public class PlayerListAdapter extends BaseAdapter {
 		refreshDescentVersion();
 		
 		for (int i = 0; i < 5; i++) 
-			firstEdListeners.add(new StartDiceSelectionListener(i, PlayerListActivity.ACTION_FIRSTED));
+			firstEdListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_FIRSTED));
 		for (int i = 0; i < 5; i++) 
-			secondEdAttackListeners.add(new StartDiceSelectionListener(i, PlayerListActivity.ACTION_SECONDED_ATTACK));
+			secondEdAttackListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_SECONDED_ATTACK));
 		for (int i = 0; i < 5; i++) 
-			secondEdDefenseListeners.add(new StartDiceSelectionListener(i, PlayerListActivity.ACTION_SECONDED_DEFENSE));
+			secondEdDefenseListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_SECONDED_DEFENSE));
 	}
 	
 	@Override

@@ -14,6 +14,7 @@
 
 package com.dicent;
 
+import com.dicent.dice.DieData;
 import com.dicent.dice.SideValues;
 import com.dicent.dice.firstEd.FirstEdDie;
 import com.dicent.dice.firstEd.FirstEdDieData;
@@ -75,7 +76,7 @@ public class ResultsActivity extends DicentActivity {
 				}
 				else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
 						Toast.LENGTH_SHORT).show();
-				for (FirstEdDieData data : state.getResultDice()) {
+				for (DieData data : state.getResultDice()) {
 					if (data.isSelected) {
 						data.isSelected = false;
 						data.roll();
@@ -88,7 +89,7 @@ public class ResultsActivity extends DicentActivity {
 
 		addBlackButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (state.getResultDice().powerDiceCount() >= 5) return;
+				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
 				addRolledDie(FirstEdDieData.BLACK_DIE);
 
 				state.rollEffects();
@@ -98,7 +99,7 @@ public class ResultsActivity extends DicentActivity {
 
 		addSilverButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (state.getResultDice().powerDiceCount() >= 5) return;
+				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
 				addRolledDie(FirstEdDieData.SILVER_DIE);
 
 				state.rollEffects();
@@ -108,7 +109,7 @@ public class ResultsActivity extends DicentActivity {
 
 		addGoldButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (state.getResultDice().powerDiceCount() >= 5) return;
+				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
 				addRolledDie(FirstEdDieData.GOLD_DIE);
 
 				state.rollEffects();
@@ -154,7 +155,7 @@ public class ResultsActivity extends DicentActivity {
 		wounds = surges = range = enhancement = 0;
 		fail = false;
 		
-		for (FirstEdDieData die : state.getResultDice()) {
+		for (DieData die : state.getResultDice()) {
 			SideValues currentSideValues = die.getSideValues();
 			if (currentSideValues.isFail()) fail = true;
 			else {
