@@ -23,6 +23,10 @@ import android.view.MenuItem;
 
 public class DicentActivity extends FragmentActivity {
 	public static final String FRAGMENT_ABOUTDIALOG = "aboutDialog";
+	public static final String INTENTKEY_MODE = "mode";
+	public static final int MODE_FIRSTED = 0;
+	public static final int MODE_SECONDED_ATTACK = 1;
+	public static final int MODE_SECONDED_DEFENSE = 2;
 	
 	protected DicentState state;
 	

@@ -41,6 +41,12 @@ public class SecondEdDie extends Die {
 		SideValues sv = secondEdDieData.getSideValues();
 		
 		if (secondEdDieData instanceof DefenseDieData) drawShields(canvas, sv.getShields());
+		else if (sv.isFail()) drawFail(canvas);
+		else {
+			if (sv.getRange() > 0) drawRange(canvas, sv.getRange());
+			if (sv.getWounds() > 0) drawWounds(canvas, sv.getWounds());
+			if (sv.getSurges() > 0) drawSurge(canvas);
+		}
 	}
 	
 	private void drawShields(Canvas canvas, int shields) {

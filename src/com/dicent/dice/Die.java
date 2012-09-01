@@ -16,7 +16,6 @@ package com.dicent.dice;
 
 import com.dicent.DieAdapter;
 import com.dicent.R;
-import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -59,6 +58,8 @@ public abstract class Die extends View {
 	protected static float surgeHeight;
 	protected static float failWidth;
 	protected static float failHeight;
+	
+	protected static float woundsMargin = 0.0f;
 	
 	private DieData dieData;
 	private DieAdapter dieAdapter;
@@ -121,6 +122,8 @@ public abstract class Die extends View {
 			failHeight = whiteFail.getHeight();
 		}
 		
+		if (woundsMargin <= 0.0f) woundsMargin = 2.0f * density;
+		
 		setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -154,6 +157,49 @@ public abstract class Die extends View {
 	@Override
 	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
 		setMeasuredDimension(size, size);
+	}
+	
+	protected void drawRange(Canvas canvas, int range) {
+		Paint usedPaint;
+		if (dieData.usesBlackIcons()) usedPaint = blackTextPaint;
+		else usedPaint = whiteTextPaint;
+		canvas.drawText(Integer.toString(range), hPadding, dScale - vPadding - 3.0f * density, usedPaint);
+	}
+	
+	protected void drawWounds(Canvas canvas, int wounds) {
+		Bitmap usedBitmap;
+		if (dieData.usesBlackIcons()) usedBitmap = blackWound;
+		else usedBitmap = whiteWound;
+		
+		if (wounds >= 1) 
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth, vPadding, iconPaint);
+		if (wounds >= 2)
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin, vPadding, iconPaint);
+		if (wounds == 3)
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 1.5f - woundsMargin / 2,
+					vPadding + woundHeight + woundsMargin, iconPaint);
+		if (wounds == 4) {
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth,
+					vPadding + woundHeight + woundsMargin, iconPaint);
+			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin,
+					vPadding + woundHeight + woundsMargin, iconPaint);
+		}
+	}
+	
+	protected void drawSurge(Canvas canvas) {
+		Bitmap usedBitmap;
+		if (dieData.usesBlackIcons()) usedBitmap = blackSurge;
+		else usedBitmap = whiteSurge;
+		
+		canvas.drawBitmap(usedBitmap, dScale - 5.0f * density - surgeWidth, dScale - vPadding - surgeHeight, iconPaint);
+	}
+	
+	protected void drawFail(Canvas canvas) {
+		Bitmap usedBitmap;
+		if (dieData.usesBlackIcons()) usedBitmap = blackFail;
+		else usedBitmap = whiteFail;
+		
+		canvas.drawBitmap(usedBitmap, (dScale - failWidth) / 2.0f, (dScale - failHeight) / 2.0f, iconPaint);
 	}
 	
 	public void setDieData(DieData _dieData) {

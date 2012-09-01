@@ -3,6 +3,8 @@
 	<die type="second_blue" />
 	<die type="second_red" />
 	<die type="second_red" />
+	<die type="second_red" />
+	<die type="second_yellow" />
 	<die type="second_yellow" />
 	<die type="second_yellow" />
 </diceList>

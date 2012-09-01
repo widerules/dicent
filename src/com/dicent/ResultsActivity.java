@@ -32,29 +32,34 @@ public class ResultsActivity extends DicentActivity {
 
 	private int wounds;
 	private int surges;
+	private int shields;
 	private int range;
 	private int enhancement;
 	private boolean fail;
 
 	private TextView woundsText;
 	private TextView surgesText;
+	private TextView shieldsText;
 	private TextView rangeText;
 	private TextView enhancementText;
 
 	private Button addSilverButton;
 	private Button addGoldButton;
-
-	//private Toast rerollToast;
+	
+	private int mode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.results);
+		
+		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
 
 		//collect objects created in XML
 		GridView diceGrid = (GridView)findViewById(R.id.resultsDiceGrid);
 		woundsText = (TextView)findViewById(R.id.resultWounds);
 		surgesText = (TextView)findViewById(R.id.resultSurges);
+		shieldsText = (TextView)findViewById(R.id.resultShields);
 		rangeText = (TextView)findViewById(R.id.resultRange);
 		enhancementText = (TextView)findViewById(R.id.resultEnhancement);
 		Button rerollButton = (Button)findViewById(R.id.resultsRerollButton);
@@ -62,11 +67,32 @@ public class ResultsActivity extends DicentActivity {
 		addSilverButton = (Button)findViewById(R.id.resultsAddSilverButton);
 		addGoldButton = (Button)findViewById(R.id.resultsAddGoldButton);
 
-		//create stuff
-		//rerollToast = Toast.makeText(this, getResources().getString(R.string.rerollNotification), Toast.LENGTH_SHORT);
-
 		float density = getResources().getDisplayMetrics().density;
 		diceGrid.setColumnWidth((int)(density * FirstEdDie.scale));
+		
+		if (mode != MODE_FIRSTED) {
+			findViewById(R.id.enhancementLabel).setVisibility(View.GONE);
+			findViewById(R.id.enhancementSeparator).setVisibility(View.GONE);
+			enhancementText.setVisibility(View.GONE);
+		}
+		
+		if (mode == MODE_SECONDED_DEFENSE) {
+			findViewById(R.id.woundsLabel).setVisibility(View.GONE);
+			findViewById(R.id.woundsSeparator).setVisibility(View.GONE);
+			woundsText.setVisibility(View.GONE);
+			
+			findViewById(R.id.surgesLabel).setVisibility(View.GONE);
+			findViewById(R.id.surgesSeparator).setVisibility(View.GONE);
+			surgesText.setVisibility(View.GONE);
+			
+			findViewById(R.id.rangeLabel).setVisibility(View.GONE);
+			findViewById(R.id.rangeSeparator).setVisibility(View.GONE);
+			rangeText.setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.shieldsLabel).setVisibility(View.GONE);
+			findViewById(R.id.shieldsSeparator).setVisibility(View.GONE);
+			shieldsText.setVisibility(View.GONE);
+		}
 
 		//set listeners
 		rerollButton.setOnClickListener(new OnClickListener() {
@@ -86,36 +112,42 @@ public class ResultsActivity extends DicentActivity {
 				updateResults();
 			}
 		});
-
-		addBlackButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-				addRolledDie(FirstEdDieData.BLACK_DIE);
-
-				state.rollEffects();
-				updateResults();
-			}
-		});
-
-		addSilverButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-				addRolledDie(FirstEdDieData.SILVER_DIE);
-
-				state.rollEffects();
-				updateResults();
-			}
-		});
-
-		addGoldButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-				addRolledDie(FirstEdDieData.GOLD_DIE);
-
-				state.rollEffects();
-				updateResults();
-			}
-		});
+		
+		if (mode == MODE_FIRSTED) {
+			addBlackButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+					addRolledDie(FirstEdDieData.BLACK_DIE);
+	
+					state.rollEffects();
+					updateResults();
+				}
+			});
+	
+			addSilverButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+					addRolledDie(FirstEdDieData.SILVER_DIE);
+	
+					state.rollEffects();
+					updateResults();
+				}
+			});
+	
+			addGoldButton.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+					addRolledDie(FirstEdDieData.GOLD_DIE);
+	
+					state.rollEffects();
+					updateResults();
+				}
+			});
+		} else {
+			addBlackButton.setVisibility(View.GONE);
+			addSilverButton.setVisibility(View.GONE);
+			addGoldButton.setVisibility(View.GONE);
+		}
 
 		dieAdapter.setDice(state.getResultDice());
 		state.registerPreferencesChangedNotifier(dieAdapter);
@@ -127,12 +159,15 @@ public class ResultsActivity extends DicentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (state.isRtlEnabled()) {
-			addSilverButton.setVisibility(View.VISIBLE);
-			addGoldButton.setVisibility(View.VISIBLE);
-		} else {
-			addSilverButton.setVisibility(View.GONE);
-			addGoldButton.setVisibility(View.GONE);
+		
+		if (mode == MODE_FIRSTED) {
+			if (state.isRtlEnabled()) {
+				addSilverButton.setVisibility(View.VISIBLE);
+				addGoldButton.setVisibility(View.VISIBLE);
+			} else {
+				addSilverButton.setVisibility(View.GONE);
+				addGoldButton.setVisibility(View.GONE);
+			}
 		}
 	}
 	
@@ -151,8 +186,7 @@ public class ResultsActivity extends DicentActivity {
 	}
 
 	private void updateResults() {
-
-		wounds = surges = range = enhancement = 0;
+		wounds = surges = shields = range = enhancement = 0;
 		fail = false;
 		
 		for (DieData die : state.getResultDice()) {
@@ -161,13 +195,15 @@ public class ResultsActivity extends DicentActivity {
 			else {
 				wounds += currentSideValues.getWounds();
 				surges += currentSideValues.getSurges();
+				shields += currentSideValues.getShields();
 				range += currentSideValues.getRange();
 				enhancement += currentSideValues.getEnhancement();
 			}
 		}
-		if (fail) wounds = surges = range = enhancement = 0;
+		if (fail) wounds = surges = shields = range = enhancement = 0;
 		woundsText.setText(Integer.toString(wounds));
 		surgesText.setText(Integer.toString(surges));
+		shieldsText.setText(Integer.toString(shields));
 		rangeText.setText(Integer.toString(range));
 		enhancementText.setText(Integer.toString(enhancement));
 	}

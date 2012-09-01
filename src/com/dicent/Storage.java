@@ -17,7 +17,6 @@ package com.dicent;
 import java.util.ArrayList;
 
 import com.dicent.dice.DieData;
-import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Context;
 import android.database.Cursor;

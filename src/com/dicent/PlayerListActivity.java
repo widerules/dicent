@@ -20,10 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
@@ -80,7 +77,7 @@ public class PlayerListActivity extends DicentActivity {
 		selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_PLAYERINDEX, player);
 		if (player == 0) selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_ISOVERLORD, true);
 		else selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_ISOVERLORD, false);
-		selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_MODE, mode);
+		selectDiceIntent.putExtra(INTENTKEY_MODE, mode);
 		startActivity(selectDiceIntent);
 	}
 	

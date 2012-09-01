@@ -3,7 +3,6 @@ package com.dicent;
 import android.content.Context;
 import android.preference.ListPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 
 public class DescentVersionPreference extends ListPreference {
 	private DicentPreferencesActivity activity;

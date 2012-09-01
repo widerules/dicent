@@ -16,7 +16,6 @@ package com.dicent;
 
 import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
-import com.dicent.dice.firstEd.FirstEdDieData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,20 +27,17 @@ import android.widget.GridView;
 public class SelectDiceActivity extends DicentActivity {
 	public static final String INTENTKEY_PLAYERINDEX = "playerIndex";
 	public static final String INTENTKEY_ISOVERLORD = "isOverlord";
-	public static final String INTENTKEY_MODE = "mode";
 	public static final String SAVED_BASE_DICE_SHARED_PREFERENCE = "savedBaseDice";
 	public static final String SAVED_RTL_DICE_SHARED_PREFERENCE = "savedRTLDice";
 	public static final String SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE = "savedTransparentDie";
-	
-	public static final int MODE_FIRSTED = 0;
-	public static final int MODE_SECONDED_ATTACK = 1;
-	public static final int MODE_SECONDED_DEFENSE = 2;
 
 	private DieAdapter dieAdapter = new DieAdapter();
 
 	private int playerIndex;
 	private boolean isOverlord;
 	private int mode;
+	
+	private DiceList diceList;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,9 +55,10 @@ public class SelectDiceActivity extends DicentActivity {
 		isOverlord = getIntent().getBooleanExtra(INTENTKEY_ISOVERLORD, false);
 		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
 		
-		if (mode == MODE_FIRSTED) dieAdapter.setDice(state.getFirstEdDieDatas(playerIndex));
-		else if (mode == MODE_SECONDED_ATTACK) dieAdapter.setDice(state.getSecondEdAttackDieDatas(playerIndex));
-		else if (mode == MODE_SECONDED_DEFENSE) dieAdapter.setDice(state.getSecondEdDefenseDieDatas(playerIndex));
+		if (mode == MODE_FIRSTED) diceList = state.getFirstEdDieDatas(playerIndex);
+		else if (mode == MODE_SECONDED_ATTACK) diceList = state.getSecondEdAttackDieDatas(playerIndex);
+		else if (mode == MODE_SECONDED_DEFENSE) diceList = state.getSecondEdDefenseDieDatas(playerIndex);
+		dieAdapter.setDice(diceList);
 		state.registerPreferencesChangedNotifier(dieAdapter);
 
 		//set listeners
@@ -71,7 +68,7 @@ public class SelectDiceActivity extends DicentActivity {
 
 				DiceList resultDice = state.getResultDice();
 				resultDice.clear();
-				for (DieData data : state.getFirstEdDieDatas(playerIndex)) {
+				for (DieData data : diceList) {
 					if (!data.isSelected || !data.isVisible()) continue;
 					DieData newData = data.copy();
 					newData.isSelected = false;
@@ -80,6 +77,7 @@ public class SelectDiceActivity extends DicentActivity {
 				}
 
 				Intent resultsIntent = new Intent(getBaseContext(), ResultsActivity.class);
+				resultsIntent.putExtra(INTENTKEY_MODE, mode);
 				startActivity(resultsIntent);
 			}
 		});

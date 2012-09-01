@@ -24,15 +24,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 public class FirstEdDie extends Die {
 	protected static Bitmap whiteSeparator;
 	
 	protected static float separatorWidth;
 	protected static float separatorHeight;
-	
-	protected static float woundsMargin = 0.0f;
 	
 	private FirstEdDieData firstEdDieData;
 	
@@ -46,8 +43,6 @@ public class FirstEdDie extends Die {
 			separatorWidth = whiteSeparator.getWidth();
 			separatorHeight = whiteSeparator.getHeight();
 		}
-		
-		if (woundsMargin <= 0.0f) woundsMargin = 2.0f * density;
 	}
 	
 	@Override
@@ -69,40 +64,7 @@ public class FirstEdDie extends Die {
 		}
 	}
 	
-	protected void drawRange(Canvas canvas, int range) {
-		Paint usedPaint;
-		if (firstEdDieData.usesBlackIcons()) usedPaint = blackTextPaint;
-		else usedPaint = whiteTextPaint;
-		canvas.drawText(Integer.toString(range), hPadding, dScale - vPadding - 3.0f * density, usedPaint);
-	}
 	
-	protected void drawWounds(Canvas canvas, int wounds) {
-		Bitmap usedBitmap;
-		if (firstEdDieData.usesBlackIcons()) usedBitmap = blackWound;
-		else usedBitmap = whiteWound;
-		
-		if (wounds >= 1) 
-			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth, vPadding, iconPaint);
-		if (wounds >= 2)
-			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin, vPadding, iconPaint);
-		if (wounds == 3)
-			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 1.5f - woundsMargin / 2,
-					vPadding + woundHeight + woundsMargin, iconPaint);
-		if (wounds == 4) {
-			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth,
-					vPadding + woundHeight + woundsMargin, iconPaint);
-			canvas.drawBitmap(usedBitmap, dScale - hPadding - woundWidth * 2.0f - woundsMargin,
-					vPadding + woundHeight + woundsMargin, iconPaint);
-		}
-	}
-	
-	protected void drawSurge(Canvas canvas) {
-		Bitmap usedBitmap;
-		if (firstEdDieData.usesBlackIcons()) usedBitmap = blackSurge;
-		else usedBitmap = whiteSurge;
-		
-		canvas.drawBitmap(usedBitmap, dScale - 5.0f * density - surgeWidth, dScale - vPadding - surgeHeight, iconPaint);
-	}
 	
 	protected void drawPowerDieSurges(Canvas canvas, int surges) {
 		Bitmap usedBitmap;
@@ -121,14 +83,6 @@ public class FirstEdDie extends Die {
 		drawRange(canvas, enhancement);
 		drawWounds(canvas, enhancement);
 		canvas.drawBitmap(whiteSeparator, (dScale - separatorWidth) / 2.0f, (dScale - separatorHeight) / 2.0f, iconPaint);
-	}
-	
-	protected void drawFail(Canvas canvas) {
-		Bitmap usedBitmap;
-		if (firstEdDieData.usesBlackIcons()) usedBitmap = blackFail;
-		else usedBitmap = whiteFail;
-		
-		canvas.drawBitmap(usedBitmap, (dScale - failWidth) / 2.0f, (dScale - failHeight) / 2.0f, iconPaint);
 	}
 	
 	@Override

@@ -17,7 +17,6 @@ package com.dicent;
 import java.util.ArrayList;
 
 import com.dicent.dice.DieData;
-import com.dicent.dice.firstEd.FirstEdDieData;
 import com.dicent.dice.firstEd.PowerDieData;
 
 public class DiceList extends ArrayList<DieData> {

@@ -2,8 +2,6 @@ package com.dicent;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +23,11 @@ public class PlayerListAdapter extends BaseAdapter {
 		refreshDescentVersion();
 		
 		for (int i = 0; i < 5; i++) 
-			firstEdListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_FIRSTED));
+			firstEdListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_FIRSTED));
 		for (int i = 0; i < 5; i++) 
-			secondEdAttackListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_SECONDED_ATTACK));
+			secondEdAttackListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_SECONDED_ATTACK));
 		for (int i = 0; i < 5; i++) 
-			secondEdDefenseListeners.add(new StartDiceSelectionListener(i, SelectDiceActivity.MODE_SECONDED_DEFENSE));
+			secondEdDefenseListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_SECONDED_DEFENSE));
 	}
 	
 	@Override
