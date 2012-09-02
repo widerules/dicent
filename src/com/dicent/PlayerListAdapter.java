@@ -14,6 +14,7 @@ public class PlayerListAdapter extends BaseAdapter {
 	private boolean firstEd = true;
 	private PlayerListActivity activity;
 	
+	private ArrayList<RenamePlayerListener> renamePlayerListeners = new ArrayList<RenamePlayerListener>(5);
 	private ArrayList<StartDiceSelectionListener> firstEdListeners = new ArrayList<StartDiceSelectionListener>(5);
 	private ArrayList<StartDiceSelectionListener> secondEdAttackListeners = new ArrayList<StartDiceSelectionListener>(5);
 	private ArrayList<StartDiceSelectionListener> secondEdDefenseListeners = new ArrayList<StartDiceSelectionListener>(5);
@@ -21,13 +22,12 @@ public class PlayerListAdapter extends BaseAdapter {
 	public PlayerListAdapter(PlayerListActivity _activity) {
 		activity = _activity;
 		refreshDescentVersion();
-		
-		for (int i = 0; i < 5; i++) 
+		for (int i = 0; i < 5; i++) {
+			renamePlayerListeners.add(new RenamePlayerListener(i));
 			firstEdListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_FIRSTED));
-		for (int i = 0; i < 5; i++) 
 			secondEdAttackListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_SECONDED_ATTACK));
-		for (int i = 0; i < 5; i++) 
 			secondEdDefenseListeners.add(new StartDiceSelectionListener(i, DicentActivity.MODE_SECONDED_DEFENSE));
+		}
 	}
 	
 	@Override
@@ -55,7 +55,9 @@ public class PlayerListAdapter extends BaseAdapter {
 		TextView playerName = (TextView)layout.findViewById(R.id.playerName);
 		playerName.setText(state.getPlayers()[position]);
 		
-		if (firstEd) layout.setOnClickListener(firstEdListeners.get(position));
+		playerName.setOnLongClickListener(renamePlayerListeners.get(position));
+		
+		if (firstEd) playerName.setOnClickListener(firstEdListeners.get(position));
 		else {
 			layout.findViewById(R.id.attack).setOnClickListener(secondEdAttackListeners.get(position));
 			layout.findViewById(R.id.defense).setOnClickListener(secondEdDefenseListeners.get(position));
@@ -85,6 +87,20 @@ public class PlayerListAdapter extends BaseAdapter {
 		@Override
 		public void onClick(View v) {
 			activity.startDiceSelection(player, action);
+		}
+	}
+	
+	private class RenamePlayerListener implements View.OnLongClickListener {
+		private int player;
+		
+		public RenamePlayerListener(int _player) {
+			player = _player;
+		}
+
+		@Override
+		public boolean onLongClick(View v) {
+			activity.renamePlayer(player);
+			return true;
 		}
 	}
 }

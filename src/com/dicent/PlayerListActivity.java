@@ -18,10 +18,7 @@ import com.dicent.R;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 public class PlayerListActivity extends DicentActivity {
 	public static final String FRAGMENT_PLAYERNAME = "playerName";
@@ -42,16 +39,6 @@ public class PlayerListActivity extends DicentActivity {
 		//fragments
 		playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
 		if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
-		
-		//set listeners
-		playersListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
-				playerNameDialogFragment.setPlayerIndex(position);
-				playerNameDialogFragment.setPlayerName(state.getPlayers()[position]);
-				playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
-				return true;
-			}
-		});
 		
 		//playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
 		playerAdapter = new PlayerListAdapter(this);
@@ -79,6 +66,12 @@ public class PlayerListActivity extends DicentActivity {
 		else selectDiceIntent.putExtra(SelectDiceActivity.INTENTKEY_ISOVERLORD, false);
 		selectDiceIntent.putExtra(INTENTKEY_MODE, mode);
 		startActivity(selectDiceIntent);
+	}
+	
+	public void renamePlayer(int player) {
+		playerNameDialogFragment.setPlayerIndex(player);
+		playerNameDialogFragment.setPlayerName(state.getPlayers()[player]);
+		playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
 	}
 	
 	private class PrefChangedNotifier implements PreferencesChangedNotifier {

@@ -103,6 +103,7 @@ public class DicentState {
 		}
 		
 		//TODO storage.restorePlayesDice(firstEdDieDatas);
+		storage.restorePlayesDice(firstEdDieDatas, secondEdAttackDieDatas, secondEdDefenseDieDatas);
 	}
 	
 	public void saveState(Context context) {
@@ -116,7 +117,7 @@ public class DicentState {
 		savedPlayerNamesEditor.commit();
 		
 		//save player dice
-		storage.savePlayersDice(firstEdDieDatas);
+		storage.savePlayersDice(firstEdDieDatas, secondEdAttackDieDatas, secondEdDefenseDieDatas);
 		
 		//enable for testing
 		//state = null;

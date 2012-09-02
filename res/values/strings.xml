@@ -12,6 +12,9 @@
     <string name="OK">OK</string>
     <string name="cancel">Cancel</string>
     
+    <string name="attackRoll">Attack roll</string>
+    <string name="defenseRoll">Defense roll</string>
+    
     <string name="roll">Roll</string>
     <string name="reroll">Reroll</string>
     <string name="rerollNotification">select dice to reroll.</string>
@@ -22,6 +25,11 @@
     <string name="enhancement">Enhancement</string>
     <string name="menuPreferences">Preferences</string>
     <string name="menuAbout">About</string>
+    
+    <string name="resultsSeparator">:</string>
+    <string name="wounds">Wounds</string>
+    <string name="surges">Surges</string>
+    <string name="shields">Shields</string>
     
     <string name="attack">Attack</string>
     <string name="defense">Defense</string>
@@ -59,7 +67,7 @@
     <string name="selectDiceTitle">Dicent - select dice</string>
     
     <string name="selectAddons">Select Addons</string>
-    <string name="about">Version 3.1
+    <string name="about">Version 4.0
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -70,6 +78,9 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n4.0
+	\n- added support for second edition descent
+	\n
     \n3.1
 	\n- removed warning on exit since it\'s no longer neccesary
 	\n- dice selection is a bit more visible now
@@ -79,18 +90,6 @@
     \n3.0
 	\n- proper support for high density displays
 	\n- lots of code cleanup
-	\n
-    \n2.1
-	\n- the reroll button no longer ignores the vibration setting
-	\n- confirmation on app exit now also works on android versions &lt; 2.0
-	\n
-    \n2.0
-	\n- a LOT of code cleanup/restructuring
-	\n- now compatible with android 1.5 and newer
-	\n- new preferences screen
-	\n- persistent storage (player names, selected dice, preferences)
-	\n- roll sound
-	\n- slightly better dice background
 	\n
     </string>
 </resources>

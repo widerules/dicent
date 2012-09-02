@@ -10,6 +10,6 @@
 	    android:layout_weight="1"
 	    android:padding="15dp"
 	    android:textSize="20sp"
-	    android:longClickable="false" />
+	    android:background="@drawable/item_background" />
 </LinearLayout>
 

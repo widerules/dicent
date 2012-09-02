@@ -26,9 +26,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Storage extends SQLiteOpenHelper {
 	public static final String DBNAME = "dicentDb";
-	public static final int DBVERSION = 1;
+	public static final int DBVERSION = 2;
 	public static final String TABLE_DICE = "dice";
 	
+	public static final String MODE = "mode";
 	public static final String DICE_PLAYER = "dieType";
 	public static final String DICE_DIE = "die";
 	public static final String DICE_SELECTED = "selected";
@@ -40,6 +41,7 @@ public class Storage extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + TABLE_DICE + "(" +
+				MODE + " INTEGER," + 
 				DICE_PLAYER + " INTEGER," +
 				DICE_DIE + " INTEGER," +
 				DICE_SELECTED + " BOOLEAN" +
@@ -47,40 +49,60 @@ public class Storage extends SQLiteOpenHelper {
 	}
 	
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		db.execSQL("DROP TABLE " + TABLE_DICE);
+		onCreate(db);
+	}
 	
-	public void savePlayersDice(ArrayList<DiceList> playersDice) {
+	public void savePlayersDice(ArrayList<DiceList> firstEd, ArrayList<DiceList> secondEdAttack,
+			ArrayList<DiceList> secondEdDefense) {
 		SQLiteDatabase db = getWritableDatabase();
-		//db.execSQL("DELTE FROM " + TABLE_DICE);
 		db.delete(TABLE_DICE, null, null);
 		SQLiteStatement insertStatement = db.compileStatement("INSERT INTO " + TABLE_DICE +
-				" VALUES (?, ?, ?)");
-		for (int i = 0; i < playersDice.size(); i++) {
-			DiceList dice = playersDice.get(i);
-			for (int j = 0; j < dice.size(); j++) {
-				DieData data = dice.get(j);
-				insertStatement.bindLong(1, i);
-				insertStatement.bindLong(2, j);
-				if (data.isSelected) insertStatement.bindLong(3, 1);
-				else insertStatement.bindLong(3, 0);
-				insertStatement.execute();
-			}
-		}
+				" VALUES (?, ?, ?, ?)");
+		saveDiceLists(insertStatement, DicentActivity.MODE_FIRSTED, firstEd);
+		saveDiceLists(insertStatement, DicentActivity.MODE_SECONDED_ATTACK, secondEdAttack);
+		saveDiceLists(insertStatement, DicentActivity.MODE_SECONDED_DEFENSE, secondEdDefense);
+		
 		db.close();
 	}
 	
-	public void restorePlayesDice(ArrayList<DiceList> playersDice) {
+	public void restorePlayesDice(ArrayList<DiceList> firstEd, ArrayList<DiceList> secondEdAttack,
+			ArrayList<DiceList> secondEdDefense) {
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.rawQuery("SELECT * FROM " + TABLE_DICE, null);
+		restoreDiceLists(db, DicentActivity.MODE_FIRSTED, firstEd);
+		restoreDiceLists(db, DicentActivity.MODE_SECONDED_ATTACK, secondEdAttack);
+		restoreDiceLists(db, DicentActivity.MODE_SECONDED_DEFENSE, secondEdDefense);
+		db.close();
+	}
+	
+	private void saveDiceLists(SQLiteStatement insertStatement, int mode, ArrayList<DiceList> diceLists) {
+		for (int i = 0; i < diceLists.size(); i++) {
+			DiceList diceList = diceLists.get(i);
+			for (int j = 0; j < diceList.size(); j++) {
+				DieData data = diceList.get(j);
+				insertStatement.bindLong(1, mode);
+				insertStatement.bindLong(2, i);
+				insertStatement.bindLong(3, j);
+				if (data.isSelected) insertStatement.bindLong(4, 1);
+				else insertStatement.bindLong(4, 0);
+				insertStatement.execute();
+			}
+		}
+	}
+	
+	private void restoreDiceLists(SQLiteDatabase db,  int mode, ArrayList<DiceList> diceLists) {
+		Cursor c = db.rawQuery("SELECT " + DICE_PLAYER +
+				", " + DICE_DIE + 
+				", " + DICE_SELECTED + 
+				" FROM " + TABLE_DICE + " WHERE " + MODE + " = " + mode, null);
 		c.moveToFirst();
 		while (!c.isAfterLast()) {
-			DieData data = playersDice.get(c.getInt(0)).get(c.getInt(1));
+			DieData data = diceLists.get(c.getInt(0)).get(c.getInt(1));
 			if (c.getInt(2) == 1) data.isSelected = true;
 			else data.isSelected = false;
 			
 			c.moveToNext();
 		}
-		db.close();
 	}
-	
 }
