@@ -9,68 +9,12 @@
    		android:orientation="vertical"
    		android:layout_alignParentBottom="true">
    		
-	   	<LinearLayout android:layout_width="fill_parent"
-	   		android:layout_height="wrap_content"
-	   		android:layout_marginBottom="3dp"
-	   		android:layout_marginLeft="3dp">
-	   		<ImageView android:id="@+id/woundsLabel"
-	   			android:src="@drawable/whitewound"
-	   			android:layout_width="14dp"
-	   			android:contentDescription="@string/wounds"
-	   			style="@style/resultsImageLabel" />
-   			<TextView android:id="@+id/woundsSeparator"
-   				style="@style/resultsSeparator" />
-   			<TextView android:id="@+id/resultWounds"
-   			    android:layout_height="wrap_content"
-   			    android:layout_width="wrap_content"
-   				android:layout_marginRight="15dp" />
-   			
-   			<ImageView android:id="@+id/surgesLabel"
-   			    android:src="@drawable/whitesurge"
-   				android:layout_width="35dp"
-   				android:contentDescription="@string/surges"
-   				style="@style/resultsImageLabel" />
-   			<TextView android:id="@+id/surgesSeparator"
-   			    style="@style/resultsSeparator" />
-   			<TextView android:id="@+id/resultSurges"
-   			    android:layout_height="wrap_content"
-   			    android:layout_width="wrap_content"
-   				android:layout_marginRight="15dp" />
-   			
-   			<ImageView android:id="@+id/shieldsLabel"
-   			    android:src="@drawable/whiteshield"
-   				android:layout_width="14dp"
-   				android:layout_gravity="center_vertical"
-   				android:contentDescription="@string/shields"
-   				style="@style/resultsImageLabel" />
-   			<TextView android:id="@+id/shieldsSeparator"
-   			    style="@style/resultsSeparator" />
-   			<TextView android:id="@+id/resultShields"
-   			    android:layout_width="wrap_content"
-   			    android:layout_height="wrap_content"
-   				android:layout_marginRight="15dp" />
-   				
-   			<TextView android:id="@+id/rangeLabel"
-   			    android:layout_width="wrap_content"
-   			    android:layout_height="wrap_content"
-   			    android:text="@string/range" />
-   			<TextView android:id="@+id/rangeSeparator"
-   			    style="@style/resultsSeparator" />
-   			<TextView android:id="@+id/resultRange"
-   			    android:layout_width="wrap_content"
-   			    android:layout_height="wrap_content"
-   				android:layout_marginRight="15dp" />
-   				
-   			<TextView android:id="@+id/enhancementLabel"
-   			    android:layout_width="wrap_content"
-   			    android:layout_height="wrap_content"
-   			    android:text="@string/enhancement" />
-   			<TextView android:id="@+id/enhancementSeparator"
-   			    style="@style/resultsSeparator" />
-   			<TextView android:id="@+id/resultEnhancement"
-   			    android:layout_width="wrap_content"
-   			    android:layout_height="wrap_content" />
-	   	</LinearLayout>
+	   	<fragment
+            android:name="com.dicent.StatsFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:tag="stats" />
 	   	
 	   	
 	   	<LinearLayout
@@ -99,9 +43,10 @@
    	
    	</LinearLayout>
    	
-   	<GridView android:id="@+id/resultsDiceGrid"
-		style="@style/DiceGrid"
-		android:numColumns="auto_fit"
-		android:layout_above="@id/resultsBottomStuff" />
+   	<fragment android:name="com.dicent.SimpleDiceFragment"
+		    android:tag="diceGrid"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_above="@id/resultsBottomStuff" />
    	
 </RelativeLayout>

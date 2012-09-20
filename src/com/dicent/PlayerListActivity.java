@@ -76,7 +76,7 @@ public class PlayerListActivity extends DicentActivity {
 	
 	private class PrefChangedNotifier implements PreferencesChangedNotifier {
 		@Override
-		public void preferencesChanged() {
+		public void diceChanged() {
 			playerAdapter.preferencesChanged();
 		}
 	}

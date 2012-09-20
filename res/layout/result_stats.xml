@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/woundsLabel"
+        style="@style/resultsImageLabel"
+        android:layout_width="14dp"
+        android:contentDescription="@string/wounds"
+        android:src="@drawable/whitewound" />
+
+    <TextView
+        android:id="@+id/woundsSeparator"
+        style="@style/resultsSeparator" />
+
+    <TextView
+        android:id="@+id/resultWounds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp" />
+
+    <ImageView
+        android:id="@+id/surgesLabel"
+        style="@style/resultsImageLabel"
+        android:layout_width="35dp"
+        android:contentDescription="@string/surges"
+        android:src="@drawable/whitesurge" />
+
+    <TextView
+        android:id="@+id/surgesSeparator"
+        style="@style/resultsSeparator" />
+
+    <TextView
+        android:id="@+id/resultSurges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp" />
+
+    <ImageView
+        android:id="@+id/shieldsLabel"
+        style="@style/resultsImageLabel"
+        android:layout_width="14dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/shields"
+        android:src="@drawable/whiteshield" />
+
+    <TextView
+        android:id="@+id/shieldsSeparator"
+        style="@style/resultsSeparator" />
+
+    <TextView
+        android:id="@+id/resultShields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp" />
+
+    <TextView
+        android:id="@+id/rangeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/range" />
+
+    <TextView
+        android:id="@+id/rangeSeparator"
+        style="@style/resultsSeparator" />
+
+    <TextView
+        android:id="@+id/resultRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp" />
+
+    <TextView
+        android:id="@+id/enhancementLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enhancement" />
+
+    <TextView
+        android:id="@+id/enhancementSeparator"
+        style="@style/resultsSeparator" />
+
+    <TextView
+        android:id="@+id/resultEnhancement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

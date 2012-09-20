@@ -14,7 +14,6 @@
 
 package com.dicent;
 
-import com.dicent.dice.Die;
 import com.dicent.dice.DieData;
 
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.GridView;
 
 public class SelectDiceActivity extends DicentActivity {
 	public static final String INTENTKEY_PLAYERINDEX = "playerIndex";
@@ -31,24 +29,21 @@ public class SelectDiceActivity extends DicentActivity {
 	public static final String SAVED_RTL_DICE_SHARED_PREFERENCE = "savedRTLDice";
 	public static final String SAVED_TRANSPARENT_DIE_SHARED_PREFERENCE = "savedTransparentDie";
 
-	private DieAdapter dieAdapter = new DieAdapter();
-
 	private int playerIndex;
 	private boolean isOverlord;
 	private int mode;
 	
 	private DiceList diceList;
+	
+	private DiceFragment diceFragment;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_dice);
 
 		//collect objects created in XML
-		GridView diceGrid = (GridView)findViewById(R.id.selectDiceGrid);
 		Button rollButton = (Button)findViewById(R.id.selectDiceRollButton);
-
-		float density = getResources().getDisplayMetrics().density;
-		diceGrid.setColumnWidth((int)(density * Die.scale));
+		diceFragment = (DiceFragment)getSupportFragmentManager().findFragmentByTag("diceGrid");
 
 		//create stuff
 		playerIndex = getIntent().getIntExtra(INTENTKEY_PLAYERINDEX, 0);
@@ -58,8 +53,11 @@ public class SelectDiceActivity extends DicentActivity {
 		if (mode == MODE_FIRSTED) diceList = state.getFirstEdDieDatas(playerIndex);
 		else if (mode == MODE_SECONDED_ATTACK) diceList = state.getSecondEdAttackDieDatas(playerIndex);
 		else if (mode == MODE_SECONDED_DEFENSE) diceList = state.getSecondEdDefenseDieDatas(playerIndex);
-		dieAdapter.setDice(diceList);
-		state.registerPreferencesChangedNotifier(dieAdapter);
+		
+		if (isOverlord)
+			for (DieData data : diceList) data.isSelected = false;
+		
+		diceFragment.setDice(diceList);
 
 		//set listeners
 		rollButton.setOnClickListener(new OnClickListener() {
@@ -81,19 +79,5 @@ public class SelectDiceActivity extends DicentActivity {
 				startActivity(resultsIntent);
 			}
 		});
-		
-		if (savedInstanceState == null && isOverlord) {
-			for (DieData data : state.getFirstEdDieDatas(playerIndex))
-				data.isSelected = false;
-		}
-
-		diceGrid.setAdapter(dieAdapter);
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		state.unregisterPreferencesChangedNotifier(dieAdapter);
 	}
 }

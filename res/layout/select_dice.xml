@@ -5,12 +5,13 @@
    	
    	<Button android:id="@+id/selectDiceRollButton"
    		style="@style/BottomButtons"
-		android:text="Roll"
+		android:text="@string/roll"
 		android:layout_alignParentBottom="true" />
 		
-	<GridView android:id="@+id/selectDiceGrid"
-		style="@style/DiceGrid"
-		android:numColumns="auto_fit"
+	<fragment android:name="com.dicent.SimpleDiceFragment"
+	    android:tag="diceGrid"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
 	    android:layout_above="@id/selectDiceRollButton" />
 	
 </RelativeLayout>

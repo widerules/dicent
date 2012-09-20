@@ -28,25 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResultsActivity extends DicentActivity {
-	private DieAdapter dieAdapter = new DieAdapter();
-
-	private int wounds;
-	private int surges;
-	private int shields;
-	private int range;
-	private int enhancement;
-	private boolean fail;
-
-	private TextView woundsText;
-	private TextView surgesText;
-	private TextView shieldsText;
-	private TextView rangeText;
-	private TextView enhancementText;
-
 	private Button addSilverButton;
 	private Button addGoldButton;
 	
 	private int mode;
+	
+	private DiceFragment diceFragment;
+	private StatsFragment statsFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,43 +44,15 @@ public class ResultsActivity extends DicentActivity {
 		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
 
 		//collect objects created in XML
-		GridView diceGrid = (GridView)findViewById(R.id.resultsDiceGrid);
-		woundsText = (TextView)findViewById(R.id.resultWounds);
-		surgesText = (TextView)findViewById(R.id.resultSurges);
-		shieldsText = (TextView)findViewById(R.id.resultShields);
-		rangeText = (TextView)findViewById(R.id.resultRange);
-		enhancementText = (TextView)findViewById(R.id.resultEnhancement);
 		Button rerollButton = (Button)findViewById(R.id.resultsRerollButton);
 		Button addBlackButton = (Button)findViewById(R.id.resultsAddBlackButton);
 		addSilverButton = (Button)findViewById(R.id.resultsAddSilverButton);
 		addGoldButton = (Button)findViewById(R.id.resultsAddGoldButton);
-
-		float density = getResources().getDisplayMetrics().density;
-		diceGrid.setColumnWidth((int)(density * FirstEdDie.scale));
 		
-		if (mode != MODE_FIRSTED) {
-			findViewById(R.id.enhancementLabel).setVisibility(View.GONE);
-			findViewById(R.id.enhancementSeparator).setVisibility(View.GONE);
-			enhancementText.setVisibility(View.GONE);
-		}
+		statsFragment = (StatsFragment)getSupportFragmentManager().findFragmentByTag("stats");
+		diceFragment = (DiceFragment)getSupportFragmentManager().findFragmentByTag("diceGrid");
 		
-		if (mode == MODE_SECONDED_DEFENSE) {
-			findViewById(R.id.woundsLabel).setVisibility(View.GONE);
-			findViewById(R.id.woundsSeparator).setVisibility(View.GONE);
-			woundsText.setVisibility(View.GONE);
-			
-			findViewById(R.id.surgesLabel).setVisibility(View.GONE);
-			findViewById(R.id.surgesSeparator).setVisibility(View.GONE);
-			surgesText.setVisibility(View.GONE);
-			
-			findViewById(R.id.rangeLabel).setVisibility(View.GONE);
-			findViewById(R.id.rangeSeparator).setVisibility(View.GONE);
-			rangeText.setVisibility(View.GONE);
-		} else {
-			findViewById(R.id.shieldsLabel).setVisibility(View.GONE);
-			findViewById(R.id.shieldsSeparator).setVisibility(View.GONE);
-			shieldsText.setVisibility(View.GONE);
-		}
+		
 
 		//set listeners
 		rerollButton.setOnClickListener(new OnClickListener() {
@@ -108,8 +68,8 @@ public class ResultsActivity extends DicentActivity {
 						data.roll();
 					}
 				}
-				dieAdapter.notifyDataSetChanged();
-				updateResults();
+				diceFragment.notifyDataSetChanged();
+				statsFragment.updateStats();
 			}
 		});
 		
@@ -120,7 +80,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.BLACK_DIE);
 	
 					state.rollEffects();
-					updateResults();
+					statsFragment.updateStats();
 				}
 			});
 	
@@ -130,7 +90,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.SILVER_DIE);
 	
 					state.rollEffects();
-					updateResults();
+					statsFragment.updateStats();
 				}
 			});
 	
@@ -140,7 +100,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.GOLD_DIE);
 	
 					state.rollEffects();
-					updateResults();
+					statsFragment.updateStats();
 				}
 			});
 		} else {
@@ -149,11 +109,8 @@ public class ResultsActivity extends DicentActivity {
 			addGoldButton.setVisibility(View.GONE);
 		}
 
-		dieAdapter.setDice(state.getResultDice());
-		state.registerPreferencesChangedNotifier(dieAdapter);
-		diceGrid.setAdapter(dieAdapter);
-
-		updateResults();
+		diceFragment.setDice(state.getResultDice());
+		statsFragment.setMode(mode);
 	}
 	
 	@Override
@@ -171,40 +128,10 @@ public class ResultsActivity extends DicentActivity {
 		}
 	}
 	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		state.unregisterPreferencesChangedNotifier(dieAdapter);
-	}
-	
 	private void addRolledDie(int dieType) {
 		FirstEdDieData newDie = FirstEdDieData.create(dieType);
 		newDie.roll();
 		state.getResultDice().add(newDie);
-		dieAdapter.preferencesChanged();
-	}
-
-	private void updateResults() {
-		wounds = surges = shields = range = enhancement = 0;
-		fail = false;
-		
-		for (DieData die : state.getResultDice()) {
-			SideValues currentSideValues = die.getSideValues();
-			if (currentSideValues.isFail()) fail = true;
-			else {
-				wounds += currentSideValues.getWounds();
-				surges += currentSideValues.getSurges();
-				shields += currentSideValues.getShields();
-				range += currentSideValues.getRange();
-				enhancement += currentSideValues.getEnhancement();
-			}
-		}
-		if (fail) wounds = surges = shields = range = enhancement = 0;
-		woundsText.setText(Integer.toString(wounds));
-		surgesText.setText(Integer.toString(surges));
-		shieldsText.setText(Integer.toString(shields));
-		rangeText.setText(Integer.toString(range));
-		enhancementText.setText(Integer.toString(enhancement));
+		diceFragment.diceChanged();
 	}
 }

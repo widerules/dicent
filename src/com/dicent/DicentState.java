@@ -125,7 +125,7 @@ public class DicentState {
 	
 	public void preferencesChanged(Context context) {
 		restorePreferences(context);
-		for (PreferencesChangedNotifier notifier : prefChangedNotifiers) notifier.preferencesChanged();
+		for (PreferencesChangedNotifier notifier : prefChangedNotifiers) notifier.diceChanged();
 	}
 	
 	public void registerPreferencesChangedNotifier(PreferencesChangedNotifier notifier) {
