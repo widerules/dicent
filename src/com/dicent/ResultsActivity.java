@@ -68,8 +68,8 @@ public class ResultsActivity extends DicentActivity {
 						data.roll();
 					}
 				}
-				diceFragment.notifyDataSetChanged();
-				statsFragment.updateStats();
+				diceFragment.redraw();
+				statsFragment.update();
 			}
 		});
 		
@@ -80,7 +80,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.BLACK_DIE);
 	
 					state.rollEffects();
-					statsFragment.updateStats();
+					statsFragment.update();
 				}
 			});
 	
@@ -90,7 +90,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.SILVER_DIE);
 	
 					state.rollEffects();
-					statsFragment.updateStats();
+					statsFragment.update();
 				}
 			});
 	
@@ -100,7 +100,7 @@ public class ResultsActivity extends DicentActivity {
 					addRolledDie(FirstEdDieData.GOLD_DIE);
 	
 					state.rollEffects();
-					statsFragment.updateStats();
+					statsFragment.update();
 				}
 			});
 		} else {

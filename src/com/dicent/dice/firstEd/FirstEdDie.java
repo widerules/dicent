@@ -33,8 +33,8 @@ public class FirstEdDie extends Die {
 	
 	private FirstEdDieData firstEdDieData;
 	
-	public FirstEdDie(Context context, FirstEdDieData _firstEdDieData, DieAdapter _dieAdapter) {
-		super(context, _firstEdDieData, _dieAdapter);
+	public FirstEdDie(Context context, FirstEdDieData _firstEdDieData) {
+		super(context, _firstEdDieData);
 		
 		firstEdDieData = _firstEdDieData;
 		

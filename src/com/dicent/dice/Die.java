@@ -14,7 +14,6 @@
 
 package com.dicent.dice;
 
-import com.dicent.DieAdapter;
 import com.dicent.R;
 
 import android.content.Context;
@@ -23,13 +22,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 public abstract class Die extends View {
 	public static final float scale = 70.0f;
+	public static final int margin = 6;
 	protected static final float textSize = 20.0f;
 	
 	protected static float dScale;
+	protected static int dMargin;
 	
 	protected static Paint borderPaint;
 	protected static Paint selectedBorderPaint;
@@ -62,7 +66,7 @@ public abstract class Die extends View {
 	protected static float woundsMargin = 0.0f;
 	
 	private DieData dieData;
-	private DieAdapter dieAdapter;
+	//private DieAdapter dieAdapter;
 	
 	static {
 		borderPaint = new Paint();
@@ -85,16 +89,17 @@ public abstract class Die extends View {
 		iconPaint.setDither(true);
 	}
 	
-	public Die(Context context, DieData _dieData, DieAdapter _dieAdapter) {
+	public Die(Context context, DieData _dieData) {
 		super(context);
 		
-		dieAdapter = _dieAdapter;
+		//dieAdapter = _dieAdapter;
 		dieData = _dieData;
 		
 		if (density <= 0.0f) {
 			density = context.getResources().getDisplayMetrics().density;
 			dScale = scale * density;
 			size = (int)(dScale);
+			dMargin = (int)(margin * density);
 			hPadding = 13.0f * density;
 			vPadding = 10.0f * density;
 			whiteTextPaint.setTextSize(textSize * density);
@@ -124,18 +129,9 @@ public abstract class Die extends View {
 		
 		if (woundsMargin <= 0.0f) woundsMargin = 2.0f * density;
 		
-		setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (dieData.isSelected) {
-					dieData.isSelected = false;
-					dieAdapter.notifyDataSetChanged();
-				} else if (dieAdapter.isDieSelectable(dieData)) {
-					dieData.isSelected = true;
-					dieAdapter.notifyDataSetChanged();
-				}
-			}
-		});
+		TableRow.LayoutParams lp = new TableRow.LayoutParams();
+		lp.setMargins(dMargin, dMargin, 0, 0);
+		setLayoutParams(lp);
 	}
 	
 	@Override
@@ -204,5 +200,9 @@ public abstract class Die extends View {
 	
 	public void setDieData(DieData _dieData) {
 		dieData = _dieData;
+	}
+	
+	public DieData getDieData() {
+		return dieData;
 	}
 }

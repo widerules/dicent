@@ -15,9 +15,17 @@
 package com.dicent;
 
 import com.dicent.R;
+import com.dicent.dice.DieData;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 
 public class PlayerListActivity extends DicentActivity {
@@ -28,23 +36,75 @@ public class PlayerListActivity extends DicentActivity {
 	private PlayerNameDialogFragment playerNameDialogFragment;
 	private PrefChangedNotifier prefChangedNotifier = new PrefChangedNotifier();
 	
+	//experimental stuff
+	private DiceFragment attackDiceFragment;
+	private DiceFragment defenseDiceFragment;
+	private CheckBox attackCheckBox;
+	private CheckBox defenseCheckBox;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.playerlist);
 		
-		//collect objects created in XML
-		playersListView = (ListView)findViewById(R.id.playersListView);
+		if (state.getDescentVersion().equals(DicentPreferencesActivity.DESCENT_SECOND_EDITION_EXP)) {
+			setContentView(R.layout.exp_select_dice);
+			
+			FragmentManager fm = getSupportFragmentManager();
+			attackDiceFragment = (DiceFragment)fm.findFragmentByTag("attackDiceGrid");
+			attackDiceFragment.setDice(state.getSecondEdAttackDieDatas(1));
+			defenseDiceFragment = (DiceFragment)fm.findFragmentByTag("defenseDiceGrid");
+			defenseDiceFragment.setDice(state.getSecondEdDefenseDieDatas(1));
+			
+			attackCheckBox = (CheckBox)findViewById(R.id.attackCheckBox);
+			defenseCheckBox = (CheckBox)findViewById(R.id.defenseCheckBox);
+			
+			attackCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if (isChecked) attackDiceFragment.setVisibility(View.VISIBLE);
+					else attackDiceFragment.setVisibility(View.INVISIBLE);
+					state.setAttackEnabled(isChecked);
+				}
+			});
+			
+			defenseCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if (isChecked) defenseDiceFragment.setVisibility(View.VISIBLE);
+					else defenseDiceFragment.setVisibility(View.INVISIBLE);
+					state.setDefenseEnabled(isChecked);
+				}
+			});
+			
+			attackCheckBox.setChecked(state.isAttackEnabled());
+			defenseCheckBox.setChecked(state.isDefenseEnabled());
+			
+		} else {
+			setContentView(R.layout.playerlist);
+			
+			//collect objects created in XML
+			playersListView = (ListView)findViewById(R.id.playersListView);
+			
+			//fragments
+			playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
+			if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
+			
+			//playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
+			playerAdapter = new PlayerListAdapter(this);
+			playersListView.setAdapter(playerAdapter);
+			
+			state.registerPreferencesChangedNotifier(prefChangedNotifier);
+		}
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
 		
-		//fragments
-		playerNameDialogFragment = (PlayerNameDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_PLAYERNAME);
-		if (playerNameDialogFragment == null) playerNameDialogFragment = new PlayerNameDialogFragment();
-		
-		//playerAdapter = new ArrayAdapter<String>(this, R.layout.player_list_item, state.getPlayers());
-		playerAdapter = new PlayerListAdapter(this);
-		playersListView.setAdapter(playerAdapter);
-		
-		state.registerPreferencesChangedNotifier(prefChangedNotifier);
+		if (!state.isExpNoticeShown()) {
+			new ExpNoticeDialogFragment().show(getSupportFragmentManager(), "expNotice");
+			state.setExpNoticeShown(true);
+		}
 	}
 	
 	@Override
@@ -74,10 +134,38 @@ public class PlayerListActivity extends DicentActivity {
 		playerNameDialogFragment.show(getSupportFragmentManager(), FRAGMENT_PLAYERNAME);
 	}
 	
+	public void roll(View v) {
+		state.rollEffects();
+		DiceList resultDice = state.getResultDice();
+		resultDice.clear();
+		if (attackCheckBox.isChecked()) addRolledDice(resultDice, attackDiceFragment.getDice());
+		if (defenseCheckBox.isChecked()) addRolledDice(resultDice, defenseDiceFragment.getDice());
+		
+		Intent resultsIntent = new Intent(getBaseContext(), ResultsActivity.class);
+		resultsIntent.putExtra(INTENTKEY_MODE, MODE_EXPERIMENTAL);
+		startActivity(resultsIntent);
+	}
+	
+	private void addRolledDice(DiceList base, DiceList add) {
+		for (DieData data : add) {
+			if (!data.isSelected || !data.isVisible()) continue;
+			DieData newData = data.copy();
+			newData.isSelected = false;
+			newData.roll();
+			base.add(newData);
+		}
+	}
+	
 	private class PrefChangedNotifier implements PreferencesChangedNotifier {
 		@Override
 		public void diceChanged() {
-			playerAdapter.preferencesChanged();
+			//playerAdapter.preferencesChanged();
+			
+			//TODO dirty hack!
+			//can be replaced when experimental code is properly implemented or removed
+			Intent intent = getIntent();
+			finish();
+			startActivity(intent);
 		}
 	}
 }

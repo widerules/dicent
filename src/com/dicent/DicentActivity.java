@@ -27,6 +27,7 @@ public class DicentActivity extends FragmentActivity {
 	public static final int MODE_FIRSTED = 0;
 	public static final int MODE_SECONDED_ATTACK = 1;
 	public static final int MODE_SECONDED_DEFENSE = 2;
+	public static final int MODE_EXPERIMENTAL = 3;
 	
 	protected DicentState state;
 	

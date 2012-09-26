@@ -20,8 +20,8 @@ public class SecondEdDie extends Die {
 	
 	private SecondEdDieData secondEdDieData;
 
-	public SecondEdDie(Context context, SecondEdDieData _dieData, DieAdapter _dieAdapter) {
-		super(context, _dieData, _dieAdapter);
+	public SecondEdDie(Context context, SecondEdDieData _dieData) {
+		super(context, _dieData);
 		
 		secondEdDieData = _dieData;
 		

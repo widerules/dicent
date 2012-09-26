@@ -27,12 +27,17 @@ public class DicentPreferencesActivity extends PreferenceActivity {
 	public static final String DESCENT_VERSION = "descentVersion";
 	public static final String DESCENT_FIRST_EDITION = "firstEd";
 	public static final String DESCENT_SECOND_EDITION = "secondEd";
+	public static final String DESCENT_SECOND_EDITION_EXP = "secondEdExperimental";
 	public static final String DEFAULT_DESCENT_VERSION = DESCENT_FIRST_EDITION;
 	public static final String PLAYERNAMES = "playerNames";
 	public static final String RTL_ENABLED = "roadToLegend";
 	public static final String TOI_ENABLED = "tombOfIce";
 	public static final String VIBRATION_ENABLED = "vibration";
 	public static final String SOUNDS_ENABLED = "sounds";
+	
+	public static final String EXPERIMENTAL = "experimental";
+	public static final String ATTACK_ENABLED = "attackEnabled";
+	public static final String DEFENSE_ENABLED = "defenseEnabled";
 	
 	public static final boolean DEFAULT_RTL_ENABLED = false;
 	public static final boolean DEFAULT_TOI_ENABLED = false;

@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   	android:layout_width="fill_parent"
-   	android:layout_height="fill_parent">
-   	
-   	<LinearLayout android:id="@+id/resultsBottomStuff"
-   		android:layout_width="fill_parent"
-   		android:layout_height="wrap_content"
-   		android:orientation="vertical"
-   		android:layout_alignParentBottom="true">
-   		
-	   	<fragment
-            android:name="com.dicent.StatsFragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true" >
+
+        <fragment
+            android:name="com.dicent.SimpleDiceFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:tag="stats" />
-	   	
-	   	
-	   	<LinearLayout
-   			android:layout_width="fill_parent"
-   			android:layout_height="wrap_content"
-   			android:orientation="horizontal">
-   			
-   			<Button android:id="@+id/resultsAddBlackButton"
-	   			style="@style/BottomButtons"
-	   			android:text="@string/addBlack" />
-   		
-	   		<Button android:id="@+id/resultsAddSilverButton"
-	   			style="@style/BottomButtons"
-	   			android:text="@string/addSilver"
-	   			android:visibility="gone" />
-   		
-	   		<Button android:id="@+id/resultsAddGoldButton"
-				style="@style/BottomButtons"
-	   			android:text="@string/addGold"
-	   			android:visibility="gone" />
-	   			
-	   		<Button android:id="@+id/resultsRerollButton"
-	   			style="@style/BottomButtons"
-	   			android:text="@string/reroll" />
-   		</LinearLayout>
-   	
-   	</LinearLayout>
-   	
-   	<fragment android:name="com.dicent.SimpleDiceFragment"
-		    android:tag="diceGrid"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:layout_above="@id/resultsBottomStuff" />
-   	
-</RelativeLayout>
+            android:tag="diceGrid" />
+    </ScrollView>
+
+    <fragment
+        android:name="com.dicent.StatsFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:tag="stats" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/resultsRerollButton"
+            style="@style/BottomButtons"
+            android:text="@string/reroll" />
+
+        <Button
+            android:id="@+id/resultsAddBlackButton"
+            style="@style/BottomButtons"
+            android:text="@string/addBlack" />
+
+        <Button
+            android:id="@+id/resultsAddSilverButton"
+            style="@style/BottomButtons"
+            android:text="@string/addSilver" />
+
+        <Button
+            android:id="@+id/resultsAddGoldButton"
+            style="@style/BottomButtons"
+            android:text="@string/addGold" />
+    </LinearLayout>
+
+</LinearLayout>

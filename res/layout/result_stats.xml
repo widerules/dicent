@@ -4,87 +4,80 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/woundsLabel"
-        style="@style/resultsImageLabel"
-        android:layout_width="14dp"
-        android:contentDescription="@string/wounds"
-        android:src="@drawable/whitewound" />
-
-    <TextView
-        android:id="@+id/woundsSeparator"
-        style="@style/resultsSeparator" />
-
     <TextView
         android:id="@+id/resultWounds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp" />
-
-    <ImageView
-        android:id="@+id/surgesLabel"
-        style="@style/resultsImageLabel"
-        android:layout_width="35dp"
-        android:contentDescription="@string/surges"
-        android:src="@drawable/whitesurge" />
+        style="@style/resultsStatsText"
+        android:drawableRight="@drawable/whitewound" />
 
     <TextView
-        android:id="@+id/surgesSeparator"
-        style="@style/resultsSeparator" />
+        android:id="@+id/statsMinus"
+        style="@style/resultsStatsText"
+        android:text=" - " />
 
     <TextView
-        android:id="@+id/resultSurges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp" />
+        android:id="@+id/resultShields"
+        style="@style/resultsStatsText" />
 
     <ImageView
         android:id="@+id/shieldsLabel"
         style="@style/resultsImageLabel"
-        android:layout_width="14dp"
+        android:layout_width="16dp"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/shields"
         android:src="@drawable/whiteshield" />
 
     <TextView
-        android:id="@+id/shieldsSeparator"
-        style="@style/resultsSeparator" />
+        android:id="@+id/statsEquals"
+        style="@style/resultsStatsText"
+        android:text=" = " />
 
     <TextView
-        android:id="@+id/resultShields"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp" />
+        android:id="@+id/statsEffectiveWounds"
+        style="@style/resultsStatsText"
+        android:text = "0" />
 
-    <TextView
-        android:id="@+id/rangeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/range" />
+    <LinearLayout
+        android:id="@+id/statsSurgesGroup"
+        style="@style/resultsStatsGroup" >
 
-    <TextView
-        android:id="@+id/rangeSeparator"
-        style="@style/resultsSeparator" />
+        <View style="@style/resultsStatsSeparator" />
 
-    <TextView
-        android:id="@+id/resultRange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp" />
+        <TextView
+            android:id="@+id/resultSurges"
+            style="@style/resultsStatsText"
+            android:drawableRight="@drawable/whitesurge" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/enhancementLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enhancement" />
+    <LinearLayout
+        android:id="@+id/statsRangeGroup"
+        style="@style/resultsStatsGroup" >
 
-    <TextView
-        android:id="@+id/enhancementSeparator"
-        style="@style/resultsSeparator" />
+        <View style="@style/resultsStatsSeparator" />
 
-    <TextView
-        android:id="@+id/resultEnhancement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/resultRange"
+            style="@style/resultsStatsText" />
+
+        <TextView
+            style="@style/resultsStatsText"
+            android:layout_marginLeft="3dp"
+            android:text="@string/range" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/statsEnhancementGroup"
+        style="@style/resultsStatsGroup" >
+
+        <View style="@style/resultsStatsSeparator" />
+
+        <TextView
+            android:id="@+id/resultEnhancement"
+            style="@style/resultsStatsText" />
+
+        <TextView
+            style="@style/resultsStatsText"
+            android:layout_marginLeft="3dp"
+            android:text="@string/enhancement" />
+    </LinearLayout>
 
 </LinearLayout>

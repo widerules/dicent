@@ -10,8 +10,10 @@ public class SimpleDiceFragment extends DiceFragment {
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container,
 	                          Bundle savedInstanceState) {
-		GridView diceGrid = (GridView)createDiceGrid(inflater, container, savedInstanceState);
-		diceGrid.setAdapter(dieAdapter);
-		return diceGrid;
+		//GridView diceGrid = (GridView)createDiceGrid(inflater, container, savedInstanceState);
+		//diceGrid.setAdapter(dieAdapter);
+		//return diceGrid;
+		
+		return createDiceGrid(inflater, container, savedInstanceState);
 	}
 }

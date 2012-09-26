@@ -57,9 +57,9 @@ public class DieAdapter extends BaseAdapter implements PreferencesChangedNotifie
 			returnedView = (Die)convertView;
 			returnedView.setDieData(dieData);
 		} else if (dieData instanceof FirstEdDieData) {
-			returnedView = new FirstEdDie(parent.getContext(), (FirstEdDieData)dieData, this);
+			//returnedView = new FirstEdDie(parent.getContext(), (FirstEdDieData)dieData, this);
 		} else if (dieData instanceof SecondEdDieData) {
-			returnedView = new SecondEdDie(parent.getContext(), (SecondEdDieData)dieData, this);
+			//returnedView = new SecondEdDie(parent.getContext(), (SecondEdDieData)dieData, this);
 		}
 		
 		return returnedView;

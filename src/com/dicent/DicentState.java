@@ -48,6 +48,13 @@ public class DicentState {
 	
 	private LinkedList<PreferencesChangedNotifier> prefChangedNotifiers = new LinkedList<PreferencesChangedNotifier>();
 	
+	//experimental
+	private boolean attackEnabled = true;
+	private boolean defenseEnabled = true;
+	
+	private boolean expNoticeShown = false;
+	public static final String EXP_NOTICE_SHOWN = "expNoticeShown";
+	
 	public static DicentState init(Context context) {
 		if (state == null) state = new DicentState(context);
 		return state;
@@ -72,6 +79,12 @@ public class DicentState {
 				DicentPreferencesActivity.PLAYERNAMES, Context.MODE_PRIVATE);
 		for (int i = 0; i < players.length; i++)
 			players[i] = playerNamesPref.getString(Integer.toString(i), defaultPlayers[i]);
+		
+		SharedPreferences expPref = context.getSharedPreferences(
+				DicentPreferencesActivity.EXPERIMENTAL, Context.MODE_PRIVATE);
+		attackEnabled = expPref.getBoolean(DicentPreferencesActivity.ATTACK_ENABLED, true);
+		defenseEnabled = expPref.getBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, true);
+		expNoticeShown = expPref.getBoolean(EXP_NOTICE_SHOWN, false);
 		
 		//player die datas
 		//first edition
@@ -118,6 +131,14 @@ public class DicentState {
 		
 		//save player dice
 		storage.savePlayersDice(firstEdDieDatas, secondEdAttackDieDatas, secondEdDefenseDieDatas);
+		
+		SharedPreferences expPref = context.getSharedPreferences(
+				DicentPreferencesActivity.EXPERIMENTAL, Context.MODE_PRIVATE);
+		SharedPreferences.Editor expPrefEditor = expPref.edit();
+		expPrefEditor.putBoolean(DicentPreferencesActivity.ATTACK_ENABLED, isAttackEnabled());
+		expPrefEditor.putBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, isDefenseEnabled());
+		expPrefEditor.putBoolean(EXP_NOTICE_SHOWN, expNoticeShown);
+		expPrefEditor.commit();
 		
 		//enable for testing
 		//state = null;
@@ -179,6 +200,30 @@ public class DicentState {
 	
 	public String getDescentVersion() {
 		return descentVersion;
+	}
+	
+	public boolean isAttackEnabled() {
+		return attackEnabled;
+	}
+	
+	public boolean isDefenseEnabled() {
+		return defenseEnabled;
+	}
+	
+	public boolean isExpNoticeShown() {
+		return expNoticeShown;
+	}
+	
+	public void setAttackEnabled(boolean _attackEnabled) {
+		attackEnabled = _attackEnabled;
+	}
+	
+	public void setDefenseEnabled(boolean _defenseEnabled) {
+		defenseEnabled = _defenseEnabled;
+	}
+	
+	public void setExpNoticeShown(boolean shown) {
+		expNoticeShown = shown;
 	}
 	
 	private void restorePreferences(Context context) {

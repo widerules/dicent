@@ -14,20 +14,41 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
     
-    <style name="resultsSeparator">
+    <style name="resultsStatsGroup">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    
+    <style name="resultsStatsText" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">@string/resultsSeparator</item>
-        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:drawablePadding">3dp</item>
+    </style>
+    
+    <style name="resultsStatsSeparator">
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">3dp</item>
+        <item name="android:background">#f999</item>
     </style>
     
     <style name="resultsImageLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">12dp</item>
         <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+    </style>
+    
+    <style name="DiceGridLabel" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

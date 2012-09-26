@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.dicent.DescentVersionPreference android:title="@string/preferencesDescentVersion"
-        android:summary="@string/preferencesDescentVersionSummary"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <com.dicent.DescentVersionPreference
+        android:defaultValue="@string/descentVersionFirstEd"
         android:entries="@array/descentVersions"
         android:entryValues="@array/descentVersionsValues"
-        android:defaultValue="@string/descentVersionFirstEd"
+        android:key="descentVersion"
         android:persistent="true"
-        android:key="descentVersion" />
-    
-	<PreferenceCategory android:title="@string/preferencesFirstEdAddons"
-	    android:key="firstEdAddons">
-		<CheckBoxPreference android:title="@string/preferencesRoadToLegend"
-			android:summary="@string/preferencesRoadToLegendSummary"
-			android:defaultValue="false"
-			android:key="roadToLegend" />
-		<CheckBoxPreference android:title="@string/preferencesTombOfIce"
-			android:summary="@string/preferencesTombOfIceSummary"
-			android:defaultValue="false"
-			android:key="tombOfIce" />
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/preferencesSettings">
-		<CheckBoxPreference android:title="@string/preferencesSounds"
-			android:summary="@string/preferencesSoundsSummary"
-			android:defaultValue="true"
-			android:key="sounds" />
-		<CheckBoxPreference android:title="@string/preferencesVibration"
-			android:summary="@string/preferencesVibrationSummary"
-			android:defaultValue="true"
-			android:key="vibration" />
-		<com.dicent.ResetDialogPreference android:title="@string/preferencesReset"
-		    android:summary="@string/preferencesResetSummary"
-		    android:dialogTitle="@string/preferencesResetDialog"
-		    android:key="reset" />
-	</PreferenceCategory>
+        android:summary="@string/preferencesDescentVersionSummary"
+        android:title="@string/preferencesDescentVersion" />
+
+    <PreferenceCategory
+        android:key="firstEdAddons"
+        android:title="@string/preferencesFirstEdAddons" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="roadToLegend"
+            android:summary="@string/preferencesRoadToLegendSummary"
+            android:title="@string/preferencesRoadToLegend" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="tombOfIce"
+            android:summary="@string/preferencesTombOfIceSummary"
+            android:title="@string/preferencesTombOfIce" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preferencesSettings" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="sounds"
+            android:summary="@string/preferencesSoundsSummary"
+            android:title="@string/preferencesSounds" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="vibration"
+            android:summary="@string/preferencesVibrationSummary"
+            android:title="@string/preferencesVibration" />
+
+        <com.dicent.ResetDialogPreference
+            android:dialogTitle="@string/preferencesResetDialog"
+            android:key="reset"
+            android:summary="@string/preferencesResetSummary"
+            android:title="@string/preferencesReset" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
