@@ -49,30 +49,6 @@ public class GoldDieData extends PowerDieData {
 	@Override
 	public SideValues getSideValues() {
 		return sideValues.get(side);
-		/*
-		SideValues sv = new SideValues();
-		switch (side) {
-		case SIDE1:
-			sv.enhancement = 3;
-			break;
-		case SIDE2:
-			sv.enhancement = 3;
-			break;
-		case SIDE3:
-			sv.enhancement = 3;
-			break;
-		case SIDE4:
-			sv.surges = 3;
-			break;
-		case SIDE5:
-			sv.surges = 3;
-			break;
-		case SIDE6:
-			
-			break;
-		}
-		return sv;
-		*/
 	}
 	
 	@Override

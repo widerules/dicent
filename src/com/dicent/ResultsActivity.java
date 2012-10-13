@@ -14,18 +14,13 @@
 
 package com.dicent;
 
-import com.dicent.dice.DieData;
-import com.dicent.dice.SideValues;
-import com.dicent.dice.firstEd.FirstEdDie;
-import com.dicent.dice.firstEd.FirstEdDieData;
-
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dicent.dice.DieData;
+import com.dicent.dice.firstEd.FirstEdDieData;
 
 public class ResultsActivity extends DicentActivity {
 	private Button addSilverButton;
@@ -44,7 +39,6 @@ public class ResultsActivity extends DicentActivity {
 		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
 
 		//collect objects created in XML
-		Button rerollButton = (Button)findViewById(R.id.resultsRerollButton);
 		Button addBlackButton = (Button)findViewById(R.id.resultsAddBlackButton);
 		addSilverButton = (Button)findViewById(R.id.resultsAddSilverButton);
 		addGoldButton = (Button)findViewById(R.id.resultsAddGoldButton);
@@ -52,63 +46,12 @@ public class ResultsActivity extends DicentActivity {
 		statsFragment = (StatsFragment)getSupportFragmentManager().findFragmentByTag("stats");
 		diceFragment = (DiceFragment)getSupportFragmentManager().findFragmentByTag("diceGrid");
 		
-		
-
-		//set listeners
-		rerollButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (state.getResultDice().selectedDiceCount() > 0) {
-					state.rollEffects();
-				}
-				else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
-						Toast.LENGTH_SHORT).show();
-				for (DieData data : state.getResultDice()) {
-					if (data.isSelected) {
-						data.isSelected = false;
-						data.roll();
-					}
-				}
-				diceFragment.redraw();
-				statsFragment.update();
-			}
-		});
-		
-		if (mode == MODE_FIRSTED) {
-			addBlackButton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-					addRolledDie(FirstEdDieData.BLACK_DIE);
-	
-					state.rollEffects();
-					statsFragment.update();
-				}
-			});
-	
-			addSilverButton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-					addRolledDie(FirstEdDieData.SILVER_DIE);
-	
-					state.rollEffects();
-					statsFragment.update();
-				}
-			});
-	
-			addGoldButton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
-					addRolledDie(FirstEdDieData.GOLD_DIE);
-	
-					state.rollEffects();
-					statsFragment.update();
-				}
-			});
-		} else {
+		if (mode == MODE_SECONDED) {
 			addBlackButton.setVisibility(View.GONE);
 			addSilverButton.setVisibility(View.GONE);
 			addGoldButton.setVisibility(View.GONE);
 		}
-
+		
 		diceFragment.setDice(state.getResultDice());
 		statsFragment.setMode(mode);
 	}
@@ -128,10 +71,43 @@ public class ResultsActivity extends DicentActivity {
 		}
 	}
 	
+	public void reroll(View v) {
+		if (state.getResultDice().selectedDiceCount() > 0) {
+			state.rollEffects();
+		}
+		else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
+				Toast.LENGTH_SHORT).show();
+		for (DieData data : state.getResultDice()) {
+			if (data.isSelected) {
+				data.isSelected = false;
+				data.roll();
+			}
+		}
+		diceFragment.redraw();
+		statsFragment.update();
+	}
+	
+	public void addBlack(View v) {
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		addRolledDie(FirstEdDieData.BLACK_DIE);
+	}
+	
+	public void addSilver(View v) {
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		addRolledDie(FirstEdDieData.SILVER_DIE);
+	}
+	
+	public void addGold(View v) {
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		addRolledDie(FirstEdDieData.GOLD_DIE);
+	}
+	
 	private void addRolledDie(int dieType) {
 		FirstEdDieData newDie = FirstEdDieData.create(dieType);
 		newDie.roll();
 		state.getResultDice().add(newDie);
-		diceFragment.diceChanged();
+		diceFragment.refreshDice();
+		state.rollEffects();
+		statsFragment.update();
 	}
 }

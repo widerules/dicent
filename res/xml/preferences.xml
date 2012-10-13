@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <com.dicent.DescentVersionPreference
+    <ListPreference
         android:defaultValue="@string/descentVersionFirstEd"
         android:entries="@array/descentVersions"
         android:entryValues="@array/descentVersionsValues"
@@ -35,12 +35,6 @@
             android:key="vibration"
             android:summary="@string/preferencesVibrationSummary"
             android:title="@string/preferencesVibration" />
-
-        <com.dicent.ResetDialogPreference
-            android:dialogTitle="@string/preferencesResetDialog"
-            android:key="reset"
-            android:summary="@string/preferencesResetSummary"
-            android:title="@string/preferencesReset" />
     </PreferenceCategory>
 
 </PreferenceScreen>

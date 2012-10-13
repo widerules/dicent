@@ -1,3 +1,17 @@
+/** This file is part of Dicent.
+ *
+ *  Dicent is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  Dicent is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 package com.dicent;
 
 import com.dicent.dice.DieData;
@@ -5,7 +19,6 @@ import com.dicent.dice.SideValues;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class StatsFragment extends Fragment {
-	private ViewGroup surgesGroup;
-	private ViewGroup rangeGroup;
 	private ViewGroup enhancementGroup;
 	
 	private TextView statsMinus;
@@ -35,8 +46,6 @@ public class StatsFragment extends Fragment {
 	                          Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.result_stats, null);
 		
-		surgesGroup = (ViewGroup)view.findViewById(R.id.statsSurgesGroup);
-		rangeGroup = (ViewGroup)view.findViewById(R.id.statsRangeGroup);
 		enhancementGroup = (ViewGroup)view.findViewById(R.id.statsEnhancementGroup);
 		
 		statsMinus = (TextView)view.findViewById(R.id.statsMinus);
@@ -57,20 +66,10 @@ public class StatsFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		if (mode != DicentActivity.MODE_FIRSTED) enhancementGroup.setVisibility(View.GONE);
-		
-		if (mode == DicentActivity.MODE_FIRSTED || mode == DicentActivity.MODE_SECONDED_ATTACK) {
+		if (mode == DicentActivity.MODE_SECONDED) enhancementGroup.setVisibility(View.GONE);
+		else {
 			shieldsText.setVisibility(View.GONE);
 			shieldsLabel.setVisibility(View.GONE);
-		}
-		
-		if (mode == DicentActivity.MODE_SECONDED_DEFENSE) {
-			woundsText.setVisibility(View.GONE);
-			surgesGroup.setVisibility(View.GONE);
-			rangeGroup.setVisibility(View.GONE);
-		}
-		
-		if (mode != DicentActivity.MODE_EXPERIMENTAL) {
 			statsMinus.setVisibility(View.GONE);
 			statsEquals.setVisibility(View.GONE);
 			effectiveWoundsText.setVisibility(View.GONE);
@@ -83,7 +82,7 @@ public class StatsFragment extends Fragment {
 	public void onDestroyView() {
 		super.onDestroyView();
 		
-		surgesGroup = rangeGroup = enhancementGroup = null;
+		enhancementGroup = null;
 		statsMinus = statsEquals = null;
 		shieldsLabel = null;
 		woundsText = shieldsText = effectiveWoundsText = surgesText = rangeText = enhancementText = null;

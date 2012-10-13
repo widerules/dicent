@@ -14,18 +14,16 @@
 
 package com.dicent.dice;
 
-import com.dicent.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
-import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import com.dicent.R;
 
 public abstract class Die extends View {
 	public static final float scale = 70.0f;
@@ -66,7 +64,6 @@ public abstract class Die extends View {
 	protected static float woundsMargin = 0.0f;
 	
 	private DieData dieData;
-	//private DieAdapter dieAdapter;
 	
 	static {
 		borderPaint = new Paint();

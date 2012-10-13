@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Dicent</string>
 
-    <string-array name="players">
-        <item>Overlord</item>
-        <item>Hero 1</item>
-        <item>Hero 2</item>
-        <item>Hero 3</item>
-        <item>Hero 4</item>
-    </string-array>
-
-    <string name="changePlayerNameDialog">Change player name</string>
     <string name="OK">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="attackRoll">Attack roll</string>
-    <string name="defenseRoll">Defense roll</string>
     <string name="roll">Roll</string>
     <string name="reroll">Reroll</string>
     <string name="rerollNotification">select dice to reroll.</string>
@@ -24,8 +12,10 @@
     <string name="addGold">Add Gold</string>
     <string name="range">Range</string>
     <string name="enhancement">Enhancement</string>
+    
     <string name="menuPreferences">Preferences</string>
     <string name="menuAbout">About</string>
+    
     <string name="resultsSeparator">:</string>
     <string name="wounds">Wounds</string>
     <string name="surges">Surges</string>
@@ -52,23 +42,18 @@
     <string-array name="descentVersions">
         <item>First edition</item>
         <item>Second edition</item>
-        <item>Second edition (experimental)</item>
     </string-array>
 
     <string name="descentVersionFirstEd">firstEd</string>
     <string name="descentVersionSecondEd">secondEd</string>
-    <string name="descentVersionSecondEdExperimental">secondEdExperimental</string>
 
     <string-array name="descentVersionsValues">
         <item>@string/descentVersionFirstEd</item>
         <item>@string/descentVersionSecondEd</item>
-        <item>@string/descentVersionSecondEdExperimental</item>
     </string-array>
 
     <string name="resultsTitle">Dicent - results</string>
-    <string name="selectDiceTitle">Dicent - select dice</string>
-    <string name="selectAddons">Select Addons</string>
-    <string name="about">Version 4.1
+    <string name="about">Version 4.2
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -79,6 +64,10 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n4.2
+    \n- new interface for both descent editions
+    \n- transparent die is now more #8230; transparent
+    \n
     \n4.1
     \n- fixed overlord saving selected dice
     \n- stats on the results screen are now partitioned
@@ -92,19 +81,6 @@
 	\n- dice selection is a bit more visible now
 	\n- now uses modern style on newer android versions
 	\n- dice selection is now less laggy
-	\n
-    \n3.0
-	\n- proper support for high density displays
-	\n- lots of code cleanup
 	\n</string>
-    <string name="expNotice">        Dicent now has a new experimental interface.\n
-        If you play second edition, please try it out and provide feedback.\n
-        \n
-        To enable, go to preferences and select \"Second edition (experimental)\" as descent version.\n
-        \n
-        The reasoning behind the new interface is that I assume most people use the app to replace dice for one player only
-        anyway, which makes the player selection unneccesarily complicated.\n
-        \n
-        Since I can\'t really be sure that that assumption is correct, this thing is experimental for now ;)</string>
 
 </resources>

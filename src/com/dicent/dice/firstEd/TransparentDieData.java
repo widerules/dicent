@@ -38,7 +38,7 @@ public class TransparentDieData extends FirstEdDieData {
 
 	@Override
 	public int getDieColor() {
-		return 0xffcccccc;
+		return 0x33cccccc;
 	}
 	
 	@Override
@@ -49,30 +49,6 @@ public class TransparentDieData extends FirstEdDieData {
 	@Override
 	public SideValues getSideValues() {
 		return sideValues.get(side);
-		/*
-		SideValues sv = new SideValues();
-		switch (side) {
-		case SIDE1:
-			sv.fail = true;
-			break;
-		case SIDE2:
-			sv.fail = true;
-			break;
-		case SIDE3:
-			
-			break;
-		case SIDE4:
-			
-			break;
-		case SIDE5:
-			
-			break;
-		case SIDE6:
-			
-			break;
-		}
-		return sv;
-		*/
 	}
 	
 	@Override

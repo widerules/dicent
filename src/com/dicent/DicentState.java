@@ -15,8 +15,6 @@
 package com.dicent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -39,21 +37,14 @@ public class DicentState {
 	private boolean vibrationEnabled;
 	private boolean rollSoundEnabled;
 	
-	private String[] defaultPlayers;
-	private String[] players;
-	private ArrayList<DiceList> firstEdDieDatas = new ArrayList<DiceList>(5);
-	private ArrayList<DiceList> secondEdAttackDieDatas = new ArrayList<DiceList>(5);
-	private ArrayList<DiceList> secondEdDefenseDieDatas = new ArrayList<DiceList>(5);
+	private DiceList firstEdDice;
+	private DiceList secondEdAttackDice;
+	private DiceList secondEdDefenseDice;
 	private DiceList resultDice = new DiceList();
-	
-	private LinkedList<PreferencesChangedNotifier> prefChangedNotifiers = new LinkedList<PreferencesChangedNotifier>();
 	
 	//experimental
 	private boolean attackEnabled = true;
 	private boolean defenseEnabled = true;
-	
-	private boolean expNoticeShown = false;
-	public static final String EXP_NOTICE_SHOWN = "expNoticeShown";
 	
 	public static DicentState init(Context context) {
 		if (state == null) state = new DicentState(context);
@@ -68,29 +59,16 @@ public class DicentState {
 		storage = new Storage(context);
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		rollSound = MediaPlayer.create(context, R.raw.rollsound);
-		defaultPlayers = context.getResources().getStringArray(R.array.players);
 		
 		//restore preferences
 		restorePreferences(context);
 		
-		//restore saved player names
-		players = new String[defaultPlayers.length];
-		SharedPreferences playerNamesPref = context.getSharedPreferences(
-				DicentPreferencesActivity.PLAYERNAMES, Context.MODE_PRIVATE);
-		for (int i = 0; i < players.length; i++)
-			players[i] = playerNamesPref.getString(Integer.toString(i), defaultPlayers[i]);
-		
-		SharedPreferences expPref = context.getSharedPreferences(
-				DicentPreferencesActivity.EXPERIMENTAL, Context.MODE_PRIVATE);
-		attackEnabled = expPref.getBoolean(DicentPreferencesActivity.ATTACK_ENABLED, true);
-		defenseEnabled = expPref.getBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, true);
-		expNoticeShown = expPref.getBoolean(EXP_NOTICE_SHOWN, false);
+		SharedPreferences diceGroupsPref = context.getSharedPreferences(
+				DicentPreferencesActivity.SECONDED_DICE_GROUPS, Context.MODE_PRIVATE);
+		attackEnabled = diceGroupsPref.getBoolean(DicentPreferencesActivity.ATTACK_ENABLED, true);
+		defenseEnabled = diceGroupsPref.getBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, true);
 		
 		//player die datas
-		//first edition
-		DiceList firstEdDice = null;
-		DiceList secondEdAttackDice = null;
-		DiceList secondEdDefenseDice = null;
 		try {
 			firstEdDice = DiceXmlParser.parse(context.getResources(), R.xml.firsted_basedice);
 			firstEdDice.addAll(DiceXmlParser.parse(context.getResources(), R.xml.firsted_rtldice));
@@ -103,42 +81,19 @@ public class DicentState {
 			e.printStackTrace();
 		}
 		
-		//overlord
-		firstEdDieDatas.add(firstEdDice);
-		secondEdAttackDieDatas.add(secondEdAttackDice);
-		secondEdDefenseDieDatas.add(secondEdDefenseDice);
-		
-		//heroes
-		for (int i = 1; i <= 4; i++) {
-			firstEdDieDatas.add(firstEdDice.copy());
-			secondEdAttackDieDatas.add(secondEdAttackDice.copy());
-			secondEdDefenseDieDatas.add(secondEdDefenseDice.copy());
-		}
-		
-		//TODO storage.restorePlayesDice(firstEdDieDatas);
-		storage.restorePlayesDice(firstEdDieDatas, secondEdAttackDieDatas, secondEdDefenseDieDatas);
+		storage.restoreDice(firstEdDice, secondEdAttackDice, secondEdDefenseDice);
 	}
 	
 	public void saveState(Context context) {
-		//save player names
-		SharedPreferences savedPlayerNames = context.getSharedPreferences(
-				DicentPreferencesActivity.PLAYERNAMES, Context.MODE_PRIVATE);
-		SharedPreferences.Editor savedPlayerNamesEditor = savedPlayerNames.edit();
+		//save dice
+		storage.saveDice(firstEdDice, secondEdAttackDice, secondEdDefenseDice);
 		
-		for (int i = 0; i < players.length; i++)
-			savedPlayerNamesEditor.putString(Integer.toString(i), players[i]);
-		savedPlayerNamesEditor.commit();
-		
-		//save player dice
-		storage.savePlayersDice(firstEdDieDatas, secondEdAttackDieDatas, secondEdDefenseDieDatas);
-		
-		SharedPreferences expPref = context.getSharedPreferences(
-				DicentPreferencesActivity.EXPERIMENTAL, Context.MODE_PRIVATE);
-		SharedPreferences.Editor expPrefEditor = expPref.edit();
-		expPrefEditor.putBoolean(DicentPreferencesActivity.ATTACK_ENABLED, isAttackEnabled());
-		expPrefEditor.putBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, isDefenseEnabled());
-		expPrefEditor.putBoolean(EXP_NOTICE_SHOWN, expNoticeShown);
-		expPrefEditor.commit();
+		SharedPreferences diceGroupsPref = context.getSharedPreferences(
+				DicentPreferencesActivity.SECONDED_DICE_GROUPS, Context.MODE_PRIVATE);
+		SharedPreferences.Editor diceGroupsEditor = diceGroupsPref.edit();
+		diceGroupsEditor.putBoolean(DicentPreferencesActivity.ATTACK_ENABLED, isAttackEnabled());
+		diceGroupsEditor.putBoolean(DicentPreferencesActivity.DEFENSE_ENABLED, isDefenseEnabled());
+		diceGroupsEditor.commit();
 		
 		//enable for testing
 		//state = null;
@@ -146,19 +101,6 @@ public class DicentState {
 	
 	public void preferencesChanged(Context context) {
 		restorePreferences(context);
-		for (PreferencesChangedNotifier notifier : prefChangedNotifiers) notifier.diceChanged();
-	}
-	
-	public void registerPreferencesChangedNotifier(PreferencesChangedNotifier notifier) {
-		prefChangedNotifiers.add(notifier);
-	}
-	
-	public void unregisterPreferencesChangedNotifier(PreferencesChangedNotifier notifier) {
-		for (PreferencesChangedNotifier currentNotifier : prefChangedNotifiers)
-			if (currentNotifier == notifier) {
-				prefChangedNotifiers.remove(notifier);
-				return;
-			}
 	}
 	
 	public void rollEffects() {
@@ -166,24 +108,16 @@ public class DicentState {
 		if (rollSoundEnabled) rollSound.start();
 	}
 	
-	public String[] getPlayers() {
-		return players;
+	public DiceList getFirstEdDice() {
+		return firstEdDice;
 	}
 	
-	public String[] getDefaultPlayers() {
-		return defaultPlayers;
+	public DiceList getSecondEdAttackDice() {
+		return secondEdAttackDice;
 	}
 	
-	public DiceList getFirstEdDieDatas(int playerIndex) {
-		return firstEdDieDatas.get(playerIndex);
-	}
-	
-	public DiceList getSecondEdAttackDieDatas(int playerIndex) {
-		return secondEdAttackDieDatas.get(playerIndex);
-	}
-	
-	public DiceList getSecondEdDefenseDieDatas(int playerIndex) {
-		return secondEdDefenseDieDatas.get(playerIndex);
+	public DiceList getSecondEdDefenseDice() {
+		return secondEdDefenseDice;
 	}
 	
 	public DiceList getResultDice() {
@@ -210,20 +144,12 @@ public class DicentState {
 		return defenseEnabled;
 	}
 	
-	public boolean isExpNoticeShown() {
-		return expNoticeShown;
-	}
-	
 	public void setAttackEnabled(boolean _attackEnabled) {
 		attackEnabled = _attackEnabled;
 	}
 	
 	public void setDefenseEnabled(boolean _defenseEnabled) {
 		defenseEnabled = _defenseEnabled;
-	}
-	
-	public void setExpNoticeShown(boolean shown) {
-		expNoticeShown = shown;
 	}
 	
 	private void restorePreferences(Context context) {

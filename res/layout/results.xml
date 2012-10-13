@@ -11,7 +11,7 @@
         android:fillViewport="true" >
 
         <fragment
-            android:name="com.dicent.SimpleDiceFragment"
+            android:name="com.dicent.DiceFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:tag="diceGrid" />
@@ -30,13 +30,14 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/resultsRerollButton"
             style="@style/BottomButtons"
+            android:onClick="reroll"
             android:text="@string/reroll" />
 
         <Button
             android:id="@+id/resultsAddBlackButton"
             style="@style/BottomButtons"
+            android:onClick="addBlack"
             android:text="@string/addBlack" />
     </LinearLayout>
 
@@ -48,11 +49,13 @@
         <Button
             android:id="@+id/resultsAddSilverButton"
             style="@style/BottomButtons"
+            android:onClick="addSilver"
             android:text="@string/addSilver" />
 
         <Button
             android:id="@+id/resultsAddGoldButton"
             style="@style/BottomButtons"
+            android:onClick="addGold"
             android:text="@string/addGold" />
     </LinearLayout>
 

@@ -34,35 +34,25 @@
     <TextView
         android:id="@+id/statsEffectiveWounds"
         style="@style/resultsStatsText"
-        android:text = "0" />
+        android:text="0" />
 
-    <LinearLayout
-        android:id="@+id/statsSurgesGroup"
-        style="@style/resultsStatsGroup" >
+    <View style="@style/resultsStatsSeparator" />
 
-        <View style="@style/resultsStatsSeparator" />
+    <TextView
+        android:id="@+id/resultSurges"
+        style="@style/resultsStatsText"
+        android:drawableRight="@drawable/whitesurge" />
 
-        <TextView
-            android:id="@+id/resultSurges"
-            style="@style/resultsStatsText"
-            android:drawableRight="@drawable/whitesurge" />
-    </LinearLayout>
+    <View style="@style/resultsStatsSeparator" />
 
-    <LinearLayout
-        android:id="@+id/statsRangeGroup"
-        style="@style/resultsStatsGroup" >
+    <TextView
+        android:id="@+id/resultRange"
+        style="@style/resultsStatsText" />
 
-        <View style="@style/resultsStatsSeparator" />
-
-        <TextView
-            android:id="@+id/resultRange"
-            style="@style/resultsStatsText" />
-
-        <TextView
-            style="@style/resultsStatsText"
-            android:layout_marginLeft="3dp"
-            android:text="@string/range" />
-    </LinearLayout>
+    <TextView
+        style="@style/resultsStatsText"
+        android:layout_marginLeft="3dp"
+        android:text="@string/range" />
 
     <LinearLayout
         android:id="@+id/statsEnhancementGroup"

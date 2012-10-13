@@ -14,7 +14,6 @@
 
 package com.dicent.dice.firstEd;
 
-import com.dicent.DieAdapter;
 import com.dicent.R;
 import com.dicent.dice.Die;
 import com.dicent.dice.DieData;

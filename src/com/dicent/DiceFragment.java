@@ -1,3 +1,17 @@
+/** This file is part of Dicent.
+ *
+ *  Dicent is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  Dicent is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 package com.dicent;
 
 import com.dicent.dice.Die;
@@ -13,18 +27,24 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-public abstract class DiceFragment extends Fragment implements PreferencesChangedNotifier {
+public class DiceFragment extends Fragment {
+	public static final int ATTACK = 0;
+	public static final int DEFENSE = 1;
+	private int type = ATTACK;
 	private DiceList diceList;
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		DicentState.instance().registerPreferencesChangedNotifier(this);
-	}
+	private boolean enabled = true;
+	private boolean showCheckbox = false;
+	private String checkboxText = "";
+	
+	private CheckBox enabledCheckbox;
+	private TableLayout diceTable;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -34,19 +54,23 @@ public abstract class DiceFragment extends Fragment implements PreferencesChange
 	}
 	
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public View onCreateView (LayoutInflater inflater, ViewGroup container,
+	                          Bundle savedInstanceState) {
+		LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.dice_fragment, null);
+		enabledCheckbox = (CheckBox)layout.findViewById(R.id.diceEndabledCheckBox);
+		enabledCheckbox.setOnCheckedChangeListener(new OnEnabledListener());
+		enabledCheckbox.setText(checkboxText);
+		diceTable = (TableLayout)layout.findViewById(R.id.diceTable);
+		refreshCheckbox();
+		return layout;
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
 		
-		DicentState.instance().unregisterPreferencesChangedNotifier(this);
-	}
-	
-	public View createDiceGrid(LayoutInflater inflater,
-	                           ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.dice_grid_table, null);
-	}
-	
-	public void diceChanged() {
-		refreshDice();
+		enabledCheckbox = null;
+		diceTable = null;
 	}
 	
 	public void redraw() {
@@ -61,6 +85,7 @@ public abstract class DiceFragment extends Fragment implements PreferencesChange
 	
 	public void setDice(DiceList dice) {
 		diceList = dice;
+		if (isAdded()) refreshDice();
 	}
 	
 	public DiceList getDice() {
@@ -69,6 +94,32 @@ public abstract class DiceFragment extends Fragment implements PreferencesChange
 	
 	public void setVisibility(int visibility) {
 		getView().setVisibility(visibility);
+	}
+	
+	public void setShowCheckbox(boolean _showCheckbox) {
+		showCheckbox = _showCheckbox;
+		refreshCheckbox();
+	}
+	
+	public void setCheckboxText(String text) {
+		checkboxText = text;
+		if (enabledCheckbox != null) enabledCheckbox.setText(checkboxText);
+	}
+	
+	public void setEnabled(boolean _enabled) {
+		enabled = _enabled;
+		DicentState state = DicentState.instance();
+		if (type == ATTACK) state.setAttackEnabled(enabled);
+		else if (type == DEFENSE) state.setDefenseEnabled(enabled);
+		refreshCheckbox();
+	}
+	
+	public void setType(int _type) {
+		type = _type;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 	public boolean isDieSelectable(DieData die) {
@@ -80,19 +131,18 @@ public abstract class DiceFragment extends Fragment implements PreferencesChange
 		return true;
 	}
 	
-	private void refreshDice() {
-		if (diceList == null) return;
+	public void refreshDice() {
+		if (diceTable == null || diceList == null) return;
 		DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
 		int columns = metrics.widthPixels / (int)((Die.scale + Die.margin) * metrics.density);
-		TableLayout tl = (TableLayout)getView().findViewById(R.id.diceTable);
-		tl.removeAllViews();
+		diceTable.removeAllViews();
 		TableRow tr = null;
 		int addedDice = 0;
 		for (int i = 0; i < diceList.size(); i++) {
 			if (!diceList.get(i).isVisible()) continue;
 			if (addedDice % columns == 0) {
 				tr = new TableRow(getActivity());
-				tl.addView(tr);
+				diceTable.addView(tr);
 			}
 			Die die;
 			if (diceList.get(i) instanceof FirstEdDieData)
@@ -101,6 +151,26 @@ public abstract class DiceFragment extends Fragment implements PreferencesChange
 			die.setOnClickListener(new OnDieClickedListener(die));
 			tr.addView(die);
 			addedDice++;
+		}
+	}
+	
+	private void refreshCheckbox() {
+		if (enabledCheckbox == null || diceTable == null) return;
+		if (showCheckbox) {
+			enabledCheckbox.setVisibility(View.VISIBLE);
+			enabledCheckbox.setChecked(enabled);
+			if (enabled) diceTable.setVisibility(View.VISIBLE);
+			else diceTable.setVisibility(View.INVISIBLE);
+		} else {
+			enabledCheckbox.setVisibility(View.GONE);
+			diceTable.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	private class OnEnabledListener implements CompoundButton.OnCheckedChangeListener {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			setEnabled(isChecked);
 		}
 	}
 	

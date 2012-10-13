@@ -25,18 +25,16 @@ public class DicentActivity extends FragmentActivity {
 	public static final String FRAGMENT_ABOUTDIALOG = "aboutDialog";
 	public static final String INTENTKEY_MODE = "mode";
 	public static final int MODE_FIRSTED = 0;
-	public static final int MODE_SECONDED_ATTACK = 1;
-	public static final int MODE_SECONDED_DEFENSE = 2;
-	public static final int MODE_EXPERIMENTAL = 3;
+	public static final int MODE_SECONDED = 1;
 	
 	protected DicentState state;
 	
 	private AboutDialogFragment aboutDialogFragment;
 	
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
 		state = DicentState.init(this);
+		
+		super.onCreate(savedInstanceState);
 		
 		aboutDialogFragment = (AboutDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_ABOUTDIALOG);
 		if (aboutDialogFragment == null) aboutDialogFragment = new AboutDialogFragment();
