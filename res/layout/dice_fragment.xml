@@ -7,6 +7,8 @@
     <CheckBox
         android:id="@+id/diceEndabledCheckBox"
         style="@style/DiceGridLabel"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:checked="true" />
 
     <TableLayout

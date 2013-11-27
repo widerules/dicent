@@ -27,38 +27,38 @@ import android.view.View;
 public class MainActivity extends DicentActivity {
 	private static final String FRAGMENT_ATTACK_DICE = "attackDice";
 	private static final String FRAGMENT_DEFENCE_DICE = "defenseDice";
-	
+
 	private DiceFragment attackDiceFragment;
 	private DiceFragment defenseDiceFragment;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		
+
 		state.saveState(this);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		attackDiceFragment = (DiceFragment)fm.findFragmentByTag(FRAGMENT_ATTACK_DICE);
-		
+		attackDiceFragment = (DiceFragment) fm.findFragmentByTag(FRAGMENT_ATTACK_DICE);
+
 		if (state.getDescentVersion().equals(DicentPreferencesActivity.DESCENT_SECOND_EDITION)) {
 			attackDiceFragment.setType(DiceFragment.ATTACK);
 			attackDiceFragment.setShowCheckbox(true);
 			attackDiceFragment.setDice(state.getSecondEdAttackDice());
 			attackDiceFragment.setCheckboxText(getResources().getString(R.string.attack));
 			attackDiceFragment.setEnabled(state.isAttackEnabled());
-			
-			defenseDiceFragment = (DiceFragment)fm.findFragmentByTag(FRAGMENT_DEFENCE_DICE);
+
+			defenseDiceFragment = (DiceFragment) fm.findFragmentByTag(FRAGMENT_DEFENCE_DICE);
 			if (defenseDiceFragment == null) {
 				defenseDiceFragment = new DiceFragment();
 				ft.add(R.id.diceLayout, defenseDiceFragment, FRAGMENT_DEFENCE_DICE);
@@ -71,16 +71,17 @@ public class MainActivity extends DicentActivity {
 		} else {
 			attackDiceFragment.setShowCheckbox(false);
 			attackDiceFragment.setDice(state.getFirstEdDice());
-			defenseDiceFragment = (DiceFragment)fm.findFragmentByTag(FRAGMENT_DEFENCE_DICE);
-			if (defenseDiceFragment != null) ft.remove(defenseDiceFragment);
+			defenseDiceFragment = (DiceFragment) fm.findFragmentByTag(FRAGMENT_DEFENCE_DICE);
+			if (defenseDiceFragment != null)
+				ft.remove(defenseDiceFragment);
 			defenseDiceFragment = null;
 		}
 		ft.commit();
 	}
-	
+
 	public void roll(View v) {
 		state.rollEffects();
-		
+
 		DiceList resultDice = state.getResultDice();
 		resultDice.clear();
 		ArrayList<DiceList> diceLists = new ArrayList<DiceList>(2);
@@ -88,21 +89,23 @@ public class MainActivity extends DicentActivity {
 			diceLists.add(attackDiceFragment.getDice());
 		if (defenseDiceFragment != null && defenseDiceFragment.isEnabled())
 			diceLists.add(defenseDiceFragment.getDice());
-		
+
 		for (DiceList dice : diceLists) {
 			for (DieData data : dice) {
-				if (!data.isSelected || !data.isVisible()) continue;
+				if (!data.isSelected || !data.isVisible())
+					continue;
 				DieData newData = data.copy();
 				newData.isSelected = false;
 				newData.roll();
 				resultDice.add(newData);
 			}
 		}
-		
+
 		Intent resultsIntent = new Intent(getBaseContext(), ResultsActivity.class);
 		if (state.getDescentVersion().equals(DicentPreferencesActivity.DESCENT_SECOND_EDITION))
 			resultsIntent.putExtra(INTENTKEY_MODE, MODE_SECONDED);
-		else resultsIntent.putExtra(INTENTKEY_MODE, MODE_FIRSTED);
+		else
+			resultsIntent.putExtra(INTENTKEY_MODE, MODE_FIRSTED);
 		startActivity(resultsIntent);
 	}
 }

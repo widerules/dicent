@@ -25,41 +25,41 @@ import com.dicent.dice.firstEd.FirstEdDieData;
 public class ResultsActivity extends DicentActivity {
 	private Button addSilverButton;
 	private Button addGoldButton;
-	
+
 	private int mode;
-	
+
 	private DiceFragment diceFragment;
 	private StatsFragment statsFragment;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.results);
-		
+
 		mode = getIntent().getIntExtra(INTENTKEY_MODE, 0);
 
-		//collect objects created in XML
-		Button addBlackButton = (Button)findViewById(R.id.resultsAddBlackButton);
-		addSilverButton = (Button)findViewById(R.id.resultsAddSilverButton);
-		addGoldButton = (Button)findViewById(R.id.resultsAddGoldButton);
-		
-		statsFragment = (StatsFragment)getSupportFragmentManager().findFragmentByTag("stats");
-		diceFragment = (DiceFragment)getSupportFragmentManager().findFragmentByTag("diceGrid");
-		
+		// collect objects created in XML
+		Button addBlackButton = (Button) findViewById(R.id.resultsAddBlackButton);
+		addSilverButton = (Button) findViewById(R.id.resultsAddSilverButton);
+		addGoldButton = (Button) findViewById(R.id.resultsAddGoldButton);
+
+		statsFragment = (StatsFragment) getSupportFragmentManager().findFragmentByTag("stats");
+		diceFragment = (DiceFragment) getSupportFragmentManager().findFragmentByTag("diceGrid");
+
 		if (mode == MODE_SECONDED) {
 			addBlackButton.setVisibility(View.GONE);
 			addSilverButton.setVisibility(View.GONE);
 			addGoldButton.setVisibility(View.GONE);
 		}
-		
+
 		diceFragment.setDice(state.getResultDice());
 		statsFragment.setMode(mode);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		if (mode == MODE_FIRSTED) {
 			if (state.isRtlEnabled()) {
 				addSilverButton.setVisibility(View.VISIBLE);
@@ -70,13 +70,13 @@ public class ResultsActivity extends DicentActivity {
 			}
 		}
 	}
-	
+
 	public void reroll(View v) {
 		if (state.getResultDice().selectedDiceCount() > 0) {
 			state.rollEffects();
-		}
-		else Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
-				Toast.LENGTH_SHORT).show();
+		} else
+			Toast.makeText(ResultsActivity.this, getResources().getString(R.string.rerollNotification),
+					Toast.LENGTH_SHORT).show();
 		for (DieData data : state.getResultDice()) {
 			if (data.isSelected) {
 				data.isSelected = false;
@@ -86,22 +86,25 @@ public class ResultsActivity extends DicentActivity {
 		diceFragment.redraw();
 		statsFragment.update();
 	}
-	
+
 	public void addBlack(View v) {
-		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5)
+			return;
 		addRolledDie(FirstEdDieData.BLACK_DIE);
 	}
-	
+
 	public void addSilver(View v) {
-		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5)
+			return;
 		addRolledDie(FirstEdDieData.SILVER_DIE);
 	}
-	
+
 	public void addGold(View v) {
-		if (state.getResultDice().firstEdPowerDiceCount() >= 5) return;
+		if (state.getResultDice().firstEdPowerDiceCount() >= 5)
+			return;
 		addRolledDie(FirstEdDieData.GOLD_DIE);
 	}
-	
+
 	private void addRolledDie(int dieType) {
 		FirstEdDieData newDie = FirstEdDieData.create(dieType);
 		newDie.roll();

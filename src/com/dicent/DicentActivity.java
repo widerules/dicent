@@ -26,36 +26,37 @@ public class DicentActivity extends FragmentActivity {
 	public static final String INTENTKEY_MODE = "mode";
 	public static final int MODE_FIRSTED = 0;
 	public static final int MODE_SECONDED = 1;
-	
+
 	protected DicentState state;
-	
+
 	private AboutDialogFragment aboutDialogFragment;
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		state = DicentState.init(this);
-		
+
 		super.onCreate(savedInstanceState);
-		
-		aboutDialogFragment = (AboutDialogFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_ABOUTDIALOG);
-		if (aboutDialogFragment == null) aboutDialogFragment = new AboutDialogFragment();
+
+		aboutDialogFragment = (AboutDialogFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_ABOUTDIALOG);
+		if (aboutDialogFragment == null)
+			aboutDialogFragment = new AboutDialogFragment();
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    	case R.id.menuPreferencesButton:
-    		Intent dicentPreferences = new Intent(getBaseContext(), DicentPreferencesActivity.class);
-    		startActivity(dicentPreferences);
-    		return true;
-    	case R.id.menuAboutButton:
-    		aboutDialogFragment.show(getSupportFragmentManager(), FRAGMENT_ABOUTDIALOG);
-    		return true;
-    	}
-    	return false;
-    }
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menuPreferencesButton:
+			Intent dicentPreferences = new Intent(getBaseContext(), DicentPreferencesActivity.class);
+			startActivity(dicentPreferences);
+			return true;
+		case R.id.menuAboutButton:
+			aboutDialogFragment.show(getSupportFragmentManager(), FRAGMENT_ABOUTDIALOG);
+			return true;
+		}
+		return false;
+	}
 }

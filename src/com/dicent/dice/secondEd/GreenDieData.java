@@ -1,8 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/** This file is part of Dicent.
+ *
+ *  Dicent is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *  Dicent is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with Dicent.  If not, see <http://www.gnu.org/licenses/>.
+ **/
 
 package com.dicent.dice.secondEd;
 
@@ -11,34 +19,34 @@ import java.util.HashMap;
 import com.dicent.dice.SideValues;
 
 public class GreenDieData extends PowerDieData {
-    private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
-    
-    static {
-		sideValues.put(Side.SIDE1, new SideValues(0, 0, 1));
-		sideValues.put(Side.SIDE2, new SideValues(0, 1, 0));
-		sideValues.put(Side.SIDE3, new SideValues(1, 1, 1));
+	private static HashMap<Side, SideValues> sideValues = new HashMap<Side, SideValues>();
+
+	static {
+		sideValues.put(Side.SIDE1, new SideValues(1, 1, 1));
+		sideValues.put(Side.SIDE2, new SideValues(1, 1, 0));
+		sideValues.put(Side.SIDE3, new SideValues(1, 0, 1));
 		sideValues.put(Side.SIDE4, new SideValues(0, 1, 1));
-		sideValues.put(Side.SIDE5, new SideValues(1, 0, 1));
-		sideValues.put(Side.SIDE6, new SideValues(1, 1, 0));
+		sideValues.put(Side.SIDE5, new SideValues(0, 1, 0));
+		sideValues.put(Side.SIDE6, new SideValues(0, 0, 1));
 	}
-    
-    @Override
-    public int getDieType() {
-            return GREEN_DIE;
-    }
-    
-    @Override
-    public int getDieColor() {
-            return 0xFF00AA00;
-    }
 
-    @Override
-    public boolean usesBlackIcons() {
-            return false;
-    }
+	@Override
+	public int getDieType() {
+		return GREEN_DIE;
+	}
 
-    @Override
-    public SideValues getSideValues() {
-            return sideValues.get(side);
-    }
+	@Override
+	public int getDieColor() {
+		return 0xff00aa00;
+	}
+
+	@Override
+	public boolean usesBlackIcons() {
+		return false;
+	}
+
+	@Override
+	public SideValues getSideValues() {
+		return sideValues.get(side);
+	}
 }

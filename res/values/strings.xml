@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dicent</string>
 
+    <string name="app_name">Dicent</string>
     <string name="OK">OK</string>
     <string name="cancel">Cancel</string>
     <string name="roll">Roll</string>
@@ -12,10 +12,8 @@
     <string name="addGold">Add Gold</string>
     <string name="range">Range</string>
     <string name="enhancement">Enhancement</string>
-    
     <string name="menuPreferences">Preferences</string>
     <string name="menuAbout">About</string>
-    
     <string name="resultsSeparator">:</string>
     <string name="wounds">Wounds</string>
     <string name="surges">Surges</string>
@@ -53,7 +51,7 @@
     </string-array>
 
     <string name="resultsTitle">Dicent - results</string>
-    <string name="about">Version 4.2
+    <string name="about">Dicent 4.3
     \n
     \nIf you have feedback, suggestions or found a bug, please contact me at fa3rhan@gmail.com
     or use the issue tracker on the project\'s website
@@ -64,6 +62,11 @@
     \nDescent: Journeys in the Dark is ™ and © Fantasy Flight Games. All Rights Reserved.
     \n
     \nChangelog:
+    \n4.3
+    \n- added green die from labyrinth of ruin (thanks to doc_awesome)
+    \n- default descent version is now second edition
+    \n- small cosmetic changes to the dice selection screen
+    \n
     \n4.2
     \n- new interface for both descent editions
     \n- transparent die is now more &#8230; transparent
@@ -77,7 +80,7 @@
 	\n- added support for second edition descent
 	\n
     \n3.1
-	\n- removed warning on exit since it\'s no longer neccesary
+	\n- removed warning on exit since it\'s no longer necessary
 	\n- dice selection is a bit more visible now
 	\n- now uses modern style on newer android versions
 	\n- dice selection is now less laggy

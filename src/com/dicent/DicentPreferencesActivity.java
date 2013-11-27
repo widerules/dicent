@@ -25,7 +25,7 @@ public class DicentPreferencesActivity extends PreferenceActivity implements OnS
 	public static final String DESCENT_VERSION = "descentVersion";
 	public static final String DESCENT_FIRST_EDITION = "firstEd";
 	public static final String DESCENT_SECOND_EDITION = "secondEd";
-	public static final String DEFAULT_DESCENT_VERSION = DESCENT_FIRST_EDITION;
+	public static final String DEFAULT_DESCENT_VERSION = DESCENT_SECOND_EDITION;
 	public static final String PLAYERNAMES = "playerNames";
 	public static final String RTL_ENABLED = "roadToLegend";
 	public static final String TOI_ENABLED = "tombOfIce";
