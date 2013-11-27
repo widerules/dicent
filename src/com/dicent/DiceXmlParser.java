@@ -73,6 +73,7 @@ public class DiceXmlParser {
 		else if (name.equals("second_blue")) return SecondEdDieData.BLUE_DIE;
 		else if (name.equals("second_red")) return SecondEdDieData.RED_DIE;
 		else if (name.equals("second_yellow")) return SecondEdDieData.YELLOW_DIE;
+		else if (name.equals("second_green")) return SecondEdDieData.GREEN_DIE;
 		
 		return 0;
 	}

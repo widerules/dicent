@@ -23,6 +23,7 @@ public abstract class SecondEdDieData extends DieData {
 	public static final int BLUE_DIE = 103;
 	public static final int RED_DIE = 104;
 	public static final int YELLOW_DIE = 105;
+	public static final int GREEN_DIE = 106;
 	
 	public static SecondEdDieData create(int dieType) {
 		SecondEdDieData secondEdDieData;
@@ -44,6 +45,9 @@ public abstract class SecondEdDieData extends DieData {
 			break;
 		case YELLOW_DIE:
 			secondEdDieData = new YellowDieData();
+			break;
+		case GREEN_DIE:
+			secondEdDieData = new GreenDieData();
 			break;
 		default:
 			secondEdDieData = new BlueDieData();	
